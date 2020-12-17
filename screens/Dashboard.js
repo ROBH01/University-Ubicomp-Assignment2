@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-//TODO: Create Counties screen that is made by different components
-const Counties = () => {
+//TODO: Create Dashboard with counties screen that is made by different components
+const Dashboard = () => {
   return (
     <View
       style={{
@@ -12,9 +12,9 @@ const Counties = () => {
         backgroundColor: "pink",
       }}
     >
-      <Text style={{ fontSize: 24 }}>Counties screen</Text>
+      <Text style={{ fontSize: 24 }}>Dashboard screen</Text>
     </View>
   );
 };
 
-export default Counties;
+export default Dashboard;

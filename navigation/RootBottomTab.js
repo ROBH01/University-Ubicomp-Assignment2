@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Activities from "../screens/Activities";
-import Counties from "../screens/Counties";
+import Dashboard from "../screens/Dashboard";
 import Profile from "../screens/Profile";
 
 //TODO: Create Bottom Tab Navigator that is made by the different screens
 const BottomTabNav = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs = ({ userLocation }) => {
+  console.log(userLocation);
   return (
     <BottomTabNav.Navigator
       initialRouteName="Activities"
       tabBarOptions={{
-        activeTintColor: "#e91e63",
+        activeTintColor: "#2196F3",
       }}
     >
       <BottomTabNav.Screen
@@ -28,10 +29,10 @@ const Tabs = () => {
       />
 
       <BottomTabNav.Screen
-        name="Counties"
-        component={Counties}
+        name="Dashboard"
+        component={Dashboard}
         options={{
-          tabBarLabel: "Counties statuses",
+          tabBarLabel: "Dashboard counties",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="earth" color={color} size={size} />
           ),
