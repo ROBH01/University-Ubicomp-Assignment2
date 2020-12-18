@@ -9,7 +9,6 @@ import Profile from "../screens/Profile";
 const BottomTabNav = createBottomTabNavigator();
 
 const Tabs = ({ userLocation }) => {
-  console.log(userLocation);
   return (
     <BottomTabNav.Navigator
       initialRouteName="Activities"

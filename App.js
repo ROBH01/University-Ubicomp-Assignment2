@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, PermissionsAndroid } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Tabs from "./navigation/RootBottomTab";
 import * as Location from "expo-location";
@@ -9,11 +9,36 @@ import fetchSpecimen from "./APIs/CovidGovAPI";
 
 export default function App() {
   // Getting permission and location from the user
-  const [userLocation, setUserLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState("Hi");
   const [locationErrorMessage, setLocationErrorMessage] = useState(null);
   const [userONSAreaCode, setUserONSAreaCode] = useState(null);
 
+  // const requestCameraPermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         title: "Location permissions is needed",
+  //         message:
+  //           "Location is needed to obtain data relevant to you " +
+  //           "such as weather forecast and covid status.",
+  //         buttonNeutral: "Ask Me Later",
+  //         buttonNegative: "Cancel",
+  //         buttonPositive: "OK",
+  //       }
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log("You can use location");
+  //     } else {
+  //       console.log("Location permission denied");
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
+
   useEffect(() => {
+    let currentLocation = null;
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -21,37 +46,32 @@ export default function App() {
         return;
       }
 
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setUserLocation(currentLocation);
+      currentLocation = await Location.getCurrentPositionAsync({});
+      console.log(
+        "Current location gathered is: " + JSON.stringify(currentLocation)
+      );
+
+      if (currentLocation !== null) {
+        let latitude = currentLocation["coords"].latitude;
+        let longitude = currentLocation["coords"].longitude;
+        console.log(
+          "LATITUDE_EXTRACTED: " +
+            latitude +
+            " --- LONGITUDE_EXTRACTED: " +
+            longitude
+        );
+
+        let ONS = await fetchONSCode(latitude, longitude);
+        console.log("ONS code retrieved: " + ONS);
+
+        if (ONS !== null) {
+          let specimen = await fetchSpecimen(ONS);
+          console.log("Specimen follows next line (COVID API)");
+          console.log(specimen);
+        }
+      }
     })();
   }, []);
-
-  // let outcome = "Working on it...";
-  // if (locationErrorMessage) {
-  //   outcome = locationErrorMessage;
-  // } else if (userLocation) {
-  //   outcome = JSON.stringify(userLocation);
-  // }
-
-  if (userLocation !== null) {
-    // TODO: Make it run only once!?
-    let latitude = userLocation["coords"].latitude;
-    let longitude = userLocation["coords"].longitude;
-    console.log("LAT: " + latitude);
-    console.log("LON: " + longitude);
-    let ONS = fetchONSCode(latitude, longitude);
-    ONS.then(function (result) {
-      setUserONSAreaCode(result);
-      console.log(userONSAreaCode);
-      //TODO: Fetch data from GOV.UK COVID API
-      // let specimen = fetchSpecimen(userONSAreaCode);
-      // specimen.then(function (result) {
-      //   console.log(result);
-      // });
-    });
-  }
-
-  //TODO: Send this code to One of the screens!!!
 
   return (
     <NavigationContainer>
