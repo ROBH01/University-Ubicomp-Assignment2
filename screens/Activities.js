@@ -16,7 +16,7 @@ const Activities = () => {
         flex: 1,
         //alignItems: "center",
         //justifyContent: "center",
-        backgroundColor: "lightblue",
+        backgroundColor: "lightgray",
       }}
     >
       <MyModal

@@ -97,32 +97,33 @@ const activities = [
 low risk
 Restaurant takeaway
 Going camping
-Snowboarding
-Fishing
+/////Snowboarding
+/////Fishing
 Drive in movies
-Stargazing
+////Stargazing
 Wash the car
 
 
 Moderate risk
+////cinema
 Running or Walking
 Doctor waiting room
-Study at the library
+////Study at the library
 Eating in a restaurant (outside)
 Walking in a busy downtown
-Horse riding
+////Horse riding
 
 
 Moderate
-Grocery shopping
+////Grocery shopping
 Dinner at friend's house
 Going to the beach > get date, check if summer!!!
 Working inside the office
-Swimming in a public pool
+////Swimming in a public pool
 
 
 Moderate high
-Shopping at a mall
+////Shopping at a mall
 Going to the barbershop
 Eating inside the restaurant
 Attending weddings or funerals
@@ -133,7 +134,7 @@ Hugging or shaking hands when greeting someone
 
 High
 Eating at a buffet
-Exercise at the gym
+////Exercise at the gym
 Going to the cinema
 Attending large music concert
 Going to a sports stadium
