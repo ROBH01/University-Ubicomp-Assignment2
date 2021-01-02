@@ -4,16 +4,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Activities from "../screens/Activities";
 import Dashboard from "../screens/Dashboard";
 import Profile from "../screens/Profile";
+import colors from "../assets/colors";
 
 //TODO: Create Bottom Tab Navigator that is made by the different screens
 const BottomTabNav = createBottomTabNavigator();
 
-const Tabs = ({ userLocation }) => {
+const Tabs = () => {
   return (
     <BottomTabNav.Navigator
       initialRouteName="Activities"
       tabBarOptions={{
-        activeTintColor: "#2196F3",
+        activeTintColor: colors.tabBarTint,
       }}
     >
       <BottomTabNav.Screen
