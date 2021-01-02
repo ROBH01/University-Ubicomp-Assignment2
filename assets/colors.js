@@ -6,4 +6,5 @@ export default {
   highRisk: "#e63d00",
   tabBarTint: "#2196F3",
   appMainBackground: "#e6e6e6",
+  riskUnavailable: "#949494",
 };
