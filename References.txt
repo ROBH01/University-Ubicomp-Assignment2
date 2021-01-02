@@ -1,1 +1,10 @@
 App references
+
+1. Pictures used:
+    Running: Nearest Beach, Available from: https://farm3.static.flickr.com/2837/9171412187_0b1fdf2da9_b.jpg [Accessed 02 November 2020]
+
+
+2. Guidance and examples:
+    Modal, Available from: https://reactnative.dev/docs/modal
+    Color Reference, Available from: https://reactnative.dev/docs/colors
+    

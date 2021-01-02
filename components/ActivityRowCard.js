@@ -9,16 +9,29 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
+import MyModal from "./MyModal";
 
 //TODO: Make a row card that is rendered by a FlatList
-const ActivityRowCard = ({ beachName, beachStatus, imagePath }) => {
+const ActivityRowCard = ({
+  activityName,
+  activityRisk,
+  activityBaseRiskValue,
+  imagePath,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       underlayColor="#DDD"
-      onPress={() => alert("Pressed on " + beachName)}
+      onPress={() => setModalVisible(true)}
     >
-      {/* This view renders the beach name and the status */}
+      <MyModal
+        modalVisible={modalVisible}
+        activityBaseRiskValue={activityBaseRiskValue}
+        closeModal={() => setModalVisible(false)}
+      />
+      {/* This view renders each activity view */}
       <View
         style={{
           width: "100%",
@@ -28,7 +41,7 @@ const ActivityRowCard = ({ beachName, beachStatus, imagePath }) => {
           justifyContent: "flex-start",
         }}
       >
-        {/* This view renders the beach image */}
+        {/* This view renders the activity image */}
         <View
           style={{
             width: "100%",
@@ -56,7 +69,7 @@ const ActivityRowCard = ({ beachName, beachStatus, imagePath }) => {
           </ImageBackground>
         </View>
 
-        {/* Other */}
+        {/* Renders activity name and its risk level */}
         <View
           style={{
             backgroundColor: "white",
@@ -73,40 +86,31 @@ const ActivityRowCard = ({ beachName, beachStatus, imagePath }) => {
               alignSelf: "center",
             }}
           >
-            {beachName}
+            {activityName}
           </Text>
-          <View style={{ flexDirection: "row", backgroundColor: "pink" }}>
-            <View style={{ width: "90%" }}>
-              <Text style={{ marginTop: 5, fontSize: 15, alignSelf: "center" }}>
-                {beachStatus}
-              </Text>
-            </View>
+          <Text style={{ marginTop: 2, fontSize: 15, alignSelf: "center" }}>
+            {activityRisk}
+          </Text>
 
-            {/* <MaterialCommunityIcons
+          {/* Showing the right arrow on the card */}
+          <View style={{ position: "absolute", end: 5, top: 15 }}>
+            <MaterialCommunityIcons
               style={{ alignSelf: "flex-end" }}
-              name="arrow-right-circle"
-              raised
-              color={"black"}
-              onPress={() => alert("Opening activiy info")}
+              name="arrow-right" // or arrow-right-circle
+              color={"#595959"}
+              //onPress={() => alert("Opening activiy info")}
               size={24}
-            /> */}
+            />
           </View>
 
-          <View style={{ flexDirection: "row", marginTop: 2 }}>
+          {/* Showing the bottom line indicating risk level as a colour */}
+          <View style={{ flexDirection: "row", marginTop: 5 }}>
             <RiskStatusRectangle
               statusColor="green"
               width={"100%"}
-              height={6}
+              height={7}
             />
           </View>
-
-          {/* <View style={{ alignSelf: "center" }}>
-            <MaterialCommunityIcons
-              name="arrow-right"
-              color={"black"}
-              size={30}
-            />
-          </View> */}
         </View>
       </View>
     </TouchableOpacity>

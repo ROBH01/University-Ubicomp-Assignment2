@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Text, View, ActivityIndicator, Button, FlatList } from "react-native";
-import MyModal from "../components/MyModal";
-import getBeaches from "../APIs/Beach-api";
+import getActivities from "../APIs/Activities-api";
 import ActivityRowCard from "../components/ActivityRowCard";
 
 //TODO: Create Activities screen that is made by different components
 const Activities = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [covidData, setCovidData] = useState(getBeaches());
+  const [covidData, setCovidData] = useState(getActivities());
   let userLocation = "?";
 
   return (
@@ -19,11 +17,6 @@ const Activities = () => {
         backgroundColor: "lightgray",
       }}
     >
-      <MyModal
-        modalVisible={modalVisible}
-        closeModal={() => setModalVisible(false)}
-      />
-
       {/* This is the loading part */}
       {/* <ActivityIndicator size="large" color="#000" /> */}
 
@@ -46,19 +39,9 @@ const Activities = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <ActivityRowCard
-            beachName={item.beachName}
-            beachStatus={item.beachStatus}
-            lifeguarded={item.lifeguarded}
-            publicToilets={item.publicToilets}
-            parkingAvailability={item.parkingAvailability}
-            dogWalking={item.dogWalking}
-            cycling={item.cycling}
-            bbq={item.bbq}
-            warningInfo={item.warningInfo}
-            latitude={item.latitude}
-            longitude={item.longitude}
-            latitudeParking={item.latitudeParking}
-            longitudeParking={item.longitudeParking}
+            activityName={item.activityName}
+            activityRisk={item.activityRisk}
+            activityBaseRiskValue={item.activityBaseRiskValue}
             imagePath={item.imagePath}
           />
         )}

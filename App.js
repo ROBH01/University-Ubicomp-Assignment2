@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, PermissionsAndroid } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Tabs from "./navigation/RootBottomTab";
 import * as Location from "expo-location";
@@ -9,40 +9,36 @@ import fetchSpecimen from "./APIs/CovidGovAPI";
 
 export default function App() {
   // Getting permission and location from the user
-  const [userLocation, setUserLocation] = useState("Hi");
+  const [userLocation, setUserLocation] = useState(null);
   const [locationErrorMessage, setLocationErrorMessage] = useState(null);
-  const [userONSAreaCode, setUserONSAreaCode] = useState(null);
+  const [ONSAreaCode, setONSAreaCode] = useState(null);
+  const [specimenData, setSpecimenData] = useState(null);
 
-  // const requestCameraPermission = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         title: "Location permissions is needed",
-  //         message:
-  //           "Location is needed to obtain data relevant to you " +
-  //           "such as weather forecast and covid status.",
-  //         buttonNeutral: "Ask Me Later",
-  //         buttonNegative: "Cancel",
-  //         buttonPositive: "OK",
-  //       }
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       console.log("You can use location");
-  //     } else {
-  //       console.log("Location permission denied");
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // };
+  // async function updateStateVariables(currentLocation, ONS, currentSpecimen) {
+  //   await setUserLocation(currentLocation);
+  //   await setONSAreaCode(ONS);
+  //   await setSpecimenData(currentSpecimen);
+  //   console.log(
+  //     "Check if saved in state userLocation: " + JSON.stringify(userLocation)
+  //   );
+  //   console.log("Check if saved in state ONSAreaCode: " + ONSAreaCode);
+  //   console.log(
+  //     "Check if saved in state specimenData: " + JSON.stringify(specimenData)
+  //   );
+  // }
 
   useEffect(() => {
     let currentLocation = null;
+    let ONS = null;
+    let specimen = null;
+
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setLocationErrorMessage("Permission to access location was denied");
+        alert(
+          "The application will not work without the permission, please launch the app again and accept if you wish to use the app"
+        );
         return;
       }
 
@@ -61,22 +57,21 @@ export default function App() {
             longitude
         );
 
-        let ONS = await fetchONSCode(latitude, longitude);
+        // fetching ONS code from the PostCodes API
+        ONS = await fetchONSCode(latitude, longitude);
         console.log("ONS code retrieved: " + ONS);
 
-        if (ONS !== null) {
-          let specimen = await fetchSpecimen(ONS);
-          console.log("Specimen follows next line (COVID API)");
-          console.log(specimen);
-        }
+        specimen = await fetchSpecimen(ONS);
+        console.log("Specimen follows next line (COVID API)");
+        console.log(specimen);
       }
     })();
-  }, []);
+  }, []); //this second empty array passed as to execute this useEffect only once!
 
   return (
     <NavigationContainer>
       <Tabs />
-      {/* <Text style={{ alignSelf: "center" }}>{userONSAreaCode}</Text> */}
+      {/* <Text style={{ alignSelf: "center" }}>{ONSAreaCode}</Text> */}
       {/* <WeatherAPI userLocation={userLocation} /> */}
     </NavigationContainer>
   );
