@@ -19,7 +19,7 @@ const RiskStatusRectangle = ({
   return (
     <View
       style={{
-        backgroundColor: colors.lowRisk,
+        backgroundColor: statusColor,
         width: width,
         height: height,
         alignSelf: alignSelf,

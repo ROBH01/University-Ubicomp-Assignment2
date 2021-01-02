@@ -30,8 +30,8 @@ const Activities = () => {
       <FlatList
         data={covidData}
         style={{
-          marginLeft: 10,
-          marginRight: 10,
+          marginLeft: 5,
+          marginRight: 5,
           marginTop: 20,
           marginBottom: 10,
           //backgroundColor: "blue",
@@ -42,6 +42,7 @@ const Activities = () => {
             activityName={item.activityName}
             activityRisk={item.activityRisk}
             activityBaseRiskValue={item.activityBaseRiskValue}
+            activityType={item.activityType}
             imagePath={item.imagePath}
           />
         )}

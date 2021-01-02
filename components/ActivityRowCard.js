@@ -10,12 +10,14 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import MyModal from "./MyModal";
+import colors from "../assets/colors";
 
 //TODO: Make a row card that is rendered by a FlatList
 const ActivityRowCard = ({
   activityName,
   activityRisk,
   activityBaseRiskValue,
+  activityType,
   imagePath,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,7 +30,9 @@ const ActivityRowCard = ({
     >
       <MyModal
         modalVisible={modalVisible}
+        activityName={activityName}
         activityBaseRiskValue={activityBaseRiskValue}
+        activityType={activityType}
         closeModal={() => setModalVisible(false)}
       />
       {/* This view renders each activity view */}
@@ -103,10 +107,22 @@ const ActivityRowCard = ({
             />
           </View>
 
-          {/* Showing the bottom line indicating risk level as a colour */}
+          {/* Showing the bottom line indicating risk level as a colour TODO: maybe add gradients!*/}
           <View style={{ flexDirection: "row", marginTop: 5 }}>
             <RiskStatusRectangle
-              statusColor="green"
+              statusColor={
+                activityBaseRiskValue === 10
+                  ? colors.lowRisk
+                  : activityBaseRiskValue === 30
+                  ? colors.moderateLowRisk
+                  : activityBaseRiskValue === 50
+                  ? colors.moderateRisk
+                  : activityBaseRiskValue === 70
+                  ? colors.moderateHighRisk
+                  : activityBaseRiskValue === 90
+                  ? colors.highRisk
+                  : colors.riskUnavailable
+              }
               width={"100%"}
               height={7}
             />
