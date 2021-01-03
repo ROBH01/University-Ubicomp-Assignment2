@@ -23,16 +23,16 @@ const Activities = () => {
       {/* <Text style={{ fontSize: 24 }}>Activities screen</Text> */}
       {/* <Button title="Toggle modal" onPress={() => setModalVisible(true)} />
       <Text>Hi, your location is: {userLocation}</Text> */}
-      <Text style={{ fontSize: 26, alignSelf: "center", marginTop: 40 }}>
+      {/* <Text style={{ fontSize: 26, alignSelf: "center", marginTop: 40 }}>
         Add new activity
-      </Text>
+      </Text> */}
       {/* Starting FlatList from here! */}
       <FlatList
         data={covidData}
         style={{
           marginLeft: 5,
           marginRight: 5,
-          marginTop: 20,
+          marginTop: 40,
           marginBottom: 10,
           //backgroundColor: "blue",
         }}

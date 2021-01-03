@@ -31,6 +31,7 @@ const ActivityRowCard = ({
       <MyModal
         modalVisible={modalVisible}
         activityName={activityName}
+        activityRisk={activityRisk}
         activityBaseRiskValue={activityBaseRiskValue}
         activityType={activityType}
         closeModal={() => setModalVisible(false)}
@@ -111,15 +112,15 @@ const ActivityRowCard = ({
           <View style={{ flexDirection: "row", marginTop: 5 }}>
             <RiskStatusRectangle
               statusColor={
-                activityBaseRiskValue === 10
+                activityBaseRiskValue === 1
                   ? colors.lowRisk
-                  : activityBaseRiskValue === 30
+                  : activityBaseRiskValue === 2
                   ? colors.moderateLowRisk
-                  : activityBaseRiskValue === 50
+                  : activityBaseRiskValue === 3
                   ? colors.moderateRisk
-                  : activityBaseRiskValue === 70
+                  : activityBaseRiskValue === 4
                   ? colors.moderateHighRisk
-                  : activityBaseRiskValue === 90
+                  : activityBaseRiskValue === 5
                   ? colors.highRisk
                   : colors.riskUnavailable
               }
