@@ -1,3 +1,7 @@
+/**
+ * This API is used to retrieve the ONS code for the location the user
+ * is at by using the latitude and longitude provided
+ */
 async function fetchONSCode(latitude, longitude) {
   try {
     let API_response = await fetch(
