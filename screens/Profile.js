@@ -10,19 +10,30 @@ import { useContext } from "react";
 const Profile = () => {
   const [newName, setNewName] = useState("");
   const [newAge, setNewAge] = useState("");
-  const [showChangeInfoModal, setShowChangeInfoModal] = useState(true);
+  const [
+    newUserUnderlayingHealthCond,
+    setNewUserUnderlayingHealthCond,
+  ] = useState(false);
+  const [showChangeInfoModal, setShowChangeInfoModal] = useState(false);
 
   //getting data from context
-  // const myContext = useContext(AppContext);
+  const myContext = useContext(AppContext);
+  console.log(myContext);
+  console.log("NEXT IS CONTEXT username");
+  let userName = myContext.userName;
+  let userAge = myContext.userAge;
+  let userUnderlayingHealthCond = myContext.userUnderlayingHealthCond;
+  console.log(userName);
 
-  // console.log(newName);
+  console.log("SETTING NEW NAME: " + newName);
   // console.log(newAge);
-  // console.log("NEXT IS CONTEXT detail");
-  // console.log(myContext.ONSCode);
 
   const updateUserInfo = () => {
     // TODO: Update in db and context + show alert confirming changes to user
-    // How add to context???? (replacing old value)
+
+    // changing user details in context
+    myContext.userName = newName;
+    myContext.userAge = newAge;
     alert(
       "Update info in database and Context. Information successfully updated"
     );
@@ -50,7 +61,7 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={"old name (replace with var)"}
+        placeholder={userName}
         keyboardType={"default"}
         onChangeText={(name) => setNewName(name)}
         maxLength={16}
@@ -65,7 +76,7 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={"old age (replace with var)"}
+        placeholder={userAge}
         keyboardType={"number-pad"}
         onChangeText={(age) => setNewAge(age)}
         maxLength={3}
@@ -96,6 +107,14 @@ const Profile = () => {
           text={"Update your name, age and underlying health conditions"}
           buttonName={"Update"}
           completed={updateUserInfo}
+          userName={newName}
+          setUserName={(name) => setNewName(name)}
+          userAge={newAge}
+          setUserAge={(age) => setNewAge(age)}
+          userUnderlayingHealthCond={newUserUnderlayingHealthCond}
+          setUserUnderlayingHealthCond={(newUnderlyingCondition) =>
+            setNewUserUnderlayingHealthCond(newUnderlyingCondition)
+          }
         />
       </Modal>
     </View>
