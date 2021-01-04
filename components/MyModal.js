@@ -69,8 +69,8 @@ const MyModal = ({
     // check covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
     // get area rolling rate x 100k
     let rollingRate100k = 900; // ideally from API
-    let userAge = 27; // from APP storage
-    let userUnderlyingHealthConditions = false;
+    let userAge = 88; // from APP storage
+    let userUnderlyingHealthConditions = true;
 
     // add covid weights
     if (rollingRate100k < 150) {
