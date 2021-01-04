@@ -9,16 +9,20 @@ import { View, Text } from "react-native";
 import CustomTextInput from "../components/CustomTextInput";
 import LabeledSwitch from "react-native-custom-switches/LabeledSwitch";
 import CustomButton from "../components/CustomButton";
-const UserRegistration = ({ completed }) => {
+import AppContext from "../components/AppContext";
+import { useContext } from "react";
+
+const UserRegistration = ({ completed, title, text, buttonName }) => {
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState("");
   const [userUnderlayingHealthCond, setUserUnderlayingHealthCond] = useState(
     false
   );
+  //const myContext = useContext(AppContext);
 
-  console.log(userName);
-  console.log(userUnderlayingHealthCond);
-  console.log(userAge);
+  // console.log(userName);
+  // console.log(userUnderlayingHealthCond);
+  // console.log(userAge);
 
   return (
     <View
@@ -29,7 +33,7 @@ const UserRegistration = ({ completed }) => {
       }}
     >
       <Text style={{ alignSelf: "center", fontSize: 24, color: "white" }}>
-        Personal details
+        {title}
       </Text>
       <Text
         style={{
@@ -39,7 +43,7 @@ const UserRegistration = ({ completed }) => {
           textAlign: "center",
         }}
       >
-        Provide the following details to have a more personalised experience"
+        {text}
       </Text>
       <CustomTextInput
         marginTop={20}
@@ -93,7 +97,8 @@ const UserRegistration = ({ completed }) => {
       </View>
       <View style={{ height: 30, width: "100%", alignItems: "center" }}>
         <CustomButton
-          name={"Done"}
+          name={buttonName}
+          textFontSize={18}
           height={30}
           width={"40%"}
           disabled={

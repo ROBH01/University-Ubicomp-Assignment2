@@ -2,11 +2,21 @@ import React from "react";
 import { Text, Pressable } from "react-native";
 
 // This is a customised button that uses Pressable
-const CustomButton = ({ name, height, width, disabled, onPressOut }) => {
+const CustomButton = ({
+  name,
+  height,
+  width,
+  disabled,
+  onPressOut,
+  textFontSize,
+  marginTop,
+}) => {
   const addUserDetailsToContext = () => {
     // TODO: Add this data to the database or local storage!
     onPressOut();
   };
+
+  console.log(textFontSize);
 
   return (
     <Pressable
@@ -15,11 +25,12 @@ const CustomButton = ({ name, height, width, disabled, onPressOut }) => {
       style={({ pressed }) => [
         {
           backgroundColor: disabled ? "gray" : "#008000",
-          height: pressed ? parseInt(height) - 4 : height,
+          height: height,
           width: pressed ? parseInt(width) - 5 + "%" : width,
           alignSelf: "center",
           justifyContent: "center",
           elevation: 10,
+          marginTop: marginTop,
         },
       ]}
     >
@@ -28,7 +39,7 @@ const CustomButton = ({ name, height, width, disabled, onPressOut }) => {
           textAlign: "center",
           height: "100%",
           textAlignVertical: "center",
-          fontSize: 18,
+          fontSize: textFontSize,
           color: "white",
         }}
       >
