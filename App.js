@@ -11,6 +11,11 @@ import UserRegistration from "./screens/UserRegistration";
 
 export default function App() {
   // Getting permission and location from the user
+  const [userName, setUserName] = useState("");
+  const [userAge, setUserAge] = useState("");
+  const [userUnderlayingHealthCond, setUserUnderlayingHealthCond] = useState(
+    false
+  );
   const [userLocation, setUserLocation] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
   // const [userLocationErrMessage, setUserLocationErrMessage] = useState(null);
@@ -22,7 +27,11 @@ export default function App() {
   // functions to handle walk in screen
   const walkInCompleted = () => {
     // save user data to context
-
+    console.log("USERNAME CHANGING INTRO: " + userName);
+    console.log("AGE CHANGING INTRO: " + userAge);
+    console.log(
+      "UNDERLAYING CONDITION? CHANGING INTRO: " + userUnderlayingHealthCond
+    );
     // show main app
     setShowIntro(false);
   };
@@ -90,14 +99,7 @@ export default function App() {
   // console.log("b" + ONSAreaCode);
   // console.log("c" + rollingRate100k);
   // console.log("d" + weatherData);
-
-  // saving all in AppContext
-  let APIData = {
-    userLocation: userLocation,
-    ONSCode: ONSAreaCode,
-    rollingRate100k: rollingRate100k,
-    weatherData: weatherData,
-  };
+  console.log(userName);
 
   // show walk in screen if first time
   if (showIntro) {
@@ -109,9 +111,28 @@ export default function App() {
         }
         buttonName={"Done"}
         completed={walkInCompleted}
+        userName={userName}
+        setUserName={(username) => setUserName(username)}
+        userAge={userAge}
+        setUserAge={(age) => setUserAge(age)}
+        userUnderlayingHealthCond={userUnderlayingHealthCond}
+        setUserUnderlayingHealthCond={(underlyingCondition) =>
+          setUserUnderlayingHealthCond(underlyingCondition)
+        }
       />
     );
   }
+
+  // saving all in AppContext
+  let APIData = {
+    userLocation: userLocation,
+    ONSCode: ONSAreaCode,
+    rollingRate100k: rollingRate100k,
+    weatherData: weatherData,
+    userName: userName,
+    userAge: userAge,
+    userUnderlayingHealthCond: userUnderlayingHealthCond,
+  };
 
   // console.log(userName);
   // console.log(userUnderlayingHealthCond);

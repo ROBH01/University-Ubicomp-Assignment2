@@ -4,26 +4,26 @@
  * make the user experience more contextualised and relevant
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import CustomTextInput from "../components/CustomTextInput";
 import LabeledSwitch from "react-native-custom-switches/LabeledSwitch";
 import CustomButton from "../components/CustomButton";
-import AppContext from "../components/AppContext";
-import { useContext } from "react";
 
-const UserRegistration = ({ completed, title, text, buttonName }) => {
-  const [userName, setUserName] = useState("");
-  const [userAge, setUserAge] = useState("");
-  const [userUnderlayingHealthCond, setUserUnderlayingHealthCond] = useState(
-    false
-  );
-  //const myContext = useContext(AppContext);
-
-  // console.log(userName);
-  // console.log(userUnderlayingHealthCond);
-  // console.log(userAge);
-
+const UserRegistration = ({
+  completed,
+  title,
+  text,
+  buttonName,
+  userName,
+  setUserName,
+  userAge,
+  setUserAge,
+  userUnderlayingHealthCond,
+  setUserUnderlayingHealthCond,
+}) => {
+  console.log("FROM PROFILE new name: " + userName);
+  console.log("FROM PROFILE new age: " + userAge);
   return (
     <View
       style={{
@@ -54,7 +54,7 @@ const UserRegistration = ({ completed, title, text, buttonName }) => {
         textAlign={"center"}
         placeholder={"Enter name"}
         keyboardType={"default"}
-        onChangeText={(name) => setUserName(name)}
+        onChangeText={setUserName}
         maxLength={16}
       />
 
@@ -67,7 +67,7 @@ const UserRegistration = ({ completed, title, text, buttonName }) => {
         textAlign={"center"}
         placeholder={"Enter age"}
         keyboardType={"number-pad"}
-        onChangeText={(age) => setUserAge(age)}
+        onChangeText={setUserAge}
         maxLength={3}
       />
       <View
