@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Activities from "../screens/Activities";
@@ -6,7 +6,7 @@ import Dashboard from "../screens/Dashboard";
 import Profile from "../screens/Profile";
 import colors from "../assets/colors";
 
-//TODO: Create Bottom Tab Navigator that is made by the different screens
+// Bottom Tab Navigator that is made by the different screens
 const BottomTabNav = createBottomTabNavigator();
 
 const Tabs = () => {

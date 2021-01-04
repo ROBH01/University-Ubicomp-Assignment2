@@ -12,6 +12,7 @@ const CustomTextInput = ({
   keyboardType,
   onChangeText,
   maxLength,
+  editable,
 }) => {
   return (
     <TextInput
@@ -27,6 +28,7 @@ const CustomTextInput = ({
       keyboardType={keyboardType}
       onChangeText={onChangeText}
       maxLength={maxLength}
+      editable={editable}
     ></TextInput>
   );
 };

@@ -11,7 +11,7 @@ async function getCurrentWeather(latitude, longitude) {
       `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${OPEN_WEATHER_KEY}&units=metric`
     );
     let data = await response.json();
-    console.log(data);
+    //console.log(data);
     let currentTemperature = data.main.temp;
     let currentRealFeelTemp = data.main.feels_like;
     let town = data.name;
