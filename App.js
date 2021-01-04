@@ -7,21 +7,125 @@ import * as Location from "expo-location";
 import getCurrentWeather from "./APIs/WeatherAPI";
 import fetchONSCode from "./APIs/PostCodesAPI";
 import fetchRolling100k from "./APIs/CovidGovAPI";
+import AppIntroSlider from "react-native-app-intro-slider";
+import CustomTextInput from "./components/CustomTextInput";
+import LabeledSwitch from "react-native-custom-switches/LabeledSwitch";
+import UserRegistration from "./screens/UserRegistration";
 
 export default function App() {
   // Getting permission and location from the user
+  // const [userName, setUserName] = useState(null);
+  // const [userAge, setUserAge] = useState(null);
+  // const [userUnderlayingHealthCond, setUserUnderlayingHealthCond] = useState(
+  //   false
+  // );
   const [userLocation, setUserLocation] = useState(null);
+  const [showIntro, setShowIntro] = useState(false);
   // const [userLocationErrMessage, setUserLocationErrMessage] = useState(null);
   const [ONSAreaCode, setONSAreaCode] = useState(null);
   const [rollingRate100k, setRollingRate100k] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
   let stateVarsUpdatedFlag = false;
 
+  // functions to handle walk in screen
+  const walkInCompleted = () => {
+    setShowIntro(false);
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <View
+        style={{
+          backgroundColor: item.backgroundColor,
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ alignSelf: "center", fontSize: 24, color: "white" }}>
+          {item.title}
+        </Text>
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 16,
+            color: "white",
+            textAlign: "center",
+          }}
+        >
+          {item.text}
+        </Text>
+
+        <CustomTextInput
+          marginTop={20}
+          height={30}
+          width={"60%"}
+          backgroundColor={"white"}
+          alignSelf={"center"}
+          textAlign={"center"}
+          placeholder={"Enter name"}
+          onChangeText={(name) => setUserName(name)}
+          maxLength={16}
+        />
+
+        <CustomTextInput
+          marginTop={20}
+          height={30}
+          width={"60%"}
+          backgroundColor={"white"}
+          alignSelf={"center"}
+          textAlign={"center"}
+          placeholder={"Enter age"}
+          onChangeText={(age) => setUserAge(age)}
+          maxLength={16}
+        />
+
+        <View
+          style={{ alignSelf: "center", marginTop: 20, alignItems: "center" }}
+        >
+          <Text style={{ color: "white", marginBottom: 10 }}>
+            Do you have any underlying health conditions?
+          </Text>
+          <LabeledSwitch
+            value={userUnderlayingHealthCond}
+            onChange={
+              userUnderlayingHealthCond
+                ? () => setUserUnderlayingHealthCond(false)
+                : () => setUserUnderlayingHealthCond(true)
+            }
+            disabledColor="#e63111"
+            enabledColor="#008000"
+            disabledLabel="No"
+            enabledLabel="Yes"
+            width={90}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  const slides = [
+    // {
+    //   key: "1",
+    //   title: "Explain how the app works",
+    //   text: "Best ecommerce in the world",
+    //   backgroundColor: "#F7BB64",
+    // },
+    {
+      key: "2",
+      title: "Personal details",
+      text:
+        "Provide the following details to have a more personalised experience",
+      backgroundColor: "#2196F3",
+    },
+  ];
+
   useEffect(() => {
     let currentLocation = null;
     let ONSCode = null;
     let rolling100k = null;
     let weatherData = null;
+
+    //TODO: get data from the user from the database!!! IF THERE IS DATA, USER ALREADY REGISTERED, setShowIntro(false)
 
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
@@ -84,6 +188,16 @@ export default function App() {
     rollingRate100k: rollingRate100k,
     weatherData: weatherData,
   };
+
+  // show walk in screen
+  if (showIntro) {
+    return <UserRegistration completed={() => setShowIntro(false)} />;
+  }
+
+  // show main app
+  // console.log(userName);
+  // console.log(userUnderlayingHealthCond);
+  // console.log(userAge);
 
   return (
     <AppContext.Provider value={APIData}>
