@@ -9,7 +9,7 @@ const Profile = () => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "tomato",
+        backgroundColor: "#2196F3",
       }}
     >
       <Text style={{ fontSize: 24 }}>Profile screen</Text>

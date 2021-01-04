@@ -8,6 +8,8 @@ async function fetchONSCode(latitude, longitude) {
       `https://api.postcodes.io/postcodes?lon=${longitude}&lat=${latitude}`
     );
     let API_data = await API_response.json();
+    //console.log("Checking ONS API");
+    //console.log(API_data);
     let ONSCode = API_data.result[0].codes.admin_district;
     return ONSCode;
   } catch (error) {
