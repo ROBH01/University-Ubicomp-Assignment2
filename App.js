@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Tabs from "./navigation/RootBottomTab";
 import AppContext from "./components/AppContext";
@@ -8,16 +8,23 @@ import getCurrentWeather from "./APIs/WeatherAPI";
 import fetchONSCode from "./APIs/PostCodesAPI";
 import fetchRolling100k from "./APIs/CovidGovAPI";
 import UserRegistration from "./screens/UserRegistration";
+import { AsyncStorageController } from "./APIs/AsyncStorage";
 
 export default function App() {
+  // AsyncStorage keys
+  const USERNAME_KEY = "@name";
+  const USERAGE_KEY = "@age";
+  const USERCONDITION_KEY = "@condition";
+
   // Getting permission and location from the user
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState("");
-  const [userUnderlayingHealthCond, setUserUnderlayingHealthCond] = useState(
+  const [userUnderlyingHealthCond, setUserUnderlyingHealthCond] = useState(
     false
   );
   const [userLocation, setUserLocation] = useState(null);
-  const [showIntro, setShowIntro] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showRegistration, setShowIntro] = useState(false);
   // const [userLocationErrMessage, setUserLocationErrMessage] = useState(null);
   const [ONSAreaCode, setONSAreaCode] = useState(null);
   const [rollingRate100k, setRollingRate100k] = useState(null);
@@ -30,7 +37,7 @@ export default function App() {
     console.log("USERNAME CHANGING INTRO: " + userName);
     console.log("AGE CHANGING INTRO: " + userAge);
     console.log(
-      "UNDERLAYING CONDITION? CHANGING INTRO: " + userUnderlayingHealthCond
+      "UNDERLAYING CONDITION? CHANGING INTRO: " + userUnderlyingHealthCond
     );
     // show main app
     setShowIntro(false);
@@ -44,9 +51,24 @@ export default function App() {
 
     //TODO: First of all: MAKE SURE USER HAS INTERNET CONNECTION, IF NOT RESTART APP
 
-    //TODO: get data from the user from the database!!! IF THERE IS DATA, USER ALREADY REGISTERED, setShowIntro(false)
-
     (async () => {
+      //TODO: get data from the user from the database!!! IF THERE IS DATA, USER ALREADY REGISTERED, setShowIntro(false)
+      let user = await AsyncStorageController.readData(USERNAME_KEY);
+      let age = await AsyncStorageController.readData(USERAGE_KEY);
+      let condition = await AsyncStorageController.readData(USERCONDITION_KEY);
+
+      if (user !== null) {
+        setUserName(user);
+        setUserAge(age);
+        setUserUnderlyingHealthCond(condition === true);
+        setShowIntro(false);
+        setIsLoading(false);
+      } else {
+        setShowIntro(true);
+        setIsLoading(false);
+      }
+      AsyncStorageController.clearStorage(); //FIXME:
+
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         // setUserLocationErrMessage("Permission to access location was denied");
@@ -99,10 +121,19 @@ export default function App() {
   // console.log("b" + ONSAreaCode);
   // console.log("c" + rollingRate100k);
   // console.log("d" + weatherData);
-  console.log(userName);
+  //console.log(userName);
 
   // show walk in screen if first time
-  if (showIntro) {
+
+  if (isLoading) {
+    return (
+      <View style={{ width: "100%", height: "100%", justifyContent: "center" }}>
+        <ActivityIndicator size="large" color="#2196F3" />
+      </View>
+    );
+  }
+
+  if (showRegistration) {
     return (
       <UserRegistration
         title={"User details"}
@@ -115,9 +146,9 @@ export default function App() {
         setUserName={(username) => setUserName(username)}
         userAge={userAge}
         setUserAge={(age) => setUserAge(age)}
-        userUnderlayingHealthCond={userUnderlayingHealthCond}
-        setUserUnderlayingHealthCond={(underlyingCondition) =>
-          setUserUnderlayingHealthCond(underlyingCondition)
+        userUnderlyingHealthCond={userUnderlyingHealthCond}
+        setUserUnderlyingHealthCond={(underlyingCondition) =>
+          setUserUnderlyingHealthCond(underlyingCondition)
         }
       />
     );
@@ -131,11 +162,23 @@ export default function App() {
     weatherData: weatherData,
     userName: userName,
     userAge: userAge,
-    userUnderlayingHealthCond: userUnderlayingHealthCond,
+    userUnderlyingHealthCond: userUnderlyingHealthCond,
+    username_key: USERNAME_KEY,
+    userage_key: USERAGE_KEY,
+    usercondition_key: USERCONDITION_KEY,
   };
 
+  //console.log("USER TO SAVE: " + userName);
+  // AsyncStorageController.saveData(USERNAME_KEY, userName);
+  // AsyncStorageController.saveData(USERAGE_KEY, userAge);
+  // AsyncStorageController.saveData(
+  //   USERCONDITION_KEY,
+  //   userUnderlyingHealthCond + ""
+  // );
+  //let value = AsyncStorageController.readData(USERNAME_KEY);
+  //console.log(value);
   // console.log(userName);
-  // console.log(userUnderlayingHealthCond);
+  // console.log(userUnderlyingHealthCond);
   // console.log(userAge);
 
   // show main app

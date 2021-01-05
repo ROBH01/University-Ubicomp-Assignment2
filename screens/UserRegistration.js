@@ -19,8 +19,8 @@ const UserRegistration = ({
   setUserName,
   userAge,
   setUserAge,
-  userUnderlayingHealthCond,
-  setUserUnderlayingHealthCond,
+  userUnderlyingHealthCond,
+  setUserUnderlyingHealthCond,
 }) => {
   console.log("FROM PROFILE new name: " + userName);
   console.log("FROM PROFILE new age: " + userAge);
@@ -82,11 +82,11 @@ const UserRegistration = ({
           Do you have any underlying health conditions?
         </Text>
         <LabeledSwitch
-          value={userUnderlayingHealthCond}
+          value={userUnderlyingHealthCond}
           onChange={
-            userUnderlayingHealthCond
-              ? () => setUserUnderlayingHealthCond(false)
-              : () => setUserUnderlayingHealthCond(true)
+            userUnderlyingHealthCond
+              ? () => setUserUnderlyingHealthCond(false)
+              : () => setUserUnderlyingHealthCond(true)
           }
           disabledColor="#e63111"
           enabledColor="#008000"
