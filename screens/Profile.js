@@ -5,35 +5,46 @@ import CustomButton from "../components/CustomButton";
 import UserRegistration from "./UserRegistration";
 import AppContext from "../components/AppContext";
 import { useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageController } from "../APIs/AsyncStorage";
 
 //TODO: Create Profile screen that is made by different components
 const Profile = () => {
-  const [newName, setNewName] = useState("");
-  const [newAge, setNewAge] = useState("");
-  const [
-    newUserUnderlayingHealthCond,
-    setNewUserUnderlayingHealthCond,
-  ] = useState(false);
-  const [showChangeInfoModal, setShowChangeInfoModal] = useState(false);
-
   //getting data from context
   const myContext = useContext(AppContext);
   console.log(myContext);
-  console.log("NEXT IS CONTEXT username");
-  let userName = myContext.userName;
-  let userAge = myContext.userAge;
-  let userUnderlayingHealthCond = myContext.userUnderlayingHealthCond;
-  console.log(userName);
+  let currentUserName = myContext.userName;
+  let currentUserAge = myContext.userAge;
+  let currentUserUnderlyingHealthCond = myContext.userUnderlyingHealthCond;
+  //console.log(currentUserName);
 
-  console.log("SETTING NEW NAME: " + newName);
-  // console.log(newAge);
+  // get async keys
+  let username_key = myContext.username_key;
+  let userage_key = myContext.userage_key;
+  let usercondition_key = myContext.usercondition_key;
+
+  // state variables storing the new details about the user
+  const [newName, setNewName] = useState(currentUserName);
+  const [newAge, setNewAge] = useState(currentUserAge + "");
+  const [
+    newUserUnderlyingHealthCond,
+    setNewUserUnderlyingHealthCond,
+  ] = useState(currentUserUnderlyingHealthCond);
+  const [showChangeInfoModal, setShowChangeInfoModal] = useState(false);
 
   const updateUserInfo = () => {
     // TODO: Update in db and context + show alert confirming changes to user
+    AsyncStorageController.saveData(username_key, newName);
+    AsyncStorageController.saveData(userage_key, newAge);
+    AsyncStorageController.saveData(
+      usercondition_key,
+      newUserUnderlyingHealthCond + ""
+    );
 
     // changing user details in context
     myContext.userName = newName;
     myContext.userAge = newAge;
+    myContext.userUnderlyingHealthCond = newUserUnderlyingHealthCond;
     alert(
       "Update info in database and Context. Information successfully updated"
     );
@@ -61,9 +72,9 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={userName}
+        placeholder={newName}
         keyboardType={"default"}
-        onChangeText={(name) => setNewName(name)}
+        //onChangeText={(name) => setNewName(name)}
         maxLength={16}
         editable={false}
       />
@@ -76,14 +87,33 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={userAge}
+        placeholder={newAge}
         keyboardType={"number-pad"}
-        onChangeText={(age) => setNewAge(age)}
+        //onChangeText={(age) => setNewAge(age)}
         maxLength={3}
         editable={false}
       />
 
-      {/* Change details button */}
+      {/* Showing underlying health conditions */}
+      <CustomTextInput
+        marginTop={20}
+        height={30}
+        width={"60%"}
+        backgroundColor={"white"}
+        alignSelf={"center"}
+        textAlign={"center"}
+        placeholder={
+          newUserUnderlyingHealthCond
+            ? "With underlying health conditions"
+            : "No underlying health conditions"
+        }
+        keyboardType={"number-pad"}
+        //onChangeText={(age) => setNewAge(age)}
+        maxLength={3}
+        editable={false}
+      />
+
+      {/* Change details button TODO: change colour of button ALSO EDIT > NO DATA SHOULD BE GRAYED OUT! IS NOT */}
       <CustomButton
         name={"Edit details"}
         textFontSize={18}
@@ -111,9 +141,9 @@ const Profile = () => {
           setUserName={(name) => setNewName(name)}
           userAge={newAge}
           setUserAge={(age) => setNewAge(age)}
-          userUnderlayingHealthCond={newUserUnderlayingHealthCond}
-          setUserUnderlayingHealthCond={(newUnderlyingCondition) =>
-            setNewUserUnderlayingHealthCond(newUnderlyingCondition)
+          userUnderlyingHealthCond={newUserUnderlyingHealthCond}
+          setUserUnderlyingHealthCond={(newUnderlyingCondition) =>
+            setNewUserUnderlyingHealthCond(newUnderlyingCondition)
           }
         />
       </Modal>
