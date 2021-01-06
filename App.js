@@ -67,7 +67,7 @@ export default function App() {
         setShowIntro(true);
         setIsLoading(false);
       }
-      AsyncStorageController.clearStorage(); //FIXME:
+      //AsyncStorageController.clearStorage(); //FIXME:
 
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -168,13 +168,15 @@ export default function App() {
     usercondition_key: USERCONDITION_KEY,
   };
 
+  console.log(APIData);
+
   //console.log("USER TO SAVE: " + userName);
-  // AsyncStorageController.saveData(USERNAME_KEY, userName);
-  // AsyncStorageController.saveData(USERAGE_KEY, userAge);
-  // AsyncStorageController.saveData(
-  //   USERCONDITION_KEY,
-  //   userUnderlyingHealthCond + ""
-  // );
+  AsyncStorageController.saveData(USERNAME_KEY, userName);
+  AsyncStorageController.saveData(USERAGE_KEY, userAge);
+  AsyncStorageController.saveData(
+    USERCONDITION_KEY,
+    userUnderlyingHealthCond + ""
+  );
   //let value = AsyncStorageController.readData(USERNAME_KEY);
   //console.log(value);
   // console.log(userName);
