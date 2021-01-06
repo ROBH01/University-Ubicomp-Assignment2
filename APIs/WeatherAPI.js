@@ -11,9 +11,11 @@ async function getCurrentWeather(latitude, longitude) {
       `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${OPEN_WEATHER_KEY}&units=metric`
     );
     let data = await response.json();
-    //console.log(data);
+    console.log(data);
+    //TODO: Put this in the correct order and change index values in DashBoard context!!!!!
     let currentTemperature = data.main.temp;
     let currentRealFeelTemp = data.main.feels_like;
+    let currentHumidity = data.main.humidity;
     let town = data.name;
     let currentCondition = data.weather[0].main;
     let currentCondIcon = data.weather[0].icon;
@@ -24,8 +26,9 @@ async function getCurrentWeather(latitude, longitude) {
     // saving all into an array
     let weatherData = [
       currentTemperature,
-      currentCondition,
       currentRealFeelTemp,
+      currentHumidity,
+      currentCondition,
       town,
       currentCondIcon,
       currentWindSpeed,
