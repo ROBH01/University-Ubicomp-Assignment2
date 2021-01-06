@@ -11,7 +11,7 @@ async function getCurrentWeather(latitude, longitude) {
       `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${OPEN_WEATHER_KEY}&units=metric`
     );
     let data = await response.json();
-    console.log(data);
+    //console.log(data);
     //TODO: Put this in the correct order and change index values in DashBoard context!!!!!
     let currentTemperature = data.main.temp;
     let currentRealFeelTemp = data.main.feels_like;
@@ -42,55 +42,3 @@ async function getCurrentWeather(latitude, longitude) {
 //TODO: Make another function that gathers FORECASTED weather too.
 
 export default getCurrentWeather;
-
-//TODO: Move this code COMPONENT in another js file, rendering it on the DASHBOARD page to show weather data
-
-// import React, { useState, useEffect } from "react";
-// import { StyleSheet, View, Text } from "react-native";
-
-// const WeatherAPI = ({ userLocation }) => {
-//   const OPEN_WEATHER_KEY = "***REMOVED***";
-
-//   let latitude = userLocation["coords"].latitude;
-//   let longitude = userLocation["coords"].longitude;
-//   const [temperature, setTemperature] = useState(null);
-//   const [condition, setCondition] = useState(null);
-
-//   console.log("LAT: " + latitude);
-//   console.log("LON: " + longitude);
-
-//   async function fetchWeather(latitude, longitude) {
-//     try {
-//       let response = await fetch(
-//         `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${OPEN_WEATHER_KEY}&units=metric`
-//       );
-//       let data = await response.json();
-//       //console.log(data);
-//       let temp = data.main.temp;
-//       let cond = data.weather[0].main;
-//       setTemperature(temp);
-//       setCondition(cond);
-//       return true;
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-
-//   useEffect(() => {
-//     (async () => {
-//       try {
-//         fetchWeather(latitude, longitude);
-//       } catch (e) {
-//         console.error(e);
-//       }
-//     })();
-//   });
-
-//   return (
-//     <View>
-//       <Text>HI</Text>
-//     </View>
-//   );
-// };
-
-// export default WeatherAPI;

@@ -83,11 +83,7 @@ const UserRegistration = ({
         </Text>
         <LabeledSwitch
           value={userUnderlyingHealthCond}
-          onChange={
-            userUnderlyingHealthCond
-              ? () => setUserUnderlyingHealthCond(false)
-              : () => setUserUnderlyingHealthCond(true)
-          }
+          onChange={setUserUnderlyingHealthCond}
           disabledColor="#e63111"
           enabledColor="#008000"
           disabledLabel="No"

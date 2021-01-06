@@ -10,7 +10,7 @@ async function fetchRolling100k(ONSCode) {
     );
     let data = await response.json();
     //console.log(data.data[0]);
-    let rolling100k = data.data[0];
+    let rolling100k = data.data[0].SevenDayRolling; // only getting the number of 7 day rolling
     //console.log("Checking response: " + rolling100k);
     return rolling100k;
   } catch (error) {

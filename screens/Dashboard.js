@@ -113,9 +113,7 @@ const Dashboard = () => {
                 flex: 0.25,
               }}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 30, marginBottom: 10 }}
-              >
+              <Text style={{ fontSize: 30, marginBottom: 10 }}>
                 {Math.floor(currentTemperature)}°
               </Text>
               <Text>Temperature</Text>
@@ -133,9 +131,7 @@ const Dashboard = () => {
                 flex: 0.25,
               }}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 30, marginBottom: 10 }}
-              >
+              <Text style={{ fontSize: 30, marginBottom: 10 }}>
                 {Math.ceil(currentFeelsLike)}°
               </Text>
               <Text>Feels like</Text>
@@ -153,9 +149,7 @@ const Dashboard = () => {
                 flex: 0.25,
               }}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 30, marginBottom: 10 }}
-              >
+              <Text style={{ fontSize: 30, marginBottom: 10 }}>
                 {currentHumidity}
               </Text>
               <Text>Humidity</Text>
@@ -174,9 +168,7 @@ const Dashboard = () => {
               }}
             >
               {/* TODO: Make a new View as Component that simplifies this! Takes in params e.g. style and vars e.g. windspeed, so all views are same but no repetition*/}
-              <Text
-                style={{ fontWeight: "bold", fontSize: 30, marginBottom: 10 }}
-              >
+              <Text style={{ fontSize: 30, marginBottom: 10 }}>
                 {currentWindSpeed}
               </Text>
               <Text>Wind Speed</Text>

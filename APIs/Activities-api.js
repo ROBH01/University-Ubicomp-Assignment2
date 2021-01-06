@@ -12,7 +12,7 @@
 
 const activities = [
   {
-    id: "0",
+    id: 0,
     activityName: "Running",
     activityRiskLabel: "Low risk",
     activityBaseRiskValue: 1,
@@ -20,7 +20,7 @@ const activities = [
     imagePath: require("../assets/images/running.png"),
   },
   {
-    id: "1",
+    id: 1,
     activityName: "Cycling",
     activityRiskLabel: "Low risk",
     activityBaseRiskValue: 2,
@@ -28,7 +28,7 @@ const activities = [
     imagePath: require("../assets/images/cycling.png"),
   },
   {
-    id: "2",
+    id: 2,
     activityName: "Horse riding",
     activityRiskLabel: "Moderate-high risk",
     activityBaseRiskValue: 3,
@@ -36,7 +36,7 @@ const activities = [
     imagePath: require("../assets/images/horse_riding.png"),
   },
   {
-    id: "3",
+    id: 3,
     activityName: "Indoor swimming",
     activityRiskLabel: "Moderate-high risk",
     activityBaseRiskValue: 4,
@@ -44,7 +44,7 @@ const activities = [
     imagePath: require("../assets/images/swimming.png"),
   },
   {
-    id: "4",
+    id: 4,
     activityName: "Snowboarding",
     activityRiskLabel: "Moderate-high risk",
     activityBaseRiskValue: 5,
@@ -52,7 +52,7 @@ const activities = [
     imagePath: require("../assets/images/snowboarding.png"),
   },
   // {
-  //   id: "5",
+  //   id: 5,
   //   activityName: "Fishing",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
@@ -60,7 +60,7 @@ const activities = [
   //   imagePath: require("../assets/images/fishing.png"),
   // },
   // {
-  //   id: "7",
+  //   id: 7,
   //   activityName: "Study at the library",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
@@ -68,7 +68,7 @@ const activities = [
   //   imagePath: require("../assets/images/library.png"),
   // },
   // {
-  //   id: "8",
+  //   id: 8,
   //   activityName: "Shopping groceries",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
@@ -76,7 +76,7 @@ const activities = [
   //   imagePath: require("../assets/images/grocery.png"),
   // },
   // {
-  //   id: "9",
+  //   id: 9,
   //   activityName: "Mall shopping",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
@@ -84,7 +84,7 @@ const activities = [
   //   imagePath: require("../assets/images/mall_shopping.png"),
   // },
   // {
-  //   id: "10",
+  //   id: 10,
   //   activityName: "Going to the cinema",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
@@ -92,7 +92,7 @@ const activities = [
   //   imagePath: require("../assets/images/cinema.png"),
   // },
   // {
-  //   id: "11",
+  //   id: 11,
   //   activityName: "Stargazing",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
@@ -100,7 +100,7 @@ const activities = [
   //   imagePath: require("../assets/images/stargazing.png"),
   // },
   // {
-  //   id: "12",
+  //   id: 12,
   //   activityName: "Exercising at the gym",
   //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,

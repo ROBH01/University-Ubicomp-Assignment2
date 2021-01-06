@@ -31,6 +31,8 @@ const Profile = () => {
     setNewUserUnderlyingHealthCond,
   ] = useState(currentUserUnderlyingHealthCond);
   const [showChangeInfoModal, setShowChangeInfoModal] = useState(false);
+  console.log("CHECKING UHC: " + newUserUnderlyingHealthCond);
+  console.log("And datatype: " + typeof newUserUnderlyingHealthCond);
 
   const updateUserInfo = () => {
     // TODO: Update in db and context + show alert confirming changes to user
@@ -45,6 +47,9 @@ const Profile = () => {
     myContext.userName = newName;
     myContext.userAge = newAge;
     myContext.userUnderlyingHealthCond = newUserUnderlyingHealthCond;
+    console.log(myContext.shouldUpdate);
+    myContext.shouldUpdate = true;
+    console.log(myContext.shouldUpdate);
     alert(
       "Update info in database and Context. Information successfully updated"
     );

@@ -11,6 +11,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import MyModal from "./MyModal";
 import colors from "../assets/colors";
+import constants from "./Constants";
 //
 import AppContext from "./AppContext";
 import { useContext } from "react";
@@ -35,35 +36,11 @@ const ActivityRowCard = ({
   const myContext = useContext(AppContext);
   //console.log(myContext);
 
+  //FIXME: IF CHANGE DETAILS IN USER SCREEN, CHANGE IS NOT HAPPENING STRAIGHT AWAY IN ACTIVITIES LINE COLOUR, ONLY AFTER CLICKING ON EACH OR REFRESHES!!!
+
   // const [activityFeedback, setActivityFeedback] = useState(""); not allowing me, too many re-renders :(
   let activityFeedback = "";
   let activityRiskLevel = null;
-
-  // COVID-19 and weather weights on the risk level of each activity based on the situation in the area of the user.
-  const COVID_LOW_WEIGHT = 2;
-  const COVID_MODERATE_LOW_WEIGHT = 4;
-  const COVID_MODERATE_WEIGHT = 6;
-  const COVID_MODERATE_HIGH_WEIGHT = 9;
-  const COVID_HIGH_WEIGHT = 12;
-  const USER_AGE_WEIGHT = 3;
-  const USER_UNDERLYING_HEALTH_CONDITION_WEIGHT = 5;
-
-  // Feedback sentence format for different levels of risk TODO: feedback message to be merged into one (refactor) !!!!
-  const LOW_RISK_FORMAT = "is considered low risk.";
-  const MODERATE_LOW_RISK_FORMAT = "is considered to be moderate-low risk.";
-  const MODERATE_RISK_FORMAT = "is considered to be moderate risk.";
-  const MODERATE_HIGH_RISK_FORMAT =
-    "is considered to be moderate-high risk. If cannot be avoided, please";
-  const HIGH_RISK_FORMAT =
-    "is considered to be high risk. Please avoid or choose another activity if possible to minimise exposure to the virus.";
-  const BAD_WEATHER_FORECAST =
-    "(Rain? condition var) however is forecasted in the next hours for your location.";
-  const VERY_LOW_TEMP =
-    "\nCurrent real feel temperature in (Get user location) is (x °C).";
-  const LATE_EVENING =
-    "\n\nPay extra care around you if you are going to do this activity now as it's quite late in the evening.";
-  const SOCIAL_DISTANCING_WARNING =
-    "ensure social distancing is followed at all times, always wear a mask and use hand sanitiser frequently.";
 
   //TODO: Make a function that is called to check weather predictions, and return appropriate feedback.
   function isBadWeather() {
@@ -79,31 +56,40 @@ const ActivityRowCard = ({
 
     // check covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
     // get area rolling rate x 100k
-    let rollingRate100k = 900; // ideally from API
-    let userAge = 88; // from APP storage
-    let userUnderlyingHealthConditions = true;
+    //FIXME: THIS IS FOR DEMO ONLY TESTING WITHOUT APIs
+    //let rollingRate100k = 900; // ideally from API
+    // let userAge = 88; // from APP storage
+    //let userUnderlyingHealthConditions = true;
+
+    // trying with APIs
+    let rollingRate100k = myContext.rollingRate100k;
+    let userAge = myContext.userAge;
+    let userUnderlyingHealthConditions = myContext.userUnderlyingHealthCond;
+    let userLocation = myContext.weatherData[4];
+    let realFeelTemp = myContext.weatherData[1];
 
     // add covid weights
     if (rollingRate100k < 150) {
-      activityRiskLevel = COVID_LOW_WEIGHT;
+      activityRiskLevel = constants.weights.COVID_LOW_WEIGHT;
     } else if (rollingRate100k < 350) {
-      activityRiskLevel = COVID_MODERATE_LOW_WEIGHT;
+      activityRiskLevel = constants.weights.COVID_MODERATE_LOW_WEIGHT;
     } else if (rollingRate100k < 600) {
-      activityRiskLevel = COVID_MODERATE_WEIGHT;
+      activityRiskLevel = constants.weights.COVID_MODERATE_WEIGHT;
     } else if (rollingRate100k < 800) {
-      activityRiskLevel = COVID_MODERATE_HIGH_WEIGHT;
+      activityRiskLevel = constants.weights.COVID_MODERATE_HIGH_WEIGHT;
     } else if (rollingRate100k >= 800) {
-      activityRiskLevel = COVID_HIGH_WEIGHT;
+      activityRiskLevel = constants.weights.COVID_HIGH_WEIGHT;
     }
 
     // add age weight
     if (userAge >= 65) {
-      activityRiskLevel += USER_AGE_WEIGHT;
+      activityRiskLevel += constants.weights.USER_AGE_WEIGHT;
     }
 
     // add user underlying health conditions weight
     if (userUnderlyingHealthConditions) {
-      activityRiskLevel += USER_UNDERLYING_HEALTH_CONDITION_WEIGHT;
+      activityRiskLevel +=
+        constants.weights.USER_UNDERLYING_HEALTH_CONDITION_WEIGHT;
     }
 
     // calculate final risk level by multiplying times the activity factor (1 low, 5 high)
@@ -112,38 +98,25 @@ const ActivityRowCard = ({
 
     // add activity feedback based on risk level
     if (activityRiskLevel <= 20) {
-      activityFeedback = `${activityName} ${LOW_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.LOW_RISK_FORMAT}`;
     } else if (activityRiskLevel <= 40) {
-      activityFeedback = `${activityName} ${MODERATE_LOW_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_LOW_RISK_FORMAT}`;
     } else if (activityRiskLevel <= 60) {
-      activityFeedback = `${activityName} ${MODERATE_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_RISK_FORMAT}`;
     } else if (activityRiskLevel <= 80) {
-      activityFeedback = `${activityName} ${MODERATE_HIGH_RISK_FORMAT} ${SOCIAL_DISTANCING_WARNING}`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_HIGH_RISK_FORMAT}`;
     } else if (activityRiskLevel > 80) {
-      activityFeedback = `${activityName} ${HIGH_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.HIGH_RISK_FORMAT} ${userLocation}.`;
     }
 
     // offer additional hints that may be useful based on time of the day, weather ecc.. (unrelated to covid)
     if (activityType === "outdoor") {
       if (isBadWeather()) {
-        activityFeedback = `${activityFeedback} ${BAD_WEATHER_FORECAST} ${VERY_LOW_TEMP}`;
-      }
-
-      if (isLateEvening()) {
-        activityFeedback = `${activityFeedback} ${LATE_EVENING}`;
+        activityFeedback = `${activityFeedback} ${constants.sentences.BAD_WEATHER_FORECAST} ${constants.sentences.VERY_LOW_TEMP} ${userLocation} is ${realFeelTemp}°C.`;
       }
 
       //call isSummerSeason()
-    } else {
-      if (activityRiskLevel >= 60) {
-        `${activityFeedback} ${
-          SOCIAL_DISTANCING_WARNING.charAt(0).toUpperCase() +
-          SOCIAL_DISTANCING_WARNING.slice(1)
-        }`;
-      }
     }
-
-    // check if late evening
 
     // check activity type -> summer? bad weather?
 
@@ -180,7 +153,7 @@ const ActivityRowCard = ({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={0.8}
       underlayColor="#DDD"
       onPress={() => setModalVisible(true)}
     >
@@ -207,8 +180,9 @@ const ActivityRowCard = ({
       {/* This view renders each activity view */}
       <View
         style={{
-          width: "100%",
-          marginTop: 10,
+          //width: "80%",
+          marginTop: 5,
+          marginBottom: 5,
           backgroundColor: "white",
           flexDirection: "column",
           justifyContent: "flex-start",
@@ -217,15 +191,14 @@ const ActivityRowCard = ({
         {/* This view renders the activity image */}
         <View
           style={{
-            width: "100%",
-            height: 140,
-            //padding: 5,
+            //width: "100%",
+            height: 180,
+            padding: 3,
             overflow: "hidden",
-            backgroundColor: "white",
+            //backgroundColor: "white",
           }}
         >
           <ImageBackground
-            //borderRadius={5}
             source={imagePath}
             style={{ width: "100%", height: "100%" }}
           ></ImageBackground>
@@ -242,7 +215,7 @@ const ActivityRowCard = ({
         >
           <Text
             style={{
-              marginTop: 2,
+              marginTop: 5,
               fontWeight: "bold",
               fontSize: 18,
               alignSelf: "center",
@@ -250,12 +223,12 @@ const ActivityRowCard = ({
           >
             {activityName}
           </Text>
-          <Text style={{ marginTop: 2, fontSize: 15, alignSelf: "center" }}>
+          <Text style={{ marginTop: 5, fontSize: 15, alignSelf: "center" }}>
             {activityRiskLabel}
           </Text>
 
           {/* Showing the right arrow on the card */}
-          <View style={{ position: "absolute", end: 5, top: 15 }}>
+          <View style={{ position: "absolute", end: 5, top: 20 }}>
             <MaterialCommunityIcons
               style={{ alignSelf: "flex-end" }}
               name="arrow-right" // or arrow-right-circle
@@ -266,18 +239,18 @@ const ActivityRowCard = ({
           </View>
 
           {/* Showing the bottom line indicating risk level as a colour TODO: maybe add gradients!*/}
-          <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
             <RiskStatusRectangle
               statusColor={
-                activityBaseRiskValue === 1
+                activityRiskLevel <= 20
                   ? colors.lowRisk
-                  : activityBaseRiskValue === 2
+                  : activityRiskLevel <= 40
                   ? colors.moderateLowRisk
-                  : activityBaseRiskValue === 3
+                  : activityRiskLevel <= 60
                   ? colors.moderateRisk
-                  : activityBaseRiskValue === 4
+                  : activityRiskLevel <= 80
                   ? colors.moderateHighRisk
-                  : activityBaseRiskValue === 5
+                  : activityRiskLevel > 80
                   ? colors.highRisk
                   : colors.riskUnavailable
               }
