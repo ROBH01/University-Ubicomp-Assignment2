@@ -14,7 +14,7 @@ const activities = [
   {
     id: "0",
     activityName: "Running",
-    activityRisk: "Low risk",
+    activityRiskLabel: "Low risk",
     activityBaseRiskValue: 1,
     activityType: "outdoor",
     imagePath: require("../assets/images/running.png"),
@@ -22,7 +22,7 @@ const activities = [
   {
     id: "1",
     activityName: "Cycling",
-    activityRisk: "Low risk",
+    activityRiskLabel: "Low risk",
     activityBaseRiskValue: 2,
     activityType: "outdoor",
     imagePath: require("../assets/images/cycling.png"),
@@ -30,7 +30,7 @@ const activities = [
   {
     id: "2",
     activityName: "Horse riding",
-    activityRisk: "Moderate-high risk",
+    activityRiskLabel: "Moderate-high risk",
     activityBaseRiskValue: 3,
     activityType: "outdoor",
     imagePath: require("../assets/images/horse_riding.png"),
@@ -38,7 +38,7 @@ const activities = [
   {
     id: "3",
     activityName: "Indoor swimming",
-    activityRisk: "Moderate-high risk",
+    activityRiskLabel: "Moderate-high risk",
     activityBaseRiskValue: 4,
     activityType: "indoor",
     imagePath: require("../assets/images/swimming.png"),
@@ -46,7 +46,7 @@ const activities = [
   {
     id: "4",
     activityName: "Snowboarding",
-    activityRisk: "Moderate-high risk",
+    activityRiskLabel: "Moderate-high risk",
     activityBaseRiskValue: 5,
     activityType: "outdoor",
     imagePath: require("../assets/images/snowboarding.png"),
@@ -54,7 +54,7 @@ const activities = [
   // {
   //   id: "5",
   //   activityName: "Fishing",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "outdoor",
   //   imagePath: require("../assets/images/fishing.png"),
@@ -62,7 +62,7 @@ const activities = [
   // {
   //   id: "7",
   //   activityName: "Study at the library",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "indoor",
   //   imagePath: require("../assets/images/library.png"),
@@ -70,7 +70,7 @@ const activities = [
   // {
   //   id: "8",
   //   activityName: "Shopping groceries",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "indoor",
   //   imagePath: require("../assets/images/grocery.png"),
@@ -78,7 +78,7 @@ const activities = [
   // {
   //   id: "9",
   //   activityName: "Mall shopping",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "indoor",
   //   imagePath: require("../assets/images/mall_shopping.png"),
@@ -86,7 +86,7 @@ const activities = [
   // {
   //   id: "10",
   //   activityName: "Going to the cinema",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "indoor",
   //   imagePath: require("../assets/images/cinema.png"),
@@ -94,7 +94,7 @@ const activities = [
   // {
   //   id: "11",
   //   activityName: "Stargazing",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "outdoor",
   //   imagePath: require("../assets/images/stargazing.png"),
@@ -102,7 +102,7 @@ const activities = [
   // {
   //   id: "12",
   //   activityName: "Exercising at the gym",
-  //   activityRisk: "Moderate-high risk",
+  //   activityRiskLabel: "Moderate-high risk",
   //   activityBaseRiskValue: 5,
   //   activityType: "indoor",
   //   imagePath: require("../assets/images/gym.png"),
