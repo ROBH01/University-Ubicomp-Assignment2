@@ -3,11 +3,6 @@
 import React from "react";
 import { Text, View, Modal, StyleSheet, Button } from "react-native";
 import RiskStatusRectangle from "./RiskStatusRectangle";
-import { ProgressBar } from "@react-native-community/progress-bar-android";
-import colors from "../assets/colors";
-import { useState } from "react";
-import AppContext from "./AppContext";
-import { useContext } from "react";
 
 // This is a custom modal, adapted to display the beach data when a beach is clicked
 const MyModal = ({
@@ -22,12 +17,11 @@ const MyModal = ({
 
   return (
     <Modal
-      visible={true}
+      visible={modalVisible}
       animationType="slide"
       statusBarTranslucent={false}
       onRequestClose={closeModal}
       presentationStyle={"fullScreen"}
-      //onShow={() => alert("HI")}
     >
       {/* Modal container */}
       <View style={styles.modalContainer}>
@@ -35,9 +29,6 @@ const MyModal = ({
         <Text style={styles.title}>Covid risk level</Text>
 
         {/* PROGRESS BAR */}
-        {/* <View
-          style={{ height: 20, width: "80%", backgroundColor: "pink" }}
-        ></View> */}
         <View
           style={{
             height: 20,
@@ -96,21 +87,6 @@ const MyModal = ({
         >
           <Text>{feedback}</Text>
         </View>
-
-        {/* Current and forecasted weather */}
-
-        {/* <ProgressBar
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={0.5}
-        /> */}
-        {/* <RiskStatusRectangle
-          height={20}
-          width={"80%"}
-          statusColor={"green"}
-          alignSelf={"center"}
-          borderWidth={0.5}
-        /> */}
 
         {/* Close modal */}
         <Button title="Close" onPress={closeModal} />

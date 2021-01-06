@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { Text, View, ActivityIndicator, Button, FlatList } from "react-native";
+import { useEffect } from "react";
+import { Text, View, Button, FlatList } from "react-native";
 import getActivities from "../APIs/Activities-api";
 import ActivityRowCard from "../components/ActivityRowCard";
+////
+import AppContext from "../components/AppContext";
+import { useContext } from "react";
 
 //TODO: Create Activities screen that is made by different components
 const Activities = () => {
-  const [covidData, setCovidData] = useState(getActivities());
-  let userLocation = "?";
+  //TODO: Use the following state if want to add extra activities by the user!
+  //const [activities, setActivities] = useState(getActivities());
+
+  // function refreshData() {
+  //   //TODO: Implement refreshing
+  //   alert("Refreshed");
+  // }
 
   return (
     <View
@@ -17,9 +26,6 @@ const Activities = () => {
         backgroundColor: "lightgray",
       }}
     >
-      {/* This is the loading part */}
-      {/* <ActivityIndicator size="large" color="#000" /> */}
-
       {/* <Text style={{ fontSize: 24 }}>Activities screen</Text> */}
       {/* <Button title="Toggle modal" onPress={() => setModalVisible(true)} />
       <Text>Hi, your location is: {userLocation}</Text> */}
@@ -28,19 +34,20 @@ const Activities = () => {
       </Text> */}
       {/* Starting FlatList from here! */}
       <FlatList
-        data={covidData}
+        data={getActivities()}
         style={{
           marginLeft: 5,
           marginRight: 5,
           marginTop: 40,
-          marginBottom: 10,
           //backgroundColor: "blue",
         }}
-        keyExtractor={(item, index) => index.toString()}
+        //refreshing={??}
+        //onRefresh={refreshData}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ActivityRowCard
             activityName={item.activityName}
-            activityRisk={item.activityRisk}
+            activityRiskLabel={item.activityRiskLabel}
             activityBaseRiskValue={item.activityBaseRiskValue}
             activityType={item.activityType}
             imagePath={item.imagePath}

@@ -19,9 +19,7 @@ export default function App() {
   // Getting permission and location from the user
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState("");
-  const [userUnderlyingHealthCond, setUserUnderlyingHealthCond] = useState(
-    false
-  );
+  const [userUnderlyingHealthCond, setUserUnderlyingHealthCond] = useState("");
   const [userLocation, setUserLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showRegistration, setShowIntro] = useState(false);
@@ -60,7 +58,8 @@ export default function App() {
       if (user !== null) {
         setUserName(user);
         setUserAge(age);
-        setUserUnderlyingHealthCond(condition === true);
+        console.log(condition);
+        setUserUnderlyingHealthCond(condition === "true");
         setShowIntro(false);
         setIsLoading(false);
       } else {
@@ -125,7 +124,24 @@ export default function App() {
 
   // show walk in screen if first time
 
-  if (isLoading) {
+  // saving all in AppContext
+  let APIData = {
+    userLocation: userLocation,
+    ONSCode: ONSAreaCode,
+    rollingRate100k: rollingRate100k,
+    weatherData: weatherData,
+    userName: userName,
+    userAge: userAge,
+    userUnderlyingHealthCond: userUnderlyingHealthCond,
+    username_key: USERNAME_KEY,
+    userage_key: USERAGE_KEY,
+    usercondition_key: USERCONDITION_KEY,
+    shouldUpdate: false,
+  };
+
+  console.log(APIData);
+
+  if (isLoading || APIData.weatherData === null) {
     return (
       <View style={{ width: "100%", height: "100%", justifyContent: "center" }}>
         <ActivityIndicator size="large" color="#2196F3" />
@@ -153,22 +169,6 @@ export default function App() {
       />
     );
   }
-
-  // saving all in AppContext
-  let APIData = {
-    userLocation: userLocation,
-    ONSCode: ONSAreaCode,
-    rollingRate100k: rollingRate100k,
-    weatherData: weatherData,
-    userName: userName,
-    userAge: userAge,
-    userUnderlyingHealthCond: userUnderlyingHealthCond,
-    username_key: USERNAME_KEY,
-    userage_key: USERAGE_KEY,
-    usercondition_key: USERCONDITION_KEY,
-  };
-
-  console.log(APIData);
 
   //console.log("USER TO SAVE: " + userName);
   AsyncStorageController.saveData(USERNAME_KEY, userName);
