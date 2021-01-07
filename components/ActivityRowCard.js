@@ -42,10 +42,22 @@ const ActivityRowCard = ({
   let activityFeedback = "";
   let activityRiskLevel = null;
 
-  //TODO: Make a function that is called to check weather predictions, and return appropriate feedback.
-  function isBadWeather() {
-    // if rain or snow is forecast, add BAD_WEATHER_FORECAST to LOW_RISK_FORMAT:
-    // if real feel temp is less than 3 degrees, add VERY_LOW_TEMP to LOW_RISK_FORMAT:
+  function isBadWeather(currentCondition) {
+    // Weather APIs bad weather conditions: Thunderstorm, Rain, Snow
+    if (
+      currentCondition === "Thunderstorm" ||
+      currentCondition === "Rain" ||
+      currentCondition === "Snow"
+    ) {
+      return true;
+    }
+  }
+
+  function isVeryLowTemp(currentRealFeelTemp) {
+    // if real feel temp is less than 3 degrees, add VERY_LOW_TEMP to feedback sentence:
+    if (currentRealFeelTemp <= 3) {
+      return true;
+    }
   }
 
   // TODO: Check user age and add as factor in risk!
@@ -62,11 +74,12 @@ const ActivityRowCard = ({
     //let userUnderlyingHealthConditions = true;
 
     // trying with APIs
-    let rollingRate100k = myContext.rollingRate100k;
+    let rollingRate100k = myContext.covidAPIData[0];
     let userAge = myContext.userAge;
     let userUnderlyingHealthConditions = myContext.userUnderlyingHealthCond;
     let userLocation = myContext.weatherData[4];
-    let realFeelTemp = myContext.weatherData[1];
+    let currentRealFeelTemp = myContext.weatherData[1];
+    let currentCondition = myContext.weatherData[3];
 
     // add covid weights
     if (rollingRate100k < 150) {
@@ -98,24 +111,32 @@ const ActivityRowCard = ({
 
     // add activity feedback based on risk level
     if (activityRiskLevel <= 20) {
-      activityFeedback = `${activityName} ${constants.sentences.LOW_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel <= 40) {
-      activityFeedback = `${activityName} ${constants.sentences.MODERATE_LOW_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel <= 60) {
-      activityFeedback = `${activityName} ${constants.sentences.MODERATE_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel <= 80) {
-      activityFeedback = `${activityName} ${constants.sentences.MODERATE_HIGH_RISK_FORMAT}`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_HIGH_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel > 80) {
-      activityFeedback = `${activityName} ${constants.sentences.HIGH_RISK_FORMAT} ${userLocation}.`;
+      activityFeedback = `${activityName} ${constants.sentences.HIGH_RISK_FORMAT} in ${userLocation}. ${constants.sentences.AVOID_ACTIVITY}`;
     }
 
     // offer additional hints that may be useful based on time of the day, weather ecc.. (unrelated to covid)
     if (activityType === "outdoor") {
-      if (isBadWeather()) {
-        activityFeedback = `${activityFeedback} ${constants.sentences.BAD_WEATHER_FORECAST} ${constants.sentences.VERY_LOW_TEMP} ${userLocation} is ${realFeelTemp}°C.`;
+      //TODO: check current weather
+      if (isBadWeather(currentCondition)) {
+        activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_LOW}. ${constants.sentences.BAD_WEATHER_CURRENT} in ${userLocation} is ${currentCondition}.`;
+      }
+      if (isVeryLowTemp(currentRealFeelTemp)) {
+        activityFeedback = `${activityFeedback} ${
+          constants.sentences.VERY_LOW_TEMP
+        } ${userLocation} is ${Math.floor(currentRealFeelTemp)} °C.`;
       }
 
       //call isSummerSeason()
+    } else {
+      activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_HIGH}.`;
     }
 
     // check activity type -> summer? bad weather?
@@ -193,8 +214,9 @@ const ActivityRowCard = ({
           style={{
             //width: "100%",
             height: 180,
-            padding: 3,
+            padding: 5,
             overflow: "hidden",
+
             //backgroundColor: "white",
           }}
         >

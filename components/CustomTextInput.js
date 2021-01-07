@@ -23,6 +23,7 @@ const CustomTextInput = ({
         backgroundColor: backgroundColor,
         alignSelf: alignSelf,
         textAlign: textAlign,
+        elevation: 6,
       }}
       placeholder={placeholder}
       keyboardType={keyboardType}

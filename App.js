@@ -19,13 +19,15 @@ export default function App() {
   // Getting permission and location from the user
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState("");
-  const [userUnderlyingHealthCond, setUserUnderlyingHealthCond] = useState("");
+  const [userUnderlyingHealthCond, setUserUnderlyingHealthCond] = useState(
+    null
+  );
   const [userLocation, setUserLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showRegistration, setShowIntro] = useState(false);
   // const [userLocationErrMessage, setUserLocationErrMessage] = useState(null);
   const [ONSAreaCode, setONSAreaCode] = useState(null);
-  const [rollingRate100k, setRollingRate100k] = useState(null);
+  const [covidAPIData, setCovidAPIData] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
   let stateVarsUpdatedFlag = false;
 
@@ -42,10 +44,10 @@ export default function App() {
   };
 
   useEffect(() => {
-    let currentLocation = null;
-    let ONSCode = null;
-    let rolling100k = null;
-    let weatherData = null;
+    let temp_currentLocation = null;
+    let temp_ONSCode = null;
+    let temp_covidAPIData = null;
+    let temp_weatherData = null;
 
     //TODO: First of all: MAKE SURE USER HAS INTERNET CONNECTION, IF NOT RESTART APP
 
@@ -77,14 +79,14 @@ export default function App() {
         return;
       }
 
-      currentLocation = await Location.getCurrentPositionAsync({});
+      temp_currentLocation = await Location.getCurrentPositionAsync({});
       // console.log(
       //   "Current location gathered is: " + JSON.stringify(currentLocation)
       // );
 
-      if (currentLocation !== null) {
-        let latitude = currentLocation["coords"].latitude;
-        let longitude = currentLocation["coords"].longitude;
+      if (temp_currentLocation !== null) {
+        let latitude = temp_currentLocation["coords"].latitude;
+        let longitude = temp_currentLocation["coords"].longitude;
         let latitudeLongitude = [latitude, longitude];
         //console.log(latitudeLongitude);
         // console.log(
@@ -95,19 +97,19 @@ export default function App() {
         // );
 
         // fetching ONSCode code from the PostCodes API
-        ONSCode = await fetchONSCode(latitude, longitude);
-        if (ONSCode !== null) {
+        temp_ONSCode = await fetchONSCode(latitude, longitude);
+        if (temp_ONSCode !== null) {
           // fetching the rate per 100k population from GOV.co.uk API
-          rolling100k = await fetchRolling100k(ONSCode);
-          if (rolling100k !== null) {
+          temp_covidAPIData = await fetchRolling100k(temp_ONSCode);
+          if (temp_covidAPIData !== null) {
             // fetching current weather data from Open Weather API
-            weatherData = await getCurrentWeather(latitude, longitude);
+            temp_weatherData = await getCurrentWeather(latitude, longitude);
             if (!stateVarsUpdatedFlag) {
               // save API data into state variables
               setUserLocation(latitudeLongitude);
-              setONSAreaCode(ONSCode);
-              setRollingRate100k(rolling100k);
-              setWeatherData(weatherData);
+              setONSAreaCode(temp_ONSCode);
+              setCovidAPIData(temp_covidAPIData);
+              setWeatherData(temp_weatherData);
               stateVarsUpdatedFlag = true;
             }
           }
@@ -115,6 +117,9 @@ export default function App() {
       }
     })();
   }, []); // this second empty array: }, []);, passed as to execute this useEffect only once! without will run once but runs 4 times??
+
+  // console.log("NEXT THIS: " + userUnderlyingHealthCond);
+  // console.log(typeof userUnderlyingHealthCond);
 
   // console.log("a" + userLocation);
   // console.log("b" + ONSAreaCode);
@@ -128,7 +133,7 @@ export default function App() {
   let APIData = {
     userLocation: userLocation,
     ONSCode: ONSAreaCode,
-    rollingRate100k: rollingRate100k,
+    covidAPIData: covidAPIData,
     weatherData: weatherData,
     userName: userName,
     userAge: userAge,
@@ -139,7 +144,7 @@ export default function App() {
     shouldUpdate: false,
   };
 
-  console.log(APIData);
+  //console.log(APIData);
 
   if (isLoading || APIData.weatherData === null) {
     return (
