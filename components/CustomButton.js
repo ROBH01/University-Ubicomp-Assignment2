@@ -16,8 +16,6 @@ const CustomButton = ({
     onPressOut();
   };
 
-  console.log(textFontSize);
-
   return (
     <Pressable
       onPressOut={addUserDetailsToContext}

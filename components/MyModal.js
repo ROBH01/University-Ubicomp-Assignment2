@@ -79,13 +79,13 @@ const MyModal = ({
           style={{
             //height: 100, //TODO: remove after adding the text to let it self sizing
             width: "90%",
-            backgroundColor: "pink",
+
             alignSelf: "center",
             marginTop: 20,
             marginBottom: 20,
           }}
         >
-          <Text>{feedback}</Text>
+          <Text style={{ fontSize: 16 }}>{feedback}</Text>
         </View>
 
         {/* Close modal */}

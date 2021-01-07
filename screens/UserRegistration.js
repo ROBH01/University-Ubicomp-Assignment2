@@ -22,24 +22,22 @@ const UserRegistration = ({
   userUnderlyingHealthCond,
   setUserUnderlyingHealthCond,
 }) => {
-  console.log("FROM PROFILE new name: " + userName);
-  console.log("FROM PROFILE new age: " + userAge);
   return (
     <View
       style={{
-        backgroundColor: "#2196F3",
+        backgroundColor: "lightgray",
         flex: 1,
         justifyContent: "center",
       }}
     >
-      <Text style={{ alignSelf: "center", fontSize: 24, color: "white" }}>
+      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>
         {title}
       </Text>
       <Text
         style={{
           alignSelf: "center",
           fontSize: 16,
-          color: "white",
+          color: "black",
           textAlign: "center",
         }}
       >
@@ -78,9 +76,11 @@ const UserRegistration = ({
           marginBottom: 20,
         }}
       >
-        <Text style={{ color: "white", marginBottom: 10 }}>
+        <Text style={{ color: "black", marginBottom: 10 }}>
           Do you have any underlying health conditions?
         </Text>
+
+        {/* TODO: Says after starting app that value must be of type string into this component, so make sure value has boolean!!! */}
         <LabeledSwitch
           value={userUnderlyingHealthCond}
           onChange={setUserUnderlyingHealthCond}

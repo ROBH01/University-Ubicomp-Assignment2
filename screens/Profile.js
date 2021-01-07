@@ -24,6 +24,7 @@ const Profile = () => {
   let usercondition_key = myContext.usercondition_key;
 
   // state variables storing the new details about the user
+  //FIXME: BUG, do not update state variable when user types something in BECAUSE EDIT DETAILS IS NOT PRESSED!!!! ONLY GET DATA WHEN PRESS AND CONFIRM
   const [newName, setNewName] = useState(currentUserName);
   const [newAge, setNewAge] = useState(currentUserAge + "");
   const [
@@ -36,6 +37,8 @@ const Profile = () => {
 
   const updateUserInfo = () => {
     // TODO: Update in db and context + show alert confirming changes to user
+
+    //TODO: set the state vars here, not in the onChange!!!
     AsyncStorageController.saveData(username_key, newName);
     AsyncStorageController.saveData(userage_key, newAge);
     AsyncStorageController.saveData(
@@ -62,10 +65,10 @@ const Profile = () => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#2196F3",
+        backgroundColor: "lightgray",
       }}
     >
-      <Text style={{ alignSelf: "center", fontSize: 24, color: "white" }}>
+      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>
         My details
       </Text>
 

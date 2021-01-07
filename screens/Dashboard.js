@@ -8,12 +8,18 @@ import AppContext from "../components/AppContext";
 //TODO: Create Dashboard with counties screen that is made by different components
 const Dashboard = () => {
   // getting appcontext COVID and WEATHER data for the dashboard
-
-  // COVID DATA
-
-  // WEATHER DATA
   const myContext = useContext(AppContext);
   console.log(myContext);
+  // COVID DATA
+  let rollingRate100k = myContext.covidAPIData[0];
+  let dailyCases = myContext.covidAPIData[1];
+  let cumulativeCases = myContext.covidAPIData[2];
+  let areaName = myContext.covidAPIData[3];
+  let dailyDeaths = myContext.covidAPIData[4];
+  let cumulativeDeaths = myContext.covidAPIData[5];
+
+  // WEATHER DATA
+
   let currentTemperature = myContext.weatherData[0];
   let currentFeelsLike = myContext.weatherData[1];
   let currentHumidity = myContext.weatherData[2];
@@ -38,16 +44,54 @@ const Dashboard = () => {
       style={{
         flex: 1,
         //alignItems: "center",
-        justifyContent: "space-around",
-        //backgroundColor: "pink",
-        margin: 20,
+        justifyContent: "space-evenly",
+        backgroundColor: "lightgray",
+        //margin: 5,
+        padding: 5,
       }}
     >
       {/* Covid view */}
-      <View style={{ backgroundColor: "tomato", flex: 0.45, width: "100%" }}>
-        <Text style={{ fontSize: 24, textAlign: "center" }}>
-          Covid info section
-        </Text>
+      <View
+        style={{
+          backgroundColor: "#e5e5e5",
+          flex: 0.4,
+          width: "100%",
+          //padding: 5,
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "white",
+            padding: 5,
+            //height: 40,
+          }}
+        >
+          <Text style={styles.title}>Covid-19 stats</Text>
+          <Text style={styles.subTitle}>{areaName}</Text>
+        </View>
+        <View
+          style={{
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "space-between",
+            //height: "70%",
+          }}
+        >
+          <Text style={{ fontSize: 16, marginTop: 10 }}>
+            Cases today: {dailyCases}
+          </Text>
+          <Text style={{ fontSize: 16, marginTop: 10 }}>
+            Cumulative cases: {cumulativeCases}
+          </Text>
+          <Text style={{ fontSize: 16, marginTop: 10 }}>
+            Total deaths today: {dailyDeaths}
+          </Text>
+          <Text style={{ fontSize: 16, marginTop: 10 }}>
+            Cumulative deaths: {cumulativeDeaths}
+          </Text>
+        </View>
       </View>
 
       {/* Weather view */}
@@ -62,26 +106,26 @@ const Dashboard = () => {
           }}
         >
           <Text style={styles.title}>Current weather</Text>
-          <Text style={styles.city}>{currentCity}</Text>
-          <Text style={styles.date}>TIME?</Text>
+          <Text style={styles.subTitle}>{currentCity}</Text>
         </View>
 
         {/* Weather status */}
         <View
           style={{
-            backgroundColor: "lightgray",
+            backgroundColor: "#e5e5e5",
             //height: "100%",
             width: "100%",
           }}
         >
           {/* Icon */}
-          <View style={{ height: 100 }}>
+          <View>
             <Image
               source={conditionIconURL}
               style={{
-                height: 90,
-                width: 140,
-                marginTop: 30,
+                height: 50,
+                width: 120,
+                marginTop: 10,
+                marginBottom: 10,
                 resizeMode: "cover",
                 alignSelf: "center",
               }}
@@ -92,12 +136,11 @@ const Dashboard = () => {
           </View>
 
           {/* Weather status info */}
-
           <View
             style={{
               flexDirection: "row",
               //backgroundColor: "gray",
-              marginTop: 50,
+              //marginTop: 50,
               //height: 100,
               //justifyContent: "space-around",
             }}
@@ -107,7 +150,7 @@ const Dashboard = () => {
               style={{
                 alignItems: "center",
                 //backgroundColor: "lightblue",
-                marginTop: 20,
+                marginTop: 10,
                 marginBottom: 10,
                 justifyContent: "space-evenly",
                 flex: 0.25,
@@ -125,7 +168,7 @@ const Dashboard = () => {
               style={{
                 alignItems: "center",
                 //backgroundColor: "lightblue",
-                marginTop: 20,
+                marginTop: 10,
                 marginBottom: 10,
                 justifyContent: "space-evenly",
                 flex: 0.25,
@@ -143,7 +186,7 @@ const Dashboard = () => {
               style={{
                 alignItems: "center",
                 //backgroundColor: "lightblue",
-                marginTop: 20,
+                marginTop: 10,
                 marginBottom: 10,
                 justifyContent: "space-evenly",
                 flex: 0.25,
@@ -161,7 +204,7 @@ const Dashboard = () => {
               style={{
                 alignItems: "center",
                 //backgroundColor: "lightblue",
-                marginTop: 20,
+                marginTop: 10,
                 justifyContent: "space-evenly",
                 marginBottom: 10,
                 flex: 0.25,
@@ -186,16 +229,11 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 20,
   },
-  city: {
+  subTitle: {
     textAlign: "center",
     fontSize: 16,
-    marginTop: 2,
-  },
-  date: {
-    textAlign: "center",
-    marginTop: 2,
   },
 });
 
