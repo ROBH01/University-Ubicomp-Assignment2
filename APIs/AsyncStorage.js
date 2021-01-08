@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//TODO: Make saveUser, saveAge, saveCondition and pass the value only!!!! ADD KEYS HERE!
 
 async function saveData(key, value) {
   try {

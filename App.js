@@ -20,8 +20,8 @@ export default function App() {
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState("");
   const [userUnderlyingHealthCond, setUserUnderlyingHealthCond] = useState(
-    null
-  );
+    false
+  ); //FIXME: Changed this from null to false (last introduction to fix bug of initial screen)
   const [userLocation, setUserLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showRegistration, setShowIntro] = useState(false);

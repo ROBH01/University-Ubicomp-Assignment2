@@ -5,40 +5,42 @@ import CustomButton from "../components/CustomButton";
 import UserRegistration from "./UserRegistration";
 import AppContext from "../components/AppContext";
 import { useContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageController } from "../APIs/AsyncStorage";
 
-//TODO: Create Profile screen that is made by different components
+/** Profile screen displays the current information held about the user that
+ * was typed in at the registration stage. It also allows editing it.
+ */
 const Profile = () => {
-  //getting data from context
+  // Getting data from Context
   const myContext = useContext(AppContext);
-  console.log(myContext);
+  // console.log(myContext);
   let currentUserName = myContext.userName;
   let currentUserAge = myContext.userAge;
   let currentUserUnderlyingHealthCond = myContext.userUnderlyingHealthCond;
-  //console.log(currentUserName);
 
   // get async keys
   let username_key = myContext.username_key;
   let userage_key = myContext.userage_key;
   let usercondition_key = myContext.usercondition_key;
 
-  // state variables storing the new details about the user
-  //FIXME: BUG, do not update state variable when user types something in BECAUSE EDIT DETAILS IS NOT PRESSED!!!! ONLY GET DATA WHEN PRESS AND CONFIRM
-  const [newName, setNewName] = useState(currentUserName);
-  const [newAge, setNewAge] = useState(currentUserAge + "");
+  const [newName, setNewName] = useState("");
+  const [newAge, setNewAge] = useState("");
   const [
     newUserUnderlyingHealthCond,
     setNewUserUnderlyingHealthCond,
-  ] = useState(currentUserUnderlyingHealthCond);
+  ] = useState(false);
+  //
   const [showChangeInfoModal, setShowChangeInfoModal] = useState(false);
+  //
   console.log("CHECKING UHC: " + newUserUnderlyingHealthCond);
   console.log("And datatype: " + typeof newUserUnderlyingHealthCond);
 
+  /**
+   * This method updates the information about the user in the AsyncStorage
+   * as well as in the Context.
+   */
   const updateUserInfo = () => {
-    // TODO: Update in db and context + show alert confirming changes to user
-
-    //TODO: set the state vars here, not in the onChange!!!
+    // Updating AsyncStorage
     AsyncStorageController.saveData(username_key, newName);
     AsyncStorageController.saveData(userage_key, newAge);
     AsyncStorageController.saveData(
@@ -46,16 +48,12 @@ const Profile = () => {
       newUserUnderlyingHealthCond + ""
     );
 
-    // changing user details in context
+    // Updating Context
     myContext.userName = newName;
     myContext.userAge = newAge;
     myContext.userUnderlyingHealthCond = newUserUnderlyingHealthCond;
-    console.log(myContext.shouldUpdate);
-    myContext.shouldUpdate = true;
-    console.log(myContext.shouldUpdate);
-    alert(
-      "Update info in database and Context. Information successfully updated"
-    );
+
+    alert("Information successfully updated");
     setShowChangeInfoModal(false);
   };
 
@@ -80,7 +78,7 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={newName}
+        placeholder={currentUserName}
         keyboardType={"default"}
         //onChangeText={(name) => setNewName(name)}
         maxLength={16}
@@ -95,7 +93,7 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={newAge}
+        placeholder={currentUserAge}
         keyboardType={"number-pad"}
         //onChangeText={(age) => setNewAge(age)}
         maxLength={3}
@@ -111,7 +109,7 @@ const Profile = () => {
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={
-          newUserUnderlyingHealthCond
+          currentUserUnderlyingHealthCond
             ? "With underlying health conditions"
             : "No underlying health conditions"
         }
