@@ -17,7 +17,7 @@ const CustomButton = ({
       disabled={disabled}
       style={({ pressed }) => [
         {
-          backgroundColor: disabled ? "gray" : "#008000",
+          backgroundColor: disabled ? "gray" : "#2196F3",
           height: height,
           width: pressed ? parseInt(width) - 5 + "%" : width,
           alignSelf: "center",

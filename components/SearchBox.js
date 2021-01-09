@@ -19,6 +19,16 @@ const SearchBar = ({ searchValue, onSearch, deleteSearchValue }) => {
     return null;
   };
 
+  // Used to display a magnifier icon when there is no text
+  const ShowSearchIcon = () => {
+    if (searchValue === "") {
+      return (
+        <Icon name="search" type="font-awesome" size={20} color="gray"></Icon>
+      );
+    }
+    return null;
+  };
+
   return (
     <View style={styles.searchView}>
       <TextInput
@@ -31,6 +41,8 @@ const SearchBar = ({ searchValue, onSearch, deleteSearchValue }) => {
       />
       {/* Icon that clears text input */}
       <ClearInput />
+
+      <ShowSearchIcon />
     </View>
   );
 };

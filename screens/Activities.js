@@ -16,6 +16,12 @@ const Activities = () => {
   const [refresh, setRefreshing] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
+  useEffect(() => {
+    async () => {
+      console.log("hi");
+    };
+  }, []);
+
   const deleteSearchValue = () => {
     setSearchValue("");
     setActivities(getActivities);
@@ -37,7 +43,7 @@ const Activities = () => {
 
   function refreshData() {
     //TODO: Implement refreshing NOT WORKING!
-    //FlatList.forceUpdate();
+    //setActivities(getActivities());
     alert("Refreshed");
   }
 
