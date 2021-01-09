@@ -5,6 +5,11 @@
 
 const OPEN_WEATHER_KEY = "0be8e571b27228ec13461f21d52f880b";
 
+/**
+ * Method used to obtain the weather data needed by using user's location
+ * @param {} latitude
+ * @param {} longitude
+ */
 async function getCurrentWeather(latitude, longitude) {
   try {
     let response = await fetch(

@@ -1,6 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//TODO: Make saveUser, saveAge, saveCondition and pass the value only!!!! ADD KEYS HERE!
 
+/**
+ * This method sets the value passed in as argument
+ * for the key associated with it
+ * @param {} key
+ * @param {} value
+ */
 async function saveData(key, value) {
   try {
     await AsyncStorage.setItem(key, value);
@@ -11,6 +16,10 @@ async function saveData(key, value) {
   }
 }
 
+/**
+ * This method reads the value based on the key provided
+ * @param {} key
+ */
 async function readData(key) {
   try {
     const value = await AsyncStorage.getItem(key);
@@ -23,6 +32,9 @@ async function readData(key) {
   }
 }
 
+/**
+ * This method clears the AsyncStorage completely
+ */
 async function clearStorage() {
   try {
     await AsyncStorage.clear();

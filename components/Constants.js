@@ -22,6 +22,8 @@ const SOCIAL_DISTANCING_HIGH =
   "Ensure social distancing is followed at all times, always wear a mask and use hand sanitiser frequently";
 const AVOID_ACTIVITY =
   "Please try to avoid this activity to minimise exposure to the virus, until the number of cases decrease.";
+const SUMMER_SEASON =
+  "Be cautious around you as it may be busier as it's summer season.";
 
 export default constants = {
   weights: {
@@ -44,5 +46,6 @@ export default constants = {
     SOCIAL_DISTANCING_LOW,
     SOCIAL_DISTANCING_HIGH,
     AVOID_ACTIVITY,
+    SUMMER_SEASON,
   },
 };

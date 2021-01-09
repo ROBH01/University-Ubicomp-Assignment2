@@ -6,15 +6,15 @@ import AppContext from "./components/AppContext";
 import * as Location from "expo-location";
 import getCurrentWeather from "./APIs/WeatherAPI";
 import fetchONSCode from "./APIs/PostCodesAPI";
-import fetchRolling100k from "./APIs/CovidGovAPI";
+import fetchCovid19Data from "./APIs/CovidGovAPI";
 import UserRegistration from "./screens/UserRegistration";
 import { AsyncStorageController } from "./APIs/AsyncStorage";
 
 export default function App() {
   // AsyncStorage keys
-  const USERNAME_KEY = "@name";
-  const USERAGE_KEY = "@age";
-  const USERCONDITION_KEY = "@condition";
+  const USER_NAME_KEY = "@name";
+  const USER_AGE_KEY = "@age";
+  const USER_CONDITION_KEY = "@condition";
 
   // Getting permission and location from the user
   const [userName, setUserName] = useState("");
@@ -23,50 +23,40 @@ export default function App() {
     false
   ); //FIXME: Changed this from null to false (last introduction to fix bug of initial screen)
   const [userLocation, setUserLocation] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showRegistration, setShowIntro] = useState(false);
+  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [showRegistration, setShowRegistration] = useState(false);
   // const [userLocationErrMessage, setUserLocationErrMessage] = useState(null);
   const [ONSAreaCode, setONSAreaCode] = useState(null);
-  const [covidAPIData, setCovidAPIData] = useState(null);
+  const [covidData, setCovidData] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
   let stateVarsUpdatedFlag = false;
 
-  // functions to handle walk in screen
-  const walkInCompleted = () => {
-    // save user data to context
-    console.log("USERNAME CHANGING INTRO: " + userName);
-    console.log("AGE CHANGING INTRO: " + userAge);
-    console.log(
-      "UNDERLAYING CONDITION? CHANGING INTRO: " + userUnderlyingHealthCond
-    );
-    // show main app
-    setShowIntro(false);
+  const showMainApp = () => {
+    setShowRegistration(false);
   };
 
   useEffect(() => {
-    let temp_currentLocation = null;
-    let temp_ONSCode = null;
-    let temp_covidAPIData = null;
-    let temp_weatherData = null;
-
-    //TODO: First of all: MAKE SURE USER HAS INTERNET CONNECTION, IF NOT RESTART APP
+    let tempCurrentLocation = null;
+    let tempONSCode = null;
+    let tempCovidData = null;
+    let tempWeatherData = null;
 
     (async () => {
-      //TODO: get data from the user from the database!!! IF THERE IS DATA, USER ALREADY REGISTERED, setShowIntro(false)
-      let user = await AsyncStorageController.readData(USERNAME_KEY);
-      let age = await AsyncStorageController.readData(USERAGE_KEY);
-      let condition = await AsyncStorageController.readData(USERCONDITION_KEY);
+      // Checking if there is user information stored as to confirm if this is the first launch or not
+      let user = await AsyncStorageController.readData(USER_NAME_KEY);
+      let age = await AsyncStorageController.readData(USER_AGE_KEY);
+      let condition = await AsyncStorageController.readData(USER_CONDITION_KEY);
 
-      if (user !== null) {
+      if (user !== null || age !== null || condition !== null) {
         setUserName(user);
         setUserAge(age);
-        console.log(condition);
-        setUserUnderlyingHealthCond(condition === "true");
-        setShowIntro(false);
-        setIsLoading(false);
+        //console.log(condition);
+        setUserUnderlyingHealthCond(condition === "true"); // converting back to boolean as AsyncStorage deals with strings
+        setShowRegistration(false);
+        setIsAppLoading(false);
       } else {
-        setShowIntro(true);
-        setIsLoading(false);
+        setShowRegistration(true);
+        setIsAppLoading(false);
       }
       //AsyncStorageController.clearStorage(); //FIXME:
 
@@ -79,14 +69,15 @@ export default function App() {
         return;
       }
 
-      temp_currentLocation = await Location.getCurrentPositionAsync({});
+      // Getting user current location
+      tempCurrentLocation = await Location.getCurrentPositionAsync({});
       // console.log(
       //   "Current location gathered is: " + JSON.stringify(currentLocation)
       // );
 
-      if (temp_currentLocation !== null) {
-        let latitude = temp_currentLocation["coords"].latitude;
-        let longitude = temp_currentLocation["coords"].longitude;
+      if (tempCurrentLocation !== null) {
+        let latitude = tempCurrentLocation["coords"].latitude;
+        let longitude = tempCurrentLocation["coords"].longitude;
         let latitudeLongitude = [latitude, longitude];
         //console.log(latitudeLongitude);
         // console.log(
@@ -96,20 +87,20 @@ export default function App() {
         //     longitude
         // );
 
-        // fetching ONSCode code from the PostCodes API
-        temp_ONSCode = await fetchONSCode(latitude, longitude);
-        if (temp_ONSCode !== null) {
-          // fetching the rate per 100k population from GOV.co.uk API
-          temp_covidAPIData = await fetchRolling100k(temp_ONSCode);
-          if (temp_covidAPIData !== null) {
-            // fetching current weather data from Open Weather API
-            temp_weatherData = await getCurrentWeather(latitude, longitude);
+        // Fetching ONS code code
+        tempONSCode = await fetchONSCode(latitude, longitude);
+        if (tempONSCode !== null) {
+          // Fetching Covid data
+          tempCovidData = await fetchCovid19Data(tempONSCode);
+          if (tempCovidData !== null) {
+            // Fetching weather data
+            tempWeatherData = await getCurrentWeather(latitude, longitude);
             if (!stateVarsUpdatedFlag) {
-              // save API data into state variables
+              // Saving all the data in the state variables
               setUserLocation(latitudeLongitude);
-              setONSAreaCode(temp_ONSCode);
-              setCovidAPIData(temp_covidAPIData);
-              setWeatherData(temp_weatherData);
+              setONSAreaCode(tempONSCode);
+              setCovidData(tempCovidData);
+              setWeatherData(tempWeatherData);
               stateVarsUpdatedFlag = true;
             }
           }
@@ -118,35 +109,31 @@ export default function App() {
     })();
   }, []); // this second empty array: }, []);, passed as to execute this useEffect only once! without will run once but runs 4 times??
 
-  // console.log("NEXT THIS: " + userUnderlyingHealthCond);
-  // console.log(typeof userUnderlyingHealthCond);
-
   // console.log("a" + userLocation);
   // console.log("b" + ONSAreaCode);
   // console.log("c" + rollingRate100k);
   // console.log("d" + weatherData);
   //console.log(userName);
 
-  // show walk in screen if first time
-
-  // saving all in AppContext
+  // Saving data in the AppContext
   let APIData = {
     userLocation: userLocation,
     ONSCode: ONSAreaCode,
-    covidAPIData: covidAPIData,
+    covidData: covidData, //chg
     weatherData: weatherData,
     userName: userName,
     userAge: userAge,
     userUnderlyingHealthCond: userUnderlyingHealthCond,
-    username_key: USERNAME_KEY,
-    userage_key: USERAGE_KEY,
-    usercondition_key: USERCONDITION_KEY,
+    USER_NAME_KEY: USER_NAME_KEY, //chg
+    USER_AGE_KEY: USER_AGE_KEY, //chg
+    USER_CONDITION_KEY: USER_CONDITION_KEY, //chg
     shouldUpdate: false,
   };
 
   //console.log(APIData);
 
-  if (isLoading || APIData.weatherData === null) {
+  // Show a loader if the app is loading and the data is not fetched yet
+  if (isAppLoading || APIData.weatherData === null) {
     return (
       <View style={{ width: "100%", height: "100%", justifyContent: "center" }}>
         <ActivityIndicator size="large" color="#2196F3" />
@@ -154,41 +141,37 @@ export default function App() {
     );
   }
 
+  // Show the registration screen if first launch
   if (showRegistration) {
     return (
       <UserRegistration
         title={"User details"}
-        text={
+        subtitle={
           "Please provide the following details to have a more personalised experience"
         }
         buttonName={"Done"}
-        completed={walkInCompleted}
-        userName={userName}
-        setUserName={(username) => setUserName(username)}
-        userAge={userAge}
-        setUserAge={(age) => setUserAge(age)}
-        userUnderlyingHealthCond={userUnderlyingHealthCond}
-        setUserUnderlyingHealthCond={(underlyingCondition) =>
+        onCompleted={showMainApp}
+        newUserName={userName}
+        setNewUserName={(username) => setUserName(username)}
+        newUserAge={userAge}
+        setNewUserAge={(age) => setUserAge(age)}
+        newUserUnderlyingHealthCond={userUnderlyingHealthCond}
+        setNewUserUnderlyingHealthCond={(underlyingCondition) =>
           setUserUnderlyingHealthCond(underlyingCondition)
         }
       />
     );
   }
 
-  //console.log("USER TO SAVE: " + userName);
-  AsyncStorageController.saveData(USERNAME_KEY, userName);
-  AsyncStorageController.saveData(USERAGE_KEY, userAge);
+  // Save data that the user has typed in on local storage
+  AsyncStorageController.saveData(USER_NAME_KEY, userName);
+  AsyncStorageController.saveData(USER_AGE_KEY, userAge);
   AsyncStorageController.saveData(
-    USERCONDITION_KEY,
+    USER_CONDITION_KEY,
     userUnderlyingHealthCond + ""
   );
-  //let value = AsyncStorageController.readData(USERNAME_KEY);
-  //console.log(value);
-  // console.log(userName);
-  // console.log(userUnderlyingHealthCond);
-  // console.log(userAge);
 
-  // show main app
+  // Show the main app
   return (
     <AppContext.Provider value={APIData}>
       <NavigationContainer>

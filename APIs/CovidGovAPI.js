@@ -3,8 +3,12 @@
  * in the area the user is by using the ONS code provided
  */
 
-async function fetchRolling100k(ONSCode) {
-  const structure100k = {
+/**
+ * Method used to retrieve all the necessary Covid-19 data from gov.uk API
+ * @param {} ONSCode area code
+ */
+async function fetchCovid19Data(ONSCode) {
+  const structureRolling100k = {
     Name: "areaName",
     SevenDayRolling: "newCasesBySpecimenDateRollingRate",
     Date: "date",
@@ -22,7 +26,7 @@ async function fetchRolling100k(ONSCode) {
   try {
     let response100k = await fetch(
       `https://api.coronavirus.data.gov.uk/v1/data?filters=areaCode=${ONSCode}&structure=${JSON.stringify(
-        structure100k
+        structureRolling100k
       )}`
     );
 
@@ -64,6 +68,4 @@ async function fetchRolling100k(ONSCode) {
   }
 }
 
-//TODO: Make another function that gathers today's status in the area e.g. cases, deaths, hospital admissions, area code?, more on GOV API WEBSITE
-
-export default fetchRolling100k;
+export default fetchCovid19Data;

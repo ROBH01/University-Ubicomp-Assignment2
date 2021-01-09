@@ -1,26 +1,25 @@
-/**
- * This screen is used to gather information from the user
- * such as name, age and underlying health conditions as to
- * make the user experience more contextualised and relevant
- */
-
 import React from "react";
 import { View, Text } from "react-native";
 import CustomTextInput from "../components/CustomTextInput";
 import LabeledSwitch from "react-native-custom-switches/LabeledSwitch";
 import CustomButton from "../components/CustomButton";
 
+/**
+ * This component is used to gather information from the user
+ * such as name, age and underlying health conditions to
+ * make the user experience more contextualised and relevant
+ */
 const UserRegistration = ({
-  completed,
+  onCompleted,
   title,
-  text,
+  subtitle,
   buttonName,
-  userName,
-  setUserName,
-  userAge,
-  setUserAge,
-  userUnderlyingHealthCond,
-  setUserUnderlyingHealthCond,
+  newUserName,
+  setNewUserName,
+  newUserAge,
+  setNewUserAge,
+  newUserUnderlyingHealthCond,
+  setNewUserUnderlyingHealthCond,
 }) => {
   return (
     <View
@@ -41,7 +40,7 @@ const UserRegistration = ({
           textAlign: "center",
         }}
       >
-        {text}
+        {subtitle}
       </Text>
       <CustomTextInput
         marginTop={20}
@@ -52,7 +51,7 @@ const UserRegistration = ({
         textAlign={"center"}
         placeholder={"Enter name"}
         keyboardType={"default"}
-        onChangeText={setUserName}
+        onChangeText={setNewUserName}
         maxLength={16}
       />
 
@@ -65,7 +64,7 @@ const UserRegistration = ({
         textAlign={"center"}
         placeholder={"Enter age"}
         keyboardType={"number-pad"}
-        onChangeText={setUserAge}
+        onChangeText={setNewUserAge}
         maxLength={3}
       />
       <View
@@ -80,10 +79,10 @@ const UserRegistration = ({
           Do you have any underlying health conditions?
         </Text>
 
-        {/* TODO: Says after starting app that value must be of type string into this component, so make sure value has boolean!!! */}
+        {/* Label switch used to get the underlying health condition */}
         <LabeledSwitch
-          value={userUnderlyingHealthCond}
-          onChange={setUserUnderlyingHealthCond}
+          value={newUserUnderlyingHealthCond}
+          onChange={setNewUserUnderlyingHealthCond}
           disabledColor="#e63111"
           enabledColor="#008000"
           disabledLabel="No"
@@ -98,9 +97,9 @@ const UserRegistration = ({
           height={30}
           width={"40%"}
           disabled={
-            userName.length === 0 || userAge.length === 0 ? true : false
+            newUserName.length === 0 || newUserAge.length === 0 ? true : false
           }
-          onPressOut={completed}
+          onPressOut={onCompleted}
         />
       </View>
     </View>
