@@ -122,8 +122,8 @@ const Dashboard = () => {
             <Image
               source={conditionIconURL}
               style={{
-                height: 50,
-                width: 120,
+                height: 60,
+                width: 100,
                 marginTop: 10,
                 marginBottom: 10,
                 resizeMode: "cover",

@@ -14,6 +14,7 @@ const UserRegistration = ({
   title,
   subtitle,
   buttonName,
+
   newUserName,
   setNewUserName,
   newUserAge,
