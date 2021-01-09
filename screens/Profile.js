@@ -13,27 +13,29 @@ import { AsyncStorageController } from "../APIs/AsyncStorage";
 const Profile = () => {
   // Getting data from Context
   const myContext = useContext(AppContext);
+
+  const resetValues = () => {
+    setNewUserName("");
+    setNewUserAge("");
+  };
+
   // console.log(myContext);
   let currentUserName = myContext.userName;
   let currentUserAge = myContext.userAge;
   let currentUserUnderlyingHealthCond = myContext.userUnderlyingHealthCond;
 
-  // get async keys
-  let username_key = myContext.username_key;
-  let userage_key = myContext.userage_key;
-  let usercondition_key = myContext.usercondition_key;
+  // Getting AsyncStorage keys
+  let USER_NAME_KEY = myContext.USER_NAME_KEY;
+  let USER_AGE_KEY = myContext.USER_AGE_KEY;
+  let USER_CONDITION_KEY = myContext.USER_CONDITION_KEY;
 
-  const [newName, setNewName] = useState("");
-  const [newAge, setNewAge] = useState("");
+  const [newUserName, setNewUserName] = useState("");
+  const [newUserAge, setNewUserAge] = useState("");
   const [
     newUserUnderlyingHealthCond,
     setNewUserUnderlyingHealthCond,
   ] = useState(false);
-  //
-  const [showChangeInfoModal, setShowChangeInfoModal] = useState(false);
-  //
-  console.log("CHECKING UHC: " + newUserUnderlyingHealthCond);
-  console.log("And datatype: " + typeof newUserUnderlyingHealthCond);
+  const [showEditDetailsModal, SetShowEditDetailsModal] = useState(false);
 
   /**
    * This method updates the information about the user in the AsyncStorage
@@ -41,20 +43,21 @@ const Profile = () => {
    */
   const updateUserInfo = () => {
     // Updating AsyncStorage
-    AsyncStorageController.saveData(username_key, newName);
-    AsyncStorageController.saveData(userage_key, newAge);
+    AsyncStorageController.saveData(USER_NAME_KEY, newUserName);
+    AsyncStorageController.saveData(USER_AGE_KEY, newUserAge);
     AsyncStorageController.saveData(
-      usercondition_key,
+      USER_CONDITION_KEY,
       newUserUnderlyingHealthCond + ""
     );
 
     // Updating Context
-    myContext.userName = newName;
-    myContext.userAge = newAge;
+    myContext.userName = newUserName;
+    myContext.userAge = newUserAge;
     myContext.userUnderlyingHealthCond = newUserUnderlyingHealthCond;
 
+    // User feedback and dismiss modal
     alert("Information successfully updated");
-    setShowChangeInfoModal(false);
+    SetShowEditDetailsModal(false);
   };
 
   return (
@@ -70,7 +73,7 @@ const Profile = () => {
         My details
       </Text>
 
-      {/* Name */}
+      {/* Showing name */}
       <CustomTextInput
         marginTop={20}
         height={30}
@@ -80,12 +83,11 @@ const Profile = () => {
         textAlign={"center"}
         placeholder={currentUserName}
         keyboardType={"default"}
-        //onChangeText={(name) => setNewName(name)}
         maxLength={16}
         editable={false}
       />
 
-      {/* Age */}
+      {/* Showing age */}
       <CustomTextInput
         marginTop={20}
         height={30}
@@ -95,7 +97,6 @@ const Profile = () => {
         textAlign={"center"}
         placeholder={currentUserAge}
         keyboardType={"number-pad"}
-        //onChangeText={(age) => setNewAge(age)}
         maxLength={3}
         editable={false}
       />
@@ -114,12 +115,11 @@ const Profile = () => {
             : "No underlying health conditions"
         }
         keyboardType={"number-pad"}
-        //onChangeText={(age) => setNewAge(age)}
         maxLength={3}
         editable={false}
       />
 
-      {/* Change details button TODO: change colour of button ALSO EDIT > NO DATA SHOULD BE GRAYED OUT! IS NOT */}
+      {/* Change details button TODO: change colour of button */}
       <CustomButton
         name={"Edit details"}
         textFontSize={18}
@@ -127,29 +127,31 @@ const Profile = () => {
         width={"40%"}
         disabled={false}
         marginTop={20}
-        onPressOut={() => setShowChangeInfoModal(true)}
+        onPressOut={() => SetShowEditDetailsModal(true)}
       />
 
       {/* Modal allowing to change user details */}
       <Modal
-        visible={showChangeInfoModal}
+        visible={showEditDetailsModal}
         animationType={"slide"}
         statusBarTranslucent={false}
-        onRequestClose={() => setShowChangeInfoModal(false)}
+        onRequestClose={() => SetShowEditDetailsModal(false)}
         presentationStyle={"fullScreen"}
+        onShow={resetValues}
       >
+        {/* Getting and updating the new details using this component */}
         <UserRegistration
           title={"Edit details"}
-          text={"Update your name, age and underlying health conditions"}
+          subtitle={"Update your name, age and underlying health conditions"}
           buttonName={"Update"}
-          completed={updateUserInfo}
-          userName={newName}
-          setUserName={(name) => setNewName(name)}
-          userAge={newAge}
-          setUserAge={(age) => setNewAge(age)}
-          userUnderlyingHealthCond={newUserUnderlyingHealthCond}
-          setUserUnderlyingHealthCond={(newUnderlyingCondition) =>
-            setNewUserUnderlyingHealthCond(newUnderlyingCondition)
+          onCompleted={updateUserInfo}
+          newUserName={newUserName}
+          setNewUserName={(name) => setNewUserName(name)}
+          newUserAge={newUserAge}
+          setNewUserAge={(age) => setNewUserAge(age)}
+          newUserUnderlyingHealthCond={newUserUnderlyingHealthCond}
+          setNewUserUnderlyingHealthCond={(underlyingCondition) =>
+            setNewUserUnderlyingHealthCond(underlyingCondition)
           }
         />
       </Modal>

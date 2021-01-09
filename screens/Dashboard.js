@@ -10,16 +10,16 @@ const Dashboard = () => {
   // getting appcontext COVID and WEATHER data for the dashboard
   const myContext = useContext(AppContext);
   console.log(myContext);
+
   // COVID DATA
-  let rollingRate100k = myContext.covidAPIData[0];
-  let dailyCases = myContext.covidAPIData[1];
-  let cumulativeCases = myContext.covidAPIData[2];
-  let areaName = myContext.covidAPIData[3];
-  let dailyDeaths = myContext.covidAPIData[4];
-  let cumulativeDeaths = myContext.covidAPIData[5];
+  let rollingRate100k = myContext.covidData[0];
+  let dailyCases = myContext.covidData[1];
+  let cumulativeCases = myContext.covidData[2];
+  let areaName = myContext.covidData[3];
+  let dailyDeaths = myContext.covidData[4];
+  let cumulativeDeaths = myContext.covidData[5];
 
   // WEATHER DATA
-
   let currentTemperature = myContext.weatherData[0];
   let currentFeelsLike = myContext.weatherData[1];
   let currentHumidity = myContext.weatherData[2];
@@ -79,7 +79,7 @@ const Dashboard = () => {
             //height: "70%",
           }}
         >
-          <Text style={{ fontSize: 16, marginTop: 10 }}>
+          <Text style={{ fontSize: 16, marginTop: 20 }}>
             Cases today: {dailyCases}
           </Text>
           <Text style={{ fontSize: 16, marginTop: 10 }}>

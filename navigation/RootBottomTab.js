@@ -6,7 +6,7 @@ import Dashboard from "../screens/Dashboard";
 import Profile from "../screens/Profile";
 import colors from "../assets/colors";
 
-// Bottom Tab Navigator that is made by the different screens
+// Bottom Tab Navigator made of different screens
 const BottomTabNav = createBottomTabNavigator();
 
 const Tabs = () => {

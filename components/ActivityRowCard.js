@@ -1,22 +1,13 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  ActivityIndicator,
-  Button,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
+import { Text, View, TouchableOpacity, ImageBackground } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import MyModal from "./MyModal";
 import colors from "../assets/colors";
 import constants from "./Constants";
-//
 import AppContext from "./AppContext";
 import { useContext } from "react";
 
-//TODO: Make a row card that is rendered by a FlatList
 const ActivityRowCard = ({
   activityName,
   activityRiskLabel,
@@ -26,24 +17,20 @@ const ActivityRowCard = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  /**STARTING
-   * WORKING OUT
-   * CALCULATIONS ABOUT
-   * THIS ACTIVITY
-   */
-
-  // getting apis data from context
+  // Getting data from context
   const myContext = useContext(AppContext);
   //console.log(myContext);
 
   //FIXME: IF CHANGE DETAILS IN USER SCREEN, CHANGE IS NOT HAPPENING STRAIGHT AWAY IN ACTIVITIES LINE COLOUR, ONLY AFTER CLICKING ON EACH OR REFRESHES!!!
 
-  // const [activityFeedback, setActivityFeedback] = useState(""); not allowing me, too many re-renders :(
   let activityFeedback = "";
   let activityRiskLevel = null;
 
+  /**
+   * Function that checks wether currently is bad weather or not based on the Weather API
+   * @param {} currentCondition - Current weather condition
+   */
   function isBadWeather(currentCondition) {
-    // Weather APIs bad weather conditions: Thunderstorm, Rain, Snow
     if (
       currentCondition === "Thunderstorm" ||
       currentCondition === "Rain" ||
@@ -53,35 +40,40 @@ const ActivityRowCard = ({
     }
   }
 
+  /**
+   * Function that returns wether is currently a very low Real Feel temperature
+   * @param {} currentRealFeelTemp - Temperature under which is returned true
+   */
   function isVeryLowTemp(currentRealFeelTemp) {
-    // if real feel temp is less than 3 degrees, add VERY_LOW_TEMP to feedback sentence:
     if (currentRealFeelTemp <= 3) {
       return true;
     }
   }
 
-  // TODO: Check user age and add as factor in risk!
+  /**
+   * Function that returns whether is summer season or not
+   */
+  function isSummerSeason() {
+    let date = new Date();
+    let month = date.getMonth();
+    return month >= 5 && month <= 7;
+  }
 
-  //TODO: Make a function that calculates how much to add on top of an activity based on covid data and weather forecast?
-  const buildFeedback = () => {
-    //let activityFeedback = "";
-
-    // check covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
-    // get area rolling rate x 100k
+  function buildFeedback() {
     //FIXME: THIS IS FOR DEMO ONLY TESTING WITHOUT APIs
     //let rollingRate100k = 900; // ideally from API
     // let userAge = 88; // from APP storage
     //let userUnderlyingHealthConditions = true;
 
-    // trying with APIs
-    let rollingRate100k = myContext.covidAPIData[0];
+    // Getting APIs data
+    let rollingRate100k = myContext.covidData[0];
     let userAge = myContext.userAge;
     let userUnderlyingHealthConditions = myContext.userUnderlyingHealthCond;
     let userLocation = myContext.weatherData[4];
     let currentRealFeelTemp = myContext.weatherData[1];
-    let currentCondition = myContext.weatherData[3];
+    let currentWeatherCondition = myContext.weatherData[3];
 
-    // add covid weights
+    // Adding covid weights based on covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
     if (rollingRate100k < 150) {
       activityRiskLevel = constants.weights.COVID_LOW_WEIGHT;
     } else if (rollingRate100k < 350) {
@@ -94,22 +86,22 @@ const ActivityRowCard = ({
       activityRiskLevel = constants.weights.COVID_HIGH_WEIGHT;
     }
 
-    // add age weight
+    // Adding age weight
     if (userAge >= 65) {
       activityRiskLevel += constants.weights.USER_AGE_WEIGHT;
     }
 
-    // add user underlying health conditions weight
+    // Adding user underlying health conditions weight
     if (userUnderlyingHealthConditions) {
       activityRiskLevel +=
         constants.weights.USER_UNDERLYING_HEALTH_CONDITION_WEIGHT;
     }
 
-    // calculate final risk level by multiplying times the activity factor (1 low, 5 high)
+    // Calculating final risk level by multiplying by the activity risk factor (1 low, 5 high)
     activityRiskLevel *= activityBaseRiskValue;
-    console.log(activityRiskLevel);
+    //console.log(activityRiskLevel);
 
-    // add activity feedback based on risk level
+    // Adding activity feedback based on risk level
     if (activityRiskLevel <= 20) {
       activityFeedback = `${activityName} ${constants.sentences.LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel <= 40) {
@@ -122,55 +114,26 @@ const ActivityRowCard = ({
       activityFeedback = `${activityName} ${constants.sentences.HIGH_RISK_FORMAT} in ${userLocation}. ${constants.sentences.AVOID_ACTIVITY}`;
     }
 
-    // offer additional hints that may be useful based on time of the day, weather ecc.. (unrelated to covid)
+    // Offering additional hints that may be useful based on weather conditions (unrelated to covid)
     if (activityType === "outdoor") {
-      //TODO: check current weather
-      if (isBadWeather(currentCondition)) {
-        activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_LOW}. ${constants.sentences.BAD_WEATHER_CURRENT} in ${userLocation} is ${currentCondition}.`;
+      if (isSummerSeason()) {
+        activityFeedback = `${activityFeedback} ${constants.sentences.SUMMER_SEASON} `;
+      }
+      if (isBadWeather(currentWeatherCondition)) {
+        activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_LOW}. ${constants.sentences.BAD_WEATHER_CURRENT} in ${userLocation} is ${currentWeatherCondition}.`;
       }
       if (isVeryLowTemp(currentRealFeelTemp)) {
         activityFeedback = `${activityFeedback} ${
           constants.sentences.VERY_LOW_TEMP
         } ${userLocation} is ${Math.floor(currentRealFeelTemp)} °C.`;
       }
-
-      //call isSummerSeason()
     } else {
       activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_HIGH}.`;
     }
+  }
 
-    // check activity type -> summer? bad weather?
-
-    // check if summer season
-
-    // check if bad weather
-
-    //setActivityFeedback(activityFeedback);
-  };
-
+  // Building the feedback to the user
   buildFeedback();
-
-  // Function that returns whether is summer season or not
-  function isSummerSeason() {
-    let date = new Date();
-    let month = date.getMonth();
-    return month >= 5 && month <= 7;
-  }
-
-  // Function that checks whether is bad weather or not
-  function isBadWeather() {
-    // TODO: Check if bad weather
-    return true;
-  }
-
-  // Funtion that checks whether is late in the evening
-  function isLateEvening() {
-    let date = new Date();
-    let hours = date.getHours();
-    return hours >= 18 || hours <= 3;
-  }
-
-  /*END SECTION */
 
   return (
     <TouchableOpacity
@@ -207,6 +170,7 @@ const ActivityRowCard = ({
           backgroundColor: "white",
           flexDirection: "column",
           justifyContent: "flex-start",
+          elevation: 6,
         }}
       >
         {/* This view renders the activity image */}

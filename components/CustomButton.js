@@ -11,14 +11,9 @@ const CustomButton = ({
   textFontSize,
   marginTop,
 }) => {
-  const addUserDetailsToContext = () => {
-    // TODO: Add this data to the database or local storage!
-    onPressOut();
-  };
-
   return (
     <Pressable
-      onPressOut={addUserDetailsToContext}
+      onPressOut={onPressOut}
       disabled={disabled}
       style={({ pressed }) => [
         {
