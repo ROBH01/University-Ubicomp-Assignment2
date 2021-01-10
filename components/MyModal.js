@@ -3,6 +3,7 @@
 import React from "react";
 import { Text, View, Modal, StyleSheet, Button } from "react-native";
 import RiskStatusRectangle from "./RiskStatusRectangle";
+import CustomButton from "./CustomButton";
 
 // This is a custom modal, adapted to display the beach data when a beach is clicked
 const MyModal = ({
@@ -21,7 +22,7 @@ const MyModal = ({
       animationType="slide"
       statusBarTranslucent={false}
       onRequestClose={closeModal}
-      presentationStyle={"fullScreen"}
+      presentationStyle={"formSheet"}
     >
       {/* Modal container */}
       <View style={styles.modalContainer}>
@@ -70,7 +71,7 @@ const MyModal = ({
             marginBottom: 10,
           }}
         >
-          {activityRiskLabel}
+          {activityRiskLabel} ({riskValue}%)
         </Text>
 
         {/* Section text feedback about the activity with suggestions */}
@@ -79,7 +80,6 @@ const MyModal = ({
           style={{
             //height: 100, //TODO: remove after adding the text to let it self sizing
             width: "90%",
-
             alignSelf: "center",
             marginTop: 20,
             marginBottom: 20,
@@ -89,7 +89,15 @@ const MyModal = ({
         </View>
 
         {/* Close modal */}
-        <Button title="Close" onPress={closeModal} />
+        <CustomButton
+          disabled={false}
+          height={30}
+          textFontSize={16}
+          onPressOut={closeModal}
+          marginTop={10}
+          width={"50%"}
+          name={"CLOSE"}
+        />
       </View>
     </Modal>
   );

@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  Text,
-  View,
-  ActivityIndicator,
-  Button,
-  TouchableOpacity,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from "react";
+import { View } from "react-native";
 import colors from "../assets/colors";
 
 const RiskStatusRectangle = ({

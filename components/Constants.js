@@ -14,7 +14,7 @@ const MODERATE_RISK_FORMAT = "is considered to be moderate risk";
 const MODERATE_HIGH_RISK_FORMAT = "is considered to be moderate-high risk";
 const HIGH_RISK_FORMAT = "is considered to be high risk";
 const BAD_WEATHER_CURRENT =
-  "\nAccording to weather data, the current condition";
+  "\n\nAccording to weather data, the current condition";
 const VERY_LOW_TEMP = "\n\nCurrent Real Feel temperature in";
 const SOCIAL_DISTANCING_LOW =
   "Ensure social distancing is followed at all times";
