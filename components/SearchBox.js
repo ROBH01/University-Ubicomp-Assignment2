@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    width: "95%",
+    width: "80%",
     marginTop: 40,
-    marginBottom: 20,
+    marginBottom: 10,
     elevation: 6,
   },
   input: {

@@ -119,14 +119,14 @@ export default function App() {
   let APIData = {
     userLocation: userLocation,
     ONSCode: ONSAreaCode,
-    covidData: covidData, //chg
+    covidData: covidData,
     weatherData: weatherData,
     userName: userName,
     userAge: userAge,
     userUnderlyingHealthCond: userUnderlyingHealthCond,
-    USER_NAME_KEY: USER_NAME_KEY, //chg
-    USER_AGE_KEY: USER_AGE_KEY, //chg
-    USER_CONDITION_KEY: USER_CONDITION_KEY, //chg
+    USER_NAME_KEY: USER_NAME_KEY,
+    USER_AGE_KEY: USER_AGE_KEY,
+    USER_CONDITION_KEY: USER_CONDITION_KEY,
     shouldUpdate: false,
   };
 

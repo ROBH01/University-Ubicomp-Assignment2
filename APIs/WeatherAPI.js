@@ -17,7 +17,6 @@ async function getCurrentWeather(latitude, longitude) {
     );
     let data = await response.json();
     console.log(data);
-    //TODO: Put this in the correct order and change index values in DashBoard context!!!!!
     let currentTemperature = data.main.temp;
     let currentRealFeelTemp = data.main.feels_like;
     let currentHumidity = data.main.humidity;
@@ -43,7 +42,5 @@ async function getCurrentWeather(latitude, longitude) {
     console.error(error);
   }
 }
-
-//TODO: Make another function that gathers FORECASTED weather too.
 
 export default getCurrentWeather;

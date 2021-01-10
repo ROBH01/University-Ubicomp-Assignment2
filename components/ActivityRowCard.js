@@ -107,7 +107,7 @@ const ActivityRowCard = ({
     } else if (activityRiskLevel <= 40) {
       activityFeedback = `${activityName} ${constants.sentences.MODERATE_LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel <= 60) {
-      activityFeedback = `${activityName} ${constants.sentences.MODERATE_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
+      activityFeedback = `${activityName} ${constants.sentences.MODERATE_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment. ${constants.sentences.SOCIAL_DISTANCING_LOW}.`;
     } else if (activityRiskLevel <= 80) {
       activityFeedback = `${activityName} ${constants.sentences.MODERATE_HIGH_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
     } else if (activityRiskLevel > 80) {
@@ -120,7 +120,7 @@ const ActivityRowCard = ({
         activityFeedback = `${activityFeedback} ${constants.sentences.SUMMER_SEASON} `;
       }
       if (isBadWeather(currentWeatherCondition)) {
-        activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_LOW}. ${constants.sentences.BAD_WEATHER_CURRENT} in ${userLocation} is ${currentWeatherCondition}.`;
+        activityFeedback = `${activityFeedback} ${constants.sentences.BAD_WEATHER_CURRENT} in ${userLocation} is ${currentWeatherCondition}.`;
       }
       if (isVeryLowTemp(currentRealFeelTemp)) {
         activityFeedback = `${activityFeedback} ${
@@ -177,10 +177,9 @@ const ActivityRowCard = ({
         <View
           style={{
             //width: "100%",
-            height: 180,
-            padding: 5,
+            height: 140,
+            padding: 3,
             overflow: "hidden",
-
             //backgroundColor: "white",
           }}
         >
@@ -195,13 +194,14 @@ const ActivityRowCard = ({
           style={{
             backgroundColor: "white",
             flexDirection: "column",
+            //backgroundColor:"pink",
             width: "100%",
             //padding: 10,
           }}
         >
           <Text
             style={{
-              marginTop: 5,
+              //marginTop: 5,
               fontWeight: "bold",
               fontSize: 18,
               alignSelf: "center",
@@ -209,12 +209,12 @@ const ActivityRowCard = ({
           >
             {activityName}
           </Text>
-          <Text style={{ marginTop: 5, fontSize: 15, alignSelf: "center" }}>
+          <Text style={{ marginTop: 2, fontSize: 15, alignSelf: "center" }}>
             {activityRiskLabel}
           </Text>
 
           {/* Showing the right arrow on the card */}
-          <View style={{ position: "absolute", end: 5, top: 20 }}>
+          <View style={{ position: "absolute", end: 5, top: 15 }}>
             <MaterialCommunityIcons
               style={{ alignSelf: "flex-end" }}
               name="arrow-right" // or arrow-right-circle
