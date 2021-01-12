@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ScrollView } from "react-native";
 import { Text, View, StyleSheet, Image } from "react-native";
 import AppContext from "../components/AppContext";
+import MapView from "../components/MapView";
 
 //TODO: Create Dashboard with counties screen that is made by different components
 const Dashboard = () => {
@@ -265,6 +266,7 @@ const Dashboard = () => {
           </View>
         </View>
       </View>
+      <MapView />
     </ScrollView>
   );
 };

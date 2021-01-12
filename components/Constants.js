@@ -1,4 +1,5 @@
-// COVID-19 and user weights
+// Normal activities weights
+// Covid-19 and user weights
 const COVID_LOW_WEIGHT = 2;
 const COVID_MODERATE_LOW_WEIGHT = 4;
 const COVID_MODERATE_WEIGHT = 6;
@@ -6,6 +7,28 @@ const COVID_MODERATE_HIGH_WEIGHT = 9;
 const COVID_HIGH_WEIGHT = 12;
 const USER_AGE_WEIGHT = 3;
 const USER_UNDERLYING_HEALTH_CONDITION_WEIGHT = 5;
+
+// Personalised activities weights
+// Covid-19
+const PCOVID_LOW = 10;
+const PCOVID_MODERATE_LOW = 20;
+const PCOVID_MODERATE = 30;
+const PCOVID_MODERATE_HIGH = 40;
+const PCOVID_HIGH = 50;
+
+// User and other factors
+const PUSER_AGE_LOW = 0.1;
+const PUSER_AGE_MEDIUM = 0.2;
+const PUSER_AGE_HIGH = 0.3;
+const PUSER_UNDERLYING_HEALTH_CONDITION = 0.5;
+const POTHER_PEOPLE_INTERACTION = 0.4;
+const PTIME_SPENT_LOW = 0.1;
+const PTIME_SPENT_MEDIUM = 0.2;
+const PTIME_SPENT_HIGH = 0.3;
+const PACTIVITY_INDOOR = 0.2;
+const PACTIVITY_OUTDOOR = 0.1;
+const PEXECUTION_DURING_BUSY_TIMES = 0.3;
+const PEXECUTION_DURING_QUIET_TIMES = 0.1;
 
 // Feedback sentences formats for different levels of risk
 const LOW_RISK_FORMAT = "is considered to be low risk";
@@ -47,5 +70,24 @@ export default constants = {
     SOCIAL_DISTANCING_HIGH,
     AVOID_ACTIVITY,
     SUMMER_SEASON,
+  },
+  personalisedWeights: {
+    PCOVID_LOW,
+    PCOVID_MODERATE_LOW,
+    PCOVID_MODERATE,
+    PCOVID_MODERATE_HIGH,
+    PCOVID_HIGH,
+    PUSER_AGE_LOW,
+    PUSER_AGE_MEDIUM,
+    PUSER_AGE_HIGH,
+    PUSER_UNDERLYING_HEALTH_CONDITION,
+    POTHER_PEOPLE_INTERACTION,
+    PTIME_SPENT_LOW,
+    PTIME_SPENT_MEDIUM,
+    PTIME_SPENT_HIGH,
+    PACTIVITY_INDOOR,
+    PACTIVITY_OUTDOOR,
+    PEXECUTION_DURING_BUSY_TIMES,
+    PEXECUTION_DURING_QUIET_TIMES,
   },
 };
