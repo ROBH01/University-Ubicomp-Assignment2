@@ -11,6 +11,7 @@ const CustomButton = ({
   textFontSize,
   marginTop,
 }) => {
+  let animationWidth = 2;
   return (
     <Pressable
       onPressOut={onPressOut}
@@ -19,7 +20,7 @@ const CustomButton = ({
         {
           backgroundColor: disabled ? "gray" : "#2196F3",
           height: height,
-          width: pressed ? parseInt(width) - 5 + "%" : width,
+          width: pressed ? parseInt(width) - animationWidth + "%" : width,
           alignSelf: "center",
           justifyContent: "center",
           elevation: 10,
