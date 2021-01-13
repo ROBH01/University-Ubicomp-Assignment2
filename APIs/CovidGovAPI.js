@@ -75,7 +75,6 @@ async function fetchCovid19Data(ONSCode) {
     let dailyNationalDeaths = dataNationalStatistics.data[0].DailyDeaths;
     let cumulativeNationalDeaths =
       dataNationalStatistics.data[0].CumulativeDeaths;
-    let nationalResultsDate = dataNationalStatistics.data[0].Date;
 
     // Return all the data requested
     let covidAPIData = [
@@ -89,7 +88,6 @@ async function fetchCovid19Data(ONSCode) {
       cumulativeNationalCases,
       dailyNationalDeaths,
       cumulativeNationalDeaths,
-      nationalResultsDate,
     ];
 
     return covidAPIData;

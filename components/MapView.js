@@ -13,18 +13,20 @@ const MapView = () => {
         marginBottom: 15,
       }}
     >
+      {/* Tiers view */}
       <View
         style={{
           width: "100%",
           backgroundColor: "white",
           padding: 3,
-          //height: 40,
         }}
       >
         <Text style={{ fontWeight: "bold", textAlign: "center", fontSize: 20 }}>
           Tiers in England
         </Text>
       </View>
+
+      {/* WebView displaying Tiers container */}
       <WebView
         source={{
           uri: "https://datawrapper.dwcdn.net/uTv4K/14/",
@@ -32,11 +34,6 @@ const MapView = () => {
         javaScriptEnabled={true}
         domStorageEnabled={true}
         style={{
-          //justifyContent: "center",
-          //alignSelf: "center",
-          //alignItems: "center",
-          flex: 1,
-          //marginTop: 30,
           marginTop: 10,
           paddingTop: 30,
           backgroundColor: "lightgray",
@@ -52,7 +49,3 @@ const MapView = () => {
 };
 
 export default MapView;
-
-//https://www.covidlive.co.uk/
-//https://www.ons.gov.uk/visualisations/dvc1099/covid-death-map/index.html
-//https://datawrapper.dwcdn.net/uTv4K/14/

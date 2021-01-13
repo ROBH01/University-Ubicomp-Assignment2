@@ -3,9 +3,15 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { ScrollView } from "react-native";
+import { Button } from "react-native";
 import { Text, View, StyleSheet, Image } from "react-native";
 import AppContext from "../components/AppContext";
 import MapView from "../components/MapView";
+import getCurrentWeather from "../APIs/WeatherAPI";
+import { useFocusEffect } from "@react-navigation/native";
+import * as Location from "expo-location";
+import fetchONSCode from "../APIs/PostCodesAPI";
+import fetchCovid19Data from "../APIs/CovidGovAPI";
 
 //TODO: Create Dashboard with counties screen that is made by different components
 const Dashboard = () => {
@@ -14,27 +20,46 @@ const Dashboard = () => {
   console.log(myContext);
 
   // COVID DATA
-  let dailyCases = myContext.covidData[1];
-  let cumulativeCases = myContext.covidData[2];
-  let areaName = myContext.covidData[3];
-  let dailyDeaths = myContext.covidData[4];
-  let cumulativeDeaths = myContext.covidData[5];
-  let dailyNationalCases = myContext.covidData[6];
-  let cumulativeNationalCases = myContext.covidData[7];
-  let dailyNationalDeaths = myContext.covidData[8];
-  let cumulativeNationalDeaths = myContext.covidData[9];
-  let resultsDate = myContext.covidData[10]; //TODO: CHECK IN THE MORNING TO SEE IF THERE IS VALUES!
+  // TODO: DON T FORGET TO ADD THIS TO CONTEXT AS WELL AS UPDATING IT!!!!!!!
+  // let rollingRate100k = myContext.covidData[0];
+  const [rollingRate100k, setRolling100k] = useState(myContext.covidData[0]);
+  const [casesToday, setCasesToday] = useState(myContext.covidData[1]);
+  const [cumulativeCases, setCumulativeCases] = useState(
+    myContext.covidData[2]
+  );
+  const [areaName, setAreaName] = useState(myContext.covidData[3]);
+  const [deathsToday, setDeathsToday] = useState(myContext.covidData[4]);
+  const [cumulativeDeaths, setCumulativeDeaths] = useState(
+    myContext.covidData[5]
+  );
+  const [nationalCasesToday, setNationalCasesToday] = useState(
+    myContext.covidData[6]
+  );
+  const [nationalCumulativeCases, setNationalCumulativeCases] = useState(
+    myContext.covidData[7]
+  );
+  const [nationalDeathsToday, setNationalDeathsToday] = useState(
+    myContext.covidData[8]
+  );
+  const [nationalCumulativeDeaths, setNationalCumulativeDeaths] = useState(
+    myContext.covidData[9]
+  );
 
   // WEATHER DATA
-  let currentTemperature = myContext.weatherData[0];
-  let currentFeelsLike = myContext.weatherData[1];
-  let currentHumidity = myContext.weatherData[2];
-  let currentCondition = myContext.weatherData[3];
-  let currentCity = myContext.weatherData[4];
-  let condIconCode = myContext.weatherData[5];
-  let currentWindSpeed = myContext.weatherData[6];
+  //let currentTemperature = myContext.weatherData[0];
+  const [currT, setCurrT] = useState(myContext.weatherData[0]);
+  const [currFeelLikeTemp, setCurrFeelLikeTemp] = useState(
+    myContext.weatherData[1]
+  );
+  const [currHumidity, setCurrentHumidity] = useState(myContext.weatherData[2]);
+  const [currCondition, setCurrCondition] = useState(myContext.weatherData[3]);
+  const [currCity, setCurrCity] = useState(myContext.weatherData[4]);
+  const [conditionIconCode, setConditionIconCode] = useState(
+    myContext.weatherData[5]
+  );
+  const [currWindSpeed, setCurrWindSpeed] = useState(myContext.weatherData[6]);
   let conditionIconURL = {
-    uri: `http://openweathermap.org/img/wn/${condIconCode}@4x.png`,
+    uri: `http://openweathermap.org/img/wn/${conditionIconCode}@4x.png`,
   };
 
   const SectionRowText = ({
@@ -61,13 +86,58 @@ const Dashboard = () => {
     );
   };
 
-  // let [timeNow, setTime] = useState(new Date().getSeconds());
+  useFocusEffect(
+    React.useCallback(() => {
+      updateAPIData();
+    }, [])
+  );
 
-  // setInterval(() => {
-  //   let date = new Date().getSeconds();
-  //   setTime(date);
-  //   console.log(date);
-  // }, 60000);
+  // Updates the existing data from the APIs gathered at app launch with current ones and saves it to context
+  async function updateAPIData() {
+    let location = await Location.getCurrentPositionAsync({});
+    //console.log("NEXTTTTTTTTT: ");
+    let lat = location.coords.latitude;
+    let lon = location.coords.longitude;
+    //console.log(location.coords.latitude);
+    let currentWeather = await getCurrentWeather(lat, lon);
+    //console.log("WOW WORKS: ");
+    //console.log(newWeather);
+    setCurrT(currentWeather[0]);
+    setCurrFeelLikeTemp(currentWeather[1]);
+    setCurrentHumidity(currentWeather[2]);
+    setCurrCondition(currentWeather[3]);
+    setCurrCity(currentWeather[4]);
+    setConditionIconCode(currentWeather[5]);
+    setCurrWindSpeed(currentWeather[6]);
+
+    let currentONSCode = await fetchONSCode(lat, lon);
+    //console.log("ONS?????????????");
+    //console.log(currentONSCode);
+
+    let currentCovidData = await fetchCovid19Data(currentONSCode);
+    //console.log("NEW COVID: ");
+    //console.log(currentCovidData);
+
+    setRolling100k(currentCovidData[0]);
+    setCasesToday(currentCovidData[1]);
+    setCumulativeCases(currentCovidData[2]);
+    setAreaName(currentCovidData[3]);
+    setDeathsToday(currentCovidData[4]);
+    setCumulativeDeaths(currentCovidData[5]);
+    setNationalCasesToday(currentCovidData[6]);
+    setNationalCumulativeCases(currentCovidData[7]);
+    setNationalDeathsToday(currentCovidData[8]);
+    setNationalCumulativeDeaths(currentCovidData[9]);
+
+    // update in the context
+    myContext.userLocation = [lat, lon];
+    myContext.ONSCode = currentONSCode;
+    myContext.covidData = currentCovidData;
+    myContext.weatherData = currentWeather;
+
+    // console.log("AAAAAAAAAAAAAAAAAAAA");
+    // console.log(myContext);
+  }
 
   return (
     <ScrollView>
@@ -114,17 +184,17 @@ const Dashboard = () => {
           >
             <SectionRowText
               areaName={areaName}
-              dailyCases={dailyCases}
+              dailyCases={casesToday}
               cumulativeCases={cumulativeCases}
-              dailyDeaths={dailyDeaths}
+              dailyDeaths={deathsToday}
               cumulativeDeaths={cumulativeDeaths}
             />
             <SectionRowText
               areaName={"United Kingdom"}
-              dailyCases={dailyNationalCases}
-              cumulativeCases={cumulativeNationalCases}
-              dailyDeaths={dailyNationalDeaths}
-              cumulativeDeaths={cumulativeNationalDeaths}
+              dailyCases={nationalCasesToday}
+              cumulativeCases={nationalCumulativeCases}
+              dailyDeaths={nationalDeathsToday}
+              cumulativeDeaths={nationalCumulativeDeaths}
             />
           </View>
         </View>
@@ -160,7 +230,7 @@ const Dashboard = () => {
                 fontWeight: "bold",
               }}
             >
-              {currentCity}
+              {currCity}
             </Text>
             {/* Icon */}
             <View>
@@ -176,7 +246,7 @@ const Dashboard = () => {
                 }}
               />
               <Text style={{ alignSelf: "center", fontSize: 18 }}>
-                {currentCondition}
+                {currCondition}
               </Text>
             </View>
 
@@ -202,7 +272,7 @@ const Dashboard = () => {
                 }}
               >
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {Math.floor(currentTemperature)}°
+                  {Math.floor(currT)}°
                 </Text>
                 <Text>Temperature</Text>
                 <Text>(°C)</Text>
@@ -220,7 +290,7 @@ const Dashboard = () => {
                 }}
               >
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {Math.ceil(currentFeelsLike)}°
+                  {Math.ceil(currFeelLikeTemp)}°
                 </Text>
                 <Text>Feels like</Text>
                 <Text>(°C)</Text>
@@ -238,7 +308,7 @@ const Dashboard = () => {
                 }}
               >
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {currentHumidity}
+                  {currHumidity}
                 </Text>
                 <Text>Humidity</Text>
                 <Text>(%)</Text>
@@ -257,7 +327,7 @@ const Dashboard = () => {
               >
                 {/* TODO: Make a new View as Component that simplifies this! Takes in params e.g. style and vars e.g. windspeed, so all views are same but no repetition*/}
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {currentWindSpeed}
+                  {currWindSpeed}
                 </Text>
                 <Text>Wind Speed</Text>
                 <Text>(m/s)</Text>

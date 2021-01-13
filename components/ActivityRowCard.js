@@ -28,9 +28,6 @@ const ActivityRowCard = ({
   let userLocation = myContext.weatherData[4];
   let currentRealFeelTemp = myContext.weatherData[1];
   let currentWeatherCondition = myContext.weatherData[3];
-
-  //FIXME: IF CHANGE DETAILS IN USER SCREEN, CHANGE IS NOT HAPPENING STRAIGHT AWAY IN ACTIVITIES LINE COLOUR, ONLY AFTER CLICKING ON EACH OR REFRESHES!!!
-
   let activityFeedback = "";
   let activityRiskLevel = null;
   let personalisedRiskLevel = null;
@@ -136,7 +133,6 @@ const ActivityRowCard = ({
     }
   }
 
-  //FIXME: CAN USE THIS TO REFRESH WHEN I CLICK ON ACTIVITIES???
   function calculateRiskLevel() {
     // Calculating final risk level by multiplying by the activity risk factor (1 low, 5 high)
     activityRiskLevel *= activityBaseRiskValue;
