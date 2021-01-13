@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, ImageBackground } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ImageBackground,
+  StyleSheet,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import MyModal from "./MyModal";
@@ -15,11 +21,11 @@ const ActivityRowCard = ({
   activityType,
   imagePath,
 }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   // Getting data from context
   const myContext = useContext(AppContext);
   console.log(myContext);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Getting APIs data
   let rollingRate100k = myContext.covidData[0];
@@ -30,12 +36,11 @@ const ActivityRowCard = ({
   let currentWeatherCondition = myContext.weatherData[3];
   let activityFeedback = "";
   let activityRiskLevel = null;
-  let personalisedRiskLevel = null;
   let personalisedRiskLevelFactors = null;
 
   /**
    * Function that checks wether currently is bad weather or not based on the Weather API
-   * @param {} currentCondition - Current weather condition
+   * @param {boolean} currentCondition - Current weather condition
    */
   function isBadWeather(currentCondition) {
     if (
@@ -49,7 +54,7 @@ const ActivityRowCard = ({
 
   /**
    * Function that returns wether is currently a very low Real Feel temperature
-   * @param {} currentRealFeelTemp - Temperature under which is returned true
+   * @param {boolean} currentRealFeelTemp - Temperature under which is considered very low temperature
    */
   function isVeryLowTemp(currentRealFeelTemp) {
     if (currentRealFeelTemp <= 3) {
@@ -66,22 +71,11 @@ const ActivityRowCard = ({
     return month >= 5 && month <= 7;
   }
 
-  //TODO: //FIXME: OLD ONE
-  // function addCovidWeights(rollingRate100k) {
-  //   // Adding covid weights based on covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
-  // if (rollingRate100k < 150) {
-  //   activityRiskLevel = constants.weights.COVID_LOW_WEIGHT;
-  // } else if (rollingRate100k < 350) {
-  //   activityRiskLevel = constants.weights.COVID_MODERATE_LOW_WEIGHT;
-  // } else if (rollingRate100k < 600) {
-  //   activityRiskLevel = constants.weights.COVID_MODERATE_WEIGHT;
-  // } else if (rollingRate100k < 800) {
-  //   activityRiskLevel = constants.weights.COVID_MODERATE_HIGH_WEIGHT;
-  // } else if (rollingRate100k >= 800) {
-  //   activityRiskLevel = constants.weights.COVID_HIGH_WEIGHT;
-  // }
-  // }
-
+  /**
+   * Function that adds the covid weights based on the covid status for the requested area the user is in
+   * @param {number} rollingRate100k - The rolling rate per 100k people
+   * @param {string} weights - Either the normal weights or personalisedWeights
+   */
   function addCovidWeights(rollingRate100k, weights) {
     // Adding covid weights based on covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
     if (weights === "weights") {
@@ -99,49 +93,46 @@ const ActivityRowCard = ({
     } else {
       if (rollingRate100k < 150) {
         activityRiskLevel = constants.personalisedWeights.PCOVID_LOW;
-        personalisedRiskLevel = constants.personalisedWeights.PCOVID_LOW;
       } else if (rollingRate100k < 350) {
         activityRiskLevel = constants.personalisedWeights.PCOVID_MODERATE_LOW;
-        personalisedRiskLevel =
-          constants.personalisedWeights.PCOVID_MODERATE_LOW;
       } else if (rollingRate100k < 600) {
         activityRiskLevel = constants.personalisedWeights.PCOVID_MODERATE;
-        personalisedRiskLevel = constants.personalisedWeights.PCOVID_MODERATE;
       } else if (rollingRate100k < 800) {
         activityRiskLevel = constants.personalisedWeights.PCOVID_MODERATE_HIGH;
-        personalisedRiskLevel =
-          constants.personalisedWeights.PCOVID_MODERATE_HIGH;
       } else if (rollingRate100k >= 800) {
         activityRiskLevel = constants.personalisedWeights.PCOVID_HIGH;
-        personalisedRiskLevel = constants.personalisedWeights.PCOVID_HIGH;
       }
     }
   }
 
+  /**
+   * Function that adds the age weights
+   * @param {number} userAge
+   */
   function addAgeWeight(userAge) {
-    // Adding age weight
     if (userAge >= 65) {
       activityRiskLevel += constants.weights.USER_AGE_WEIGHT;
     }
   }
 
+  /**
+   * Function that adds extra weights if the user has any underlying health conditions
+   * @param {boolean} userUnderlyingHealthConditions
+   */
   function addUnderlyingHealthCondWeight(userUnderlyingHealthConditions) {
-    // Adding user underlying health conditions weight
     if (userUnderlyingHealthConditions) {
       activityRiskLevel +=
         constants.weights.USER_UNDERLYING_HEALTH_CONDITION_WEIGHT;
     }
   }
 
-  function calculateRiskLevel() {
-    // Calculating final risk level by multiplying by the activity risk factor (1 low, 5 high)
-    activityRiskLevel *= activityBaseRiskValue;
-    //console.log(activityRiskLevel);
-  }
-
+  /**
+   * Function that builds up the feedback sentence based on the risk level of the activity
+   * @param {boolean} isPersonalised
+   */
   function addFeedbackFromRiskLevel(isPersonalised) {
     if (isPersonalised) {
-      // Adding activity feedback based on risk level
+      // Adding feedback for the personalised user activity
       if (personalisedRiskLevelFactors <= 20) {
         activityFeedback = `According to the choices made, this activity ${constants.sentences.LOW_RISK_FORMAT} based on government covid data at the moment.`;
       } else if (personalisedRiskLevelFactors <= 40) {
@@ -154,7 +145,7 @@ const ActivityRowCard = ({
         activityFeedback = `According to the choices made, this activity ${constants.sentences.HIGH_RISK_FORMAT}. ${constants.sentences.AVOID_ACTIVITY}`;
       }
     } else {
-      // Adding activity feedback based on risk level
+      // Adding normal activity feedback
       if (activityRiskLevel <= 20) {
         activityFeedback = `${activityName} ${constants.sentences.LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
       } else if (activityRiskLevel <= 40) {
@@ -169,13 +160,15 @@ const ActivityRowCard = ({
     }
   }
 
+  /**
+   * Function that offers additional hints to the user such as
+   * weather status, unrelated to covid risk.
+   */
   function offerHints() {
-    // Offering additional hints that may be useful based on weather conditions (unrelated to covid)
     if (activityType === "outdoor") {
       if (activityRiskLevel > 50) {
         activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_LOW}.`;
       }
-
       if (isSummerSeason()) {
         activityFeedback = `${activityFeedback} ${constants.sentences.SUMMER_SEASON} `;
       }
@@ -191,6 +184,7 @@ const ActivityRowCard = ({
       activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_HIGH}.`;
     }
   }
+
   function buildFeedback() {
     //FIXME: THIS IS FOR DEMO ONLY TESTING WITHOUT APIs
     //let rollingRate100k = 900; // ideally from API
@@ -200,12 +194,11 @@ const ActivityRowCard = ({
     addCovidWeights(rollingRate100k, "weights");
     addAgeWeight(userAge);
     addUnderlyingHealthCondWeight(userUnderlyingHealthConditions);
-    calculateRiskLevel();
+    activityRiskLevel *= activityBaseRiskValue;
     addFeedbackFromRiskLevel(false);
     offerHints();
   }
 
-  // Building the feedback to the user
   buildFeedback();
 
   function provideUserSpecificActivityFeedback(
@@ -216,31 +209,17 @@ const ActivityRowCard = ({
     activityType,
     activityTimeExecution
   ) {
-    console.log(
-      userAgeBand,
-      typeof userAgeBand,
-      userUnderlyingHealthCond,
-      typeof userUnderlyingHealthCond,
-      involvesOtherPeople,
-      typeof involvesOtherPeople,
-      timeSpentOnActivity,
-      typeof timeSpentOnActivity,
-      activityType,
-      typeof activityType,
-      activityTimeExecution,
-      typeof activityTimeExecution
-    );
-
-    // set feedback and activity risk level to "", null
+    // Initialise vars
     activityFeedback = "";
     activityRiskLevel = null;
     personalisedRiskLevelFactors = null;
     let riskLabel = null;
+    let personalisedActivityData = [];
 
-    // Do covid weights, change main method
+    // Add covid weights
     addCovidWeights(rollingRate100k, "personalisedWeights");
 
-    // do age weights
+    // Add age weights
     if (userAgeBand === 0) {
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.PUSER_AGE_LOW;
@@ -251,21 +230,20 @@ const ActivityRowCard = ({
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.PUSER_AGE_HIGH;
     }
-    console.log("LOL: " + personalisedRiskLevelFactors);
 
-    // UHC
+    // Add underlying health conditions weights
     if (userUnderlyingHealthCond) {
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.PUSER_UNDERLYING_HEALTH_CONDITION;
     }
 
-    // add inlv inter with other ppl weight
+    // Add other people involvment weights
     if (involvesOtherPeople) {
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.POTHER_PEOPLE_INTERACTION;
     }
 
-    // add time spent on act weight
+    // Add time spent on activity weights
     if (timeSpentOnActivity === 0) {
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.PTIME_SPENT_LOW;
@@ -277,7 +255,7 @@ const ActivityRowCard = ({
         constants.personalisedWeights.PTIME_SPENT_HIGH;
     }
 
-    // add type act weights
+    // Add activity type weights
     if (activityType === "indoor") {
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.PACTIVITY_INDOOR;
@@ -286,7 +264,7 @@ const ActivityRowCard = ({
         constants.personalisedWeights.PACTIVITY_OUTDOOR;
     }
 
-    // add act timing weight
+    // Add activity timing weights
     if (activityTimeExecution === "busy") {
       personalisedRiskLevelFactors +=
         constants.personalisedWeights.PEXECUTION_DURING_BUSY_TIMES;
@@ -295,12 +273,11 @@ const ActivityRowCard = ({
         constants.personalisedWeights.PEXECUTION_DURING_QUIET_TIMES;
     }
 
-    // calculate risk level
+    // Calculate risk level
     personalisedRiskLevelFactors *= activityRiskLevel;
     addFeedbackFromRiskLevel(true);
-    //console.log(activityFeedback);
-    //alert(personalisedRiskLevelFactors);
 
+    // Gather appropriate risk label
     if (personalisedRiskLevelFactors <= 20) {
       riskLabel = "Low risk";
     } else if (personalisedRiskLevelFactors <= 40) {
@@ -313,17 +290,16 @@ const ActivityRowCard = ({
       riskLabel = "High risk";
     }
 
-    let personalisedActivityData = [
+    personalisedActivityData = [
       Math.floor(personalisedRiskLevelFactors),
       activityFeedback,
       riskLabel,
     ];
-
     return personalisedActivityData;
   }
 
+  // Saving function into context as to be used from other files
   myContext.provideUserSpecificActivityFeedback = provideUserSpecificActivityFeedback;
-  console.log(myContext);
 
   return (
     <TouchableOpacity
@@ -331,6 +307,7 @@ const ActivityRowCard = ({
       underlayColor="#DDD"
       onPress={() => setModalVisible(true)}
     >
+      {/* Modal showing more details about the activity clicked on */}
       <MyModal
         modalVisible={modalVisible}
         activityRiskLabel={activityRiskLabel}
@@ -351,28 +328,11 @@ const ActivityRowCard = ({
         feedback={activityFeedback}
         closeModal={() => setModalVisible(false)}
       />
-      {/* This view renders each activity view */}
-      <View
-        style={{
-          //width: "80%",
-          marginTop: 5,
-          marginBottom: 5,
-          backgroundColor: "white",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          elevation: 6,
-        }}
-      >
-        {/* This view renders the activity image */}
-        <View
-          style={{
-            //width: "100%",
-            height: 180,
-            padding: 3,
-            overflow: "hidden",
-            //backgroundColor: "white",
-          }}
-        >
+
+      {/* This view renders the activity card */}
+      <View style={styles.activityCard}>
+        {/* Image view */}
+        <View style={styles.imageView}>
           <ImageBackground
             source={imagePath}
             style={{ width: "100%", height: "100%" }}
@@ -380,41 +340,21 @@ const ActivityRowCard = ({
         </View>
 
         {/* Renders activity name and its risk level */}
-        <View
-          style={{
-            backgroundColor: "white",
-            flexDirection: "column",
-            //backgroundColor:"pink",
-            width: "100%",
-            //padding: 10,
-          }}
-        >
-          <Text
-            style={{
-              //marginTop: 5,
-              fontWeight: "bold",
-              fontSize: 18,
-              alignSelf: "center",
-            }}
-          >
-            {activityName}
-          </Text>
-          <Text style={{ marginTop: 2, fontSize: 15, alignSelf: "center" }}>
-            {activityRiskLabel}
-          </Text>
+        <View style={styles.activityNameRiskView}>
+          <Text style={styles.activityName}>{activityName}</Text>
+          <Text style={styles.activityRiskLevel}>{activityRiskLabel}</Text>
 
           {/* Showing the right arrow on the card */}
-          <View style={{ position: "absolute", end: 5, top: 15 }}>
+          <View style={styles.rightArrowIcon}>
             <MaterialCommunityIcons
               style={{ alignSelf: "flex-end" }}
-              name="arrow-right" // or arrow-right-circle
+              name="arrow-right"
               color={"#595959"}
-              //onPress={() => alert("Opening activiy info")}
               size={24}
             />
           </View>
 
-          {/* Showing the bottom line indicating risk level as a colour TODO: maybe add gradients!*/}
+          {/* Showing the bottom line indicating risk level as a colour */}
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <RiskStatusRectangle
               statusColor={
@@ -439,5 +379,41 @@ const ActivityRowCard = ({
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  activityCard: {
+    marginTop: 5,
+    marginBottom: 5,
+    backgroundColor: "white",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    elevation: 6,
+  },
+  imageView: {
+    height: 180,
+    padding: 3,
+    overflow: "hidden",
+  },
+  activityNameRiskView: {
+    backgroundColor: "white",
+    flexDirection: "column",
+    width: "100%",
+  },
+  activityName: {
+    fontWeight: "bold",
+    fontSize: 18,
+    alignSelf: "center",
+  },
+  activityRiskLevel: {
+    marginTop: 2,
+    fontSize: 15,
+    alignSelf: "center",
+  },
+  rightArrowIcon: {
+    position: "absolute",
+    end: 5,
+    top: 15,
+  },
+});
 
 export default ActivityRowCard;
