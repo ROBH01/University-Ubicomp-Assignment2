@@ -39,9 +39,8 @@ const SearchBar = ({ searchValue, onSearch, deleteSearchValue }) => {
         maxLength={20}
         style={styles.input}
       />
-      {/* Icon that clears text input */}
-      <ClearInput />
 
+      <ClearInput />
       <ShowSearchIcon />
     </View>
   );
@@ -55,17 +54,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "60%",
-    //marginTop: 40,
     height: 35,
     alignSelf: "center",
-    //backgroundColor: "red",
-    //marginBottom: 10,
     elevation: 6,
   },
   input: {
     flex: 0.9,
     paddingHorizontal: 3,
-    //backgroundColor: "green",
     height: 35,
     padding: 5,
     fontSize: 15,

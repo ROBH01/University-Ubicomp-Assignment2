@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import CustomTextInput from "../components/CustomTextInput";
 import LabeledSwitch from "react-native-custom-switches/LabeledSwitch";
 import CustomButton from "../components/CustomButton";
@@ -14,7 +14,6 @@ const UserRegistration = ({
   title,
   subtitle,
   buttonName,
-
   newUserName,
   setNewUserName,
   newUserAge,
@@ -23,26 +22,14 @@ const UserRegistration = ({
   setNewUserUnderlyingHealthCond,
 }) => {
   return (
-    <View
-      style={{
-        backgroundColor: "lightgray",
-        flex: 1,
-        justifyContent: "center",
-      }}
-    >
-      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>
-        {title}
-      </Text>
-      <Text
-        style={{
-          alignSelf: "center",
-          fontSize: 16,
-          color: "black",
-          textAlign: "center",
-        }}
-      >
-        {subtitle}
-      </Text>
+    // Main view
+    <View style={styles.mainView}>
+      {/* Title */}
+      <Text style={styles.title}>{title}</Text>
+      {/* Subtitle */}
+      <Text style={styles.subtitle}>{subtitle}</Text>
+
+      {/* Name text input */}
       <CustomTextInput
         marginTop={20}
         height={30}
@@ -56,6 +43,7 @@ const UserRegistration = ({
         maxLength={16}
       />
 
+      {/* Age text input */}
       <CustomTextInput
         marginTop={20}
         height={30}
@@ -68,14 +56,9 @@ const UserRegistration = ({
         onChangeText={setNewUserAge}
         maxLength={3}
       />
-      <View
-        style={{
-          alignSelf: "center",
-          marginTop: 20,
-          alignItems: "center",
-          marginBottom: 20,
-        }}
-      >
+
+      {/* Underlying health condition view */}
+      <View style={styles.underlyingHealthConditionsView}>
         <Text style={{ color: "black", marginBottom: 10 }}>
           Do you have any underlying health conditions?
         </Text>
@@ -91,20 +74,41 @@ const UserRegistration = ({
           width={90}
         />
       </View>
-      <View style={{ height: 30, width: "100%", alignItems: "center" }}>
-        <CustomButton
-          name={buttonName}
-          textFontSize={18}
-          height={30}
-          width={"40%"}
-          disabled={
-            newUserName.length === 0 || newUserAge.length === 0 ? true : false
-          }
-          onPressOut={onCompleted}
-        />
-      </View>
+
+      {/* Button */}
+      <CustomButton
+        name={buttonName}
+        textFontSize={18}
+        height={30}
+        width={"40%"}
+        disabled={
+          newUserName.length === 0 || newUserAge.length === 0 ? true : false
+        }
+        onPressOut={onCompleted}
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainView: {
+    backgroundColor: "lightgray",
+    flex: 1,
+    justifyContent: "center",
+  },
+  title: { alignSelf: "center", fontSize: 24, color: "black" },
+  subtitle: {
+    alignSelf: "center",
+    fontSize: 16,
+    color: "black",
+    textAlign: "center",
+  },
+  underlyingHealthConditionsView: {
+    alignSelf: "center",
+    marginTop: 20,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+});
 
 export default UserRegistration;

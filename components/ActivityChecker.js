@@ -13,14 +13,7 @@ import MyModal from "./MyModal";
 import colors from "../assets/colors";
 
 // This is a custom modal, adapted to display the beach data when a beach is clicked
-const ActivityCheckerModal = ({
-  modalVisible,
-  closeModal,
-  riskStatusColor,
-  riskValue,
-  feedback,
-  activityRiskLabel,
-}) => {
+const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
   if (!modalVisible) return <View></View>;
 
   // Getting data from context

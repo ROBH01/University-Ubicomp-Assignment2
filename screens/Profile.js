@@ -6,6 +6,9 @@ import UserRegistration from "./UserRegistration";
 import AppContext from "../components/AppContext";
 import { useContext } from "react";
 import { AsyncStorageController } from "../APIs/AsyncStorage";
+import { useFocusEffect } from "@react-navigation/native";
+import getCurrentWeather from "../APIs/WeatherAPI";
+import * as Location from "expo-location";
 
 /** Profile screen displays the current information held about the user that
  * was typed in at the registration stage. It also allows editing it.
@@ -14,21 +17,20 @@ const Profile = () => {
   // Getting data from Context
   const myContext = useContext(AppContext);
 
-  const resetValues = () => {
-    setNewUserName("");
-    setNewUserAge("");
-  };
-
-  // console.log(myContext);
+  // Getting user data
   let currentUserName = myContext.userName;
   let currentUserAge = myContext.userAge;
   let currentUserUnderlyingHealthCond = myContext.userUnderlyingHealthCond;
+  const [currentUserLocation, setCurrentUserLocation] = useState(
+    myContext.weatherData[4]
+  );
 
   // Getting AsyncStorage keys
   let USER_NAME_KEY = myContext.USER_NAME_KEY;
   let USER_AGE_KEY = myContext.USER_AGE_KEY;
   let USER_CONDITION_KEY = myContext.USER_CONDITION_KEY;
 
+  // State vars used to obtain the new info from the user when information is edited
   const [newUserName, setNewUserName] = useState("");
   const [newUserAge, setNewUserAge] = useState("");
   const [
@@ -36,6 +38,25 @@ const Profile = () => {
     setNewUserUnderlyingHealthCond,
   ] = useState(false);
   const [showEditDetailsModal, SetShowEditDetailsModal] = useState(false);
+
+  // Used to update user Location to current one
+  useFocusEffect(
+    React.useCallback(() => {
+      updateLocation();
+    }, [])
+  );
+
+  /**
+   * Updates current user location with current one
+   */
+  async function updateLocation() {
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    let weatherData = await getCurrentWeather(
+      currentLocation.coords.latitude,
+      currentLocation.coords.longitude
+    );
+    setCurrentUserLocation(weatherData[4]);
+  }
 
   /**
    * This method updates the information about the user in the AsyncStorage
@@ -55,12 +76,21 @@ const Profile = () => {
     myContext.userAge = newUserAge;
     myContext.userUnderlyingHealthCond = newUserUnderlyingHealthCond;
 
-    // User feedback and dismiss modal
+    // User feedback and dismissing modal
     alert("Information successfully updated");
     SetShowEditDetailsModal(false);
   };
 
+  /**
+   * Resets values as to keep the Update button disabled when no text is typed in
+   */
+  const resetValues = () => {
+    setNewUserName("");
+    setNewUserAge("");
+  };
+
   return (
+    // Main view
     <View
       style={{
         flex: 1,
@@ -81,9 +111,7 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={currentUserName}
-        keyboardType={"default"}
-        maxLength={16}
+        placeholder={"Name: " + currentUserName}
         editable={false}
       />
 
@@ -95,9 +123,7 @@ const Profile = () => {
         backgroundColor={"white"}
         alignSelf={"center"}
         textAlign={"center"}
-        placeholder={currentUserAge}
-        keyboardType={"number-pad"}
-        maxLength={3}
+        placeholder={"Age: " + currentUserAge}
         editable={false}
       />
 
@@ -114,12 +140,22 @@ const Profile = () => {
             ? "With underlying health conditions"
             : "No underlying health conditions"
         }
-        keyboardType={"number-pad"}
-        maxLength={3}
         editable={false}
       />
 
-      {/* Change details button TODO: change colour of button */}
+      {/* Showing user current location */}
+      <CustomTextInput
+        marginTop={20}
+        height={30}
+        width={"60%"}
+        backgroundColor={"white"}
+        alignSelf={"center"}
+        textAlign={"center"}
+        placeholder={"Currently in " + currentUserLocation}
+        editable={false}
+      />
+
+      {/* Edit details */}
       <CustomButton
         name={"Edit details"}
         textFontSize={18}
@@ -139,7 +175,7 @@ const Profile = () => {
         presentationStyle={"fullScreen"}
         onShow={resetValues}
       >
-        {/* Getting and updating the new details using this component */}
+        {/* Getting new details from the user and updating existing ones */}
         <UserRegistration
           title={"Edit details"}
           subtitle={"Update your name, age and underlying health conditions"}
