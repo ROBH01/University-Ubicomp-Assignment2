@@ -1,8 +1,37 @@
 App references
 
 1. Pictures used:
-    Running: Nearest Beach, Available from: https://farm3.static.flickr.com/2837/9171412187_0b1fdf2da9_b.jpg [Accessed 02 November 2020]
-
+    Running: Jenny Hill, Available from: https://unsplash.com/photos/Io2Zgb3_kdk [Accessed 11 January 2021]
+    Cycling: Marie Westphal, Available from: https://unsplash.com/photos/LIdAmXo7eqA [Accessed 11 January 2021]
+    Horse riding: Thomas Peham, Available from: https://unsplash.com/photos/By4tbeH0AUE [Accessed 11 January 2021]
+    Indoor swimming: Brian Matangelo, Available from: https://unsplash.com/photos/6JtmTLV_Nwg [Accessed 11 January 2021]
+    Snowboarding: Bradley Dunn, Available from: https://unsplash.com/photos/9SGGun3iIig [Accessed 11 January 2021]
+    Fishing: Brady Rogers, Available from: https://unsplash.com/photos/ZGRB8TMT6zQ [Accessed 11 January 2021]
+    Going to the library: Jerry Wang, Available from: https://unsplash.com/photos/YHzplEePb8U [Accessed 11 January 2021]
+    Shopping groceries: Mehrad Vosoughi, Available from: https://unsplash.com/photos/SsKf1L6rWJk [Accessed 11 January 2021]
+    Mall shopping: Sunyu Kim, Available from: https://unsplash.com/photos/Rj6vvs8N4Qg [Accessed 11 January 2021]
+    Going to the cinema: Krists Luhaers, Available from: https://unsplash.com/photos/AtPWnYNDJnM [Accessed 11 January 2021]
+    Stargazing: Ryan Jacobson, Available from: https://unsplash.com/photos/0R_JdRQQVqw [Accessed 11 January 2021]
+    Exercising at the gym: Victor Freitas, Available from: https://unsplash.com/photos/hOuJYX2K5DA [Accessed 11 January 2021]
+    Restaurant collection: Sven Mieke, Available from: https://unsplash.com/photos/-aL5R0kbRHc [Accessed 11 January 2021]
+    Self-washing the car: Erik Mclean, Available from: https://unsplash.com/photos/JCzdrlqgdRM [Accessed 11 January 2021]
+    Movie drive in: Tim Mossholder, Available from: https://unsplash.com/photos/bJa_vJzwJTE [Accessed 11 January 2021]
+    Visiting GP: R O, Available from: https://unsplash.com/photos/FFA8yd4OynY [Accessed 11 January 2021]
+    Dining at a friend's house: Tristan Gassert, Available from: https://unsplash.com/photos/3yrXTH5y5Nw [Accessed 11 January 2021]
+    Working in-office: Campaign Creators, Available from: https://unsplash.com/photos/qCi_MzVODoU [Accessed 11 January 2021]
+    Going to the barbershop: Carlos Magno, Available from: https://unsplash.com/photos/s63RoVQ40w8 [Accessed 11 January 2021]
+    Travel by bus: Ant Rozetsky, Available from: https://unsplash.com/photos/lr9vo8mNvrc [Accessed 11 January 2021]
+    Taking a taxi: JJ Ying, Available from: https://unsplash.com/photos/mMkWALJGXuY [Accessed 11 January 2021]
+    Eating at a buffet: Christian Chen, Available from: https://unsplash.com/photos/Aq0CkJgBKss [Accessed 11 January 2021]
+    Attending a large music concert: Hanna Tche, Available from: https://unsplash.com/photos/WT_IOIFSZfE [Accessed 11 January 2021]
+    Going to the pub: Amie Johnson, Available from: https://unsplash.com/photos/VJXLzQi5TlE [Accessed 11 January 2021]
+    Eating inside a restaurant: Spencer Davis, Available from: https://unsplash.com/photos/LXKBzkKN9ZA [Accessed 11 January 2021]
+    Attending a wedding: Shardayyy Photography, Available from: https://unsplash.com/photos/fJzmPe-a0eU [Accessed 11 January 2021]
+    Going to a busy beach: Dan Gold, Available from: https://unsplash.com/photos/_mmd-LgBPrs [Accessed 11 January 2021]
+    Playing group games: Joseph Pearson, Available from: https://unsplash.com/photos/OWfXfRhJMYI [Accessed 11 January 2021]
+    Camping with the partner: Scott Goodwill, Available from:  [Accessed 11 January 2021]
+    Going to a sports stadium: Mick Haupt, Available from: https://unsplash.com/photos/4h8qYFgbn-g [Accessed 11 January 2021]
+     
 
 2. Guidance and examples:
     Modal, Available from: https://reactnative.dev/docs/modal
