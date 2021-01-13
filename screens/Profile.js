@@ -9,6 +9,7 @@ import { AsyncStorageController } from "../APIs/AsyncStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import getCurrentWeather from "../APIs/WeatherAPI";
 import * as Location from "expo-location";
+import colors from "../assets/colors";
 
 /** Profile screen displays the current information held about the user that
  * was typed in at the registration stage. It also allows editing it.
@@ -21,9 +22,7 @@ const Profile = () => {
   let currentUserName = myContext.userName;
   let currentUserAge = myContext.userAge;
   let currentUserUnderlyingHealthCond = myContext.userUnderlyingHealthCond;
-  const [currentUserLocation, setCurrentUserLocation] = useState(
-    myContext.weatherData[4]
-  );
+  const [currentUserLocation, setCurrentUserLocation] = useState(myContext.weatherData[4]);
 
   // Getting AsyncStorage keys
   let USER_NAME_KEY = myContext.USER_NAME_KEY;
@@ -33,10 +32,7 @@ const Profile = () => {
   // State vars used to obtain the new info from the user when information is edited
   const [newUserName, setNewUserName] = useState("");
   const [newUserAge, setNewUserAge] = useState("");
-  const [
-    newUserUnderlyingHealthCond,
-    setNewUserUnderlyingHealthCond,
-  ] = useState(false);
+  const [newUserUnderlyingHealthCond, setNewUserUnderlyingHealthCond] = useState(false);
   const [showEditDetailsModal, SetShowEditDetailsModal] = useState(false);
 
   // Used to update user Location to current one
@@ -47,14 +43,11 @@ const Profile = () => {
   );
 
   /**
-   * Updates current user location with current one
+   * Updates user location with current one
    */
   async function updateLocation() {
     let currentLocation = await Location.getCurrentPositionAsync({});
-    let weatherData = await getCurrentWeather(
-      currentLocation.coords.latitude,
-      currentLocation.coords.longitude
-    );
+    let weatherData = await getCurrentWeather(currentLocation.coords.latitude, currentLocation.coords.longitude);
     setCurrentUserLocation(weatherData[4]);
   }
 
@@ -66,10 +59,7 @@ const Profile = () => {
     // Updating AsyncStorage
     AsyncStorageController.saveData(USER_NAME_KEY, newUserName);
     AsyncStorageController.saveData(USER_AGE_KEY, newUserAge);
-    AsyncStorageController.saveData(
-      USER_CONDITION_KEY,
-      newUserUnderlyingHealthCond + ""
-    );
+    AsyncStorageController.saveData(USER_CONDITION_KEY, newUserUnderlyingHealthCond + "");
 
     // Updating Context
     myContext.userName = newUserName;
@@ -96,19 +86,17 @@ const Profile = () => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "lightgray",
+        backgroundColor: colors.lightGray,
       }}
     >
-      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>
-        My details
-      </Text>
+      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>My details</Text>
 
       {/* Showing name */}
       <CustomTextInput
         marginTop={20}
         height={30}
         width={"60%"}
-        backgroundColor={"white"}
+        backgroundColor={colors.white}
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={"Name: " + currentUserName}
@@ -120,7 +108,7 @@ const Profile = () => {
         marginTop={20}
         height={30}
         width={"60%"}
-        backgroundColor={"white"}
+        backgroundColor={colors.white}
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={"Age: " + currentUserAge}
@@ -132,13 +120,11 @@ const Profile = () => {
         marginTop={20}
         height={30}
         width={"60%"}
-        backgroundColor={"white"}
+        backgroundColor={colors.white}
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={
-          currentUserUnderlyingHealthCond
-            ? "With underlying health conditions"
-            : "No underlying health conditions"
+          currentUserUnderlyingHealthCond ? "With underlying health conditions" : "No underlying health conditions"
         }
         editable={false}
       />
@@ -148,7 +134,7 @@ const Profile = () => {
         marginTop={20}
         height={30}
         width={"60%"}
-        backgroundColor={"white"}
+        backgroundColor={colors.white}
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={"Currently in " + currentUserLocation}
@@ -186,9 +172,7 @@ const Profile = () => {
           newUserAge={newUserAge}
           setNewUserAge={(age) => setNewUserAge(age)}
           newUserUnderlyingHealthCond={newUserUnderlyingHealthCond}
-          setNewUserUnderlyingHealthCond={(underlyingCondition) =>
-            setNewUserUnderlyingHealthCond(underlyingCondition)
-          }
+          setNewUserUnderlyingHealthCond={(underlyingCondition) => setNewUserUnderlyingHealthCond(underlyingCondition)}
         />
       </Modal>
     </View>

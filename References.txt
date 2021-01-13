@@ -33,7 +33,13 @@ App references
     Going to a sports stadium: Mick Haupt, Available from: https://unsplash.com/photos/4h8qYFgbn-g [Accessed 11 January 2021]
      
 
-2. Guidance and examples:
+2. Guidance, examples and libraries used:
     Modal, Available from: https://reactnative.dev/docs/modal
     Color Reference, Available from: https://reactnative.dev/docs/colors
+    Context, Available from: https://reactjs.org/docs/context.html
+    React Native Custom Switches, Available from: https://www.npmjs.com/package/react-native-custom-switches/v/1.0.4
+    React Native Picker, Available from: https://github.com/react-native-picker/picker
+    Covid-19 API, Available from: https://coronavirus.data.gov.uk/details/developers-guide
+    PostCodes API, Available from: https://postcodes.io/docs
+    Open Weather API, Available from: https://openweathermap.org/current
     

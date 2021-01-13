@@ -7,8 +7,8 @@ const OPEN_WEATHER_KEY = "***REMOVED***";
 
 /**
  * Method used to obtain the weather data needed by using user's location
- * @param {} latitude
- * @param {} longitude
+ * @param {number} latitude
+ * @param {number} longitude
  */
 async function getCurrentWeather(latitude, longitude) {
   try {
@@ -16,24 +16,22 @@ async function getCurrentWeather(latitude, longitude) {
       `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${OPEN_WEATHER_KEY}&units=metric`
     );
     let data = await response.json();
-    console.log(data);
+
+    // Getting weather information for the user location
     let currentTemperature = data.main.temp;
     let currentRealFeelTemp = data.main.feels_like;
     let currentHumidity = data.main.humidity;
-    let town = data.name;
+    let currentTown = data.name;
     let currentCondition = data.weather[0].main;
     let currentCondIcon = data.weather[0].icon;
     let currentWindSpeed = data.wind.speed;
-    //console.log(Math.floor(temp));
-    //console.log(cond);
 
-    // saving all into an array
     let weatherData = [
       currentTemperature,
       currentRealFeelTemp,
       currentHumidity,
       currentCondition,
-      town,
+      currentTown,
       currentCondIcon,
       currentWindSpeed,
     ];

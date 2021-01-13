@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import CustomTextInput from "../components/CustomTextInput";
 import LabeledSwitch from "react-native-custom-switches/LabeledSwitch";
 import CustomButton from "../components/CustomButton";
+import colors from "../assets/colors";
 
 /**
  * This component is used to gather information from the user
@@ -34,7 +35,7 @@ const UserRegistration = ({
         marginTop={20}
         height={30}
         width={"60%"}
-        backgroundColor={"white"}
+        backgroundColor={colors.white}
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={"Enter name"}
@@ -48,7 +49,7 @@ const UserRegistration = ({
         marginTop={20}
         height={30}
         width={"60%"}
-        backgroundColor={"white"}
+        backgroundColor={colors.white}
         alignSelf={"center"}
         textAlign={"center"}
         placeholder={"Enter age"}
@@ -59,16 +60,14 @@ const UserRegistration = ({
 
       {/* Underlying health condition view */}
       <View style={styles.underlyingHealthConditionsView}>
-        <Text style={{ color: "black", marginBottom: 10 }}>
-          Do you have any underlying health conditions?
-        </Text>
+        <Text style={{ color: "black", marginBottom: 10 }}>Do you have any underlying health conditions?</Text>
 
         {/* Label switch used to get the underlying health condition */}
         <LabeledSwitch
           value={newUserUnderlyingHealthCond}
           onChange={setNewUserUnderlyingHealthCond}
-          disabledColor="#e63111"
-          enabledColor="#008000"
+          disabledColor={colors.darkRed}
+          enabledColor={colors.lightGreen}
           disabledLabel="No"
           enabledLabel="Yes"
           width={90}
@@ -81,9 +80,7 @@ const UserRegistration = ({
         textFontSize={18}
         height={30}
         width={"40%"}
-        disabled={
-          newUserName.length === 0 || newUserAge.length === 0 ? true : false
-        }
+        disabled={newUserName.length === 0 || newUserAge.length === 0 ? true : false}
         onPressOut={onCompleted}
       />
     </View>
@@ -92,7 +89,7 @@ const UserRegistration = ({
 
 const styles = StyleSheet.create({
   mainView: {
-    backgroundColor: "lightgray",
+    backgroundColor: colors.lightGray,
     flex: 1,
     justifyContent: "center",
   },

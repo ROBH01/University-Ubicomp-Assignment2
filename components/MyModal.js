@@ -1,19 +1,15 @@
-//start working on a custom modal
-
 import React from "react";
 import { Text, View, Modal, StyleSheet, Button } from "react-native";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import CustomButton from "./CustomButton";
+import colors from "../assets/colors";
 
-// This is a custom modal, adapted to display the beach data when a beach is clicked
-const MyModal = ({
-  modalVisible,
-  closeModal,
-  riskStatusColor,
-  riskValue,
-  feedback,
-  activityRiskLabel,
-}) => {
+/**
+ * This is a custom modal that displays detailed info
+ * about each activity when one is pressed
+ * @param {*} param0
+ */
+const MyModal = ({ modalVisible, closeModal, riskStatusColor, riskValue, feedback, activityRiskLabel }) => {
   if (!modalVisible) return <View></View>;
 
   return (
@@ -37,11 +33,7 @@ const MyModal = ({
 
         {/* Progress bar */}
         <View style={styles.progressBar}>
-          <RiskStatusRectangle
-            statusColor={riskStatusColor}
-            width={riskValue + "%"}
-            height={25}
-          />
+          <RiskStatusRectangle statusColor={riskStatusColor} width={riskValue + "%"} height={25} />
         </View>
 
         {/* Activity risk lavel label */}
@@ -72,7 +64,7 @@ const MyModal = ({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: "#e6e6e6",
+    backgroundColor: colors.appMainBackground,
   },
   title: {
     fontSize: 24,
@@ -97,7 +89,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 25,
     alignSelf: "center",
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     marginTop: 5,
   },
   activityRiskLevel: {

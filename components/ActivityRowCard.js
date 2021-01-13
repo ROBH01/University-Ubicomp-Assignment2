@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ImageBackground,
-  StyleSheet,
-} from "react-native";
+import { Text, View, TouchableOpacity, ImageBackground, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import MyModal from "./MyModal";
@@ -14,40 +8,29 @@ import constants from "./Constants";
 import AppContext from "./AppContext";
 import { useContext } from "react";
 
-const ActivityRowCard = ({
-  activityName,
-  activityRiskLabel,
-  activityBaseRiskValue,
-  activityType,
-  imagePath,
-}) => {
+const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValue, activityType, imagePath }) => {
   // Getting data from context
   const myContext = useContext(AppContext);
-  console.log(myContext);
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   // Getting APIs data
   let rollingRate100k = myContext.covidData[0];
   let userAge = myContext.userAge;
-  let userUnderlyingHealthConditions = myContext.userUnderlyingHealthCond;
+  let userUnderlyingHealthCond = myContext.userUnderlyingHealthCond;
   let userLocation = myContext.weatherData[4];
-  let currentRealFeelTemp = myContext.weatherData[1];
-  let currentWeatherCondition = myContext.weatherData[3];
+  let realFeelTemp = myContext.weatherData[1];
+  let weatherCondition = myContext.weatherData[3];
+
   let activityFeedback = "";
   let activityRiskLevel = null;
   let personalisedRiskLevelFactors = null;
+  const [modalVisible, setModalVisible] = useState(false);
 
   /**
    * Function that checks wether currently is bad weather or not based on the Weather API
    * @param {boolean} currentCondition - Current weather condition
    */
   function isBadWeather(currentCondition) {
-    if (
-      currentCondition === "Thunderstorm" ||
-      currentCondition === "Rain" ||
-      currentCondition === "Snow"
-    ) {
+    if (currentCondition === "Thunderstorm" || currentCondition === "Rain" || currentCondition === "Snow") {
       return true;
     }
   }
@@ -72,23 +55,24 @@ const ActivityRowCard = ({
   }
 
   /**
-   * Function that adds the covid weights based on the covid status for the requested area the user is in
+   * Function that adds the covid weights based on the covid status for the
+   * requested area the user is in. Adjusted from the following utla rates:
+   * https://coronavirus.data.gov.uk/details/interactive-map)
    * @param {number} rollingRate100k - The rolling rate per 100k people
    * @param {string} weights - Either the normal weights or personalisedWeights
    */
   function addCovidWeights(rollingRate100k, weights) {
-    // Adding covid weights based on covid status of the area (utla rates taken and adjusted from: https://coronavirus.data.gov.uk/details/interactive-map)
     if (weights === "weights") {
       if (rollingRate100k < 150) {
-        activityRiskLevel = constants.weights.COVID_LOW_WEIGHT;
+        activityRiskLevel = constants.weights.COVID_LOW;
       } else if (rollingRate100k < 350) {
-        activityRiskLevel = constants.weights.COVID_MODERATE_LOW_WEIGHT;
+        activityRiskLevel = constants.weights.COVID_MODERATE_LOW;
       } else if (rollingRate100k < 600) {
-        activityRiskLevel = constants.weights.COVID_MODERATE_WEIGHT;
+        activityRiskLevel = constants.weights.COVID_MODERATE;
       } else if (rollingRate100k < 800) {
-        activityRiskLevel = constants.weights.COVID_MODERATE_HIGH_WEIGHT;
+        activityRiskLevel = constants.weights.COVID_MODERATE_HIGH;
       } else if (rollingRate100k >= 800) {
-        activityRiskLevel = constants.weights.COVID_HIGH_WEIGHT;
+        activityRiskLevel = constants.weights.COVID_HIGH;
       }
     } else {
       if (rollingRate100k < 150) {
@@ -111,7 +95,7 @@ const ActivityRowCard = ({
    */
   function addAgeWeight(userAge) {
     if (userAge >= 65) {
-      activityRiskLevel += constants.weights.USER_AGE_WEIGHT;
+      activityRiskLevel += constants.weights.USER_AGE;
     }
   }
 
@@ -121,41 +105,40 @@ const ActivityRowCard = ({
    */
   function addUnderlyingHealthCondWeight(userUnderlyingHealthConditions) {
     if (userUnderlyingHealthConditions) {
-      activityRiskLevel +=
-        constants.weights.USER_UNDERLYING_HEALTH_CONDITION_WEIGHT;
+      activityRiskLevel += constants.weights.USER_UNDERLYING_HEALTH_CONDITION;
     }
   }
 
   /**
    * Function that builds up the feedback sentence based on the risk level of the activity
-   * @param {boolean} isPersonalised
+   * @param {boolean} isPersonalised - whether the activity is the personalised one
    */
   function addFeedbackFromRiskLevel(isPersonalised) {
     if (isPersonalised) {
       // Adding feedback for the personalised user activity
       if (personalisedRiskLevelFactors <= 20) {
-        activityFeedback = `According to the choices made, this activity ${constants.sentences.LOW_RISK_FORMAT} based on government covid data at the moment.`;
+        activityFeedback = `According to the choices made, this activity ${constants.sentenceFormats.LOW_RISK} based on government covid data at the moment.`;
       } else if (personalisedRiskLevelFactors <= 40) {
-        activityFeedback = `According to the choices made, this activity ${constants.sentences.MODERATE_LOW_RISK_FORMAT} based on government covid data at the moment.`;
+        activityFeedback = `According to the choices made, this activity ${constants.sentenceFormats.MODERATE_LOW_RISK} based on government covid data at the moment.`;
       } else if (personalisedRiskLevelFactors <= 60) {
-        activityFeedback = `According to the choices made, this activity ${constants.sentences.MODERATE_RISK_FORMAT} based on government covid data at the moment. ${constants.sentences.SOCIAL_DISTANCING_LOW}.`;
+        activityFeedback = `According to the choices made, this activity ${constants.sentenceFormats.MODERATE_RISK} based on government covid data at the moment. ${constants.sentenceFormats.SOCIAL_DISTANCING_LOW}.`;
       } else if (personalisedRiskLevelFactors <= 80) {
-        activityFeedback = `According to the choices made, this activity ${constants.sentences.MODERATE_HIGH_RISK_FORMAT} based on government covid data at the moment ${constants.sentences.SOCIAL_DISTANCING_LOW}.`;
+        activityFeedback = `According to the choices made, this activity ${constants.sentenceFormats.MODERATE_HIGH_RISK} based on government covid data at the moment ${constants.sentenceFormats.SOCIAL_DISTANCING_LOW}.`;
       } else if (personalisedRiskLevelFactors > 80) {
-        activityFeedback = `According to the choices made, this activity ${constants.sentences.HIGH_RISK_FORMAT}. ${constants.sentences.AVOID_ACTIVITY}`;
+        activityFeedback = `According to the choices made, this activity ${constants.sentenceFormats.HIGH_RISK}. ${constants.sentenceFormats.AVOID_ACTIVITY}`;
       }
     } else {
       // Adding normal activity feedback
       if (activityRiskLevel <= 20) {
-        activityFeedback = `${activityName} ${constants.sentences.LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
+        activityFeedback = `${activityName} ${constants.sentenceFormats.LOW_RISK} in ${userLocation} according to the government covid data at the moment.`;
       } else if (activityRiskLevel <= 40) {
-        activityFeedback = `${activityName} ${constants.sentences.MODERATE_LOW_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
+        activityFeedback = `${activityName} ${constants.sentenceFormats.MODERATE_LOW_RISK} in ${userLocation} according to the government covid data at the moment.`;
       } else if (activityRiskLevel <= 60) {
-        activityFeedback = `${activityName} ${constants.sentences.MODERATE_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
+        activityFeedback = `${activityName} ${constants.sentenceFormats.MODERATE_RISK} in ${userLocation} according to the government covid data at the moment.`;
       } else if (activityRiskLevel <= 80) {
-        activityFeedback = `${activityName} ${constants.sentences.MODERATE_HIGH_RISK_FORMAT} in ${userLocation} according to the government covid data at the moment.`;
+        activityFeedback = `${activityName} ${constants.sentenceFormats.MODERATE_HIGH_RISK} in ${userLocation} according to the government covid data at the moment.`;
       } else if (activityRiskLevel > 80) {
-        activityFeedback = `${activityName} ${constants.sentences.HIGH_RISK_FORMAT} in ${userLocation}. ${constants.sentences.AVOID_ACTIVITY}`;
+        activityFeedback = `${activityName} ${constants.sentenceFormats.HIGH_RISK} in ${userLocation}. ${constants.sentenceFormats.AVOID_ACTIVITY}`;
       }
     }
   }
@@ -167,41 +150,49 @@ const ActivityRowCard = ({
   function offerHints() {
     if (activityType === "outdoor") {
       if (activityRiskLevel > 50) {
-        activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_LOW}.`;
+        activityFeedback = `${activityFeedback} ${constants.sentenceFormats.SOCIAL_DISTANCING_LOW}.`;
       }
       if (isSummerSeason()) {
-        activityFeedback = `${activityFeedback} ${constants.sentences.SUMMER_SEASON} `;
+        activityFeedback = `${activityFeedback} ${constants.sentenceFormats.SUMMER_SEASON} `;
       }
-      if (isBadWeather(currentWeatherCondition)) {
-        activityFeedback = `${activityFeedback} ${constants.sentences.BAD_WEATHER_CURRENT} in ${userLocation} is ${currentWeatherCondition}.`;
+      if (isBadWeather(weatherCondition)) {
+        activityFeedback = `${activityFeedback} ${constants.sentenceFormats.BAD_WEATHER} in ${userLocation} is ${weatherCondition}.`;
       }
-      if (isVeryLowTemp(currentRealFeelTemp)) {
+      if (isVeryLowTemp(realFeelTemp)) {
         activityFeedback = `${activityFeedback} ${
-          constants.sentences.VERY_LOW_TEMP
-        } ${userLocation} is ${Math.floor(currentRealFeelTemp)} °C.`;
+          constants.sentenceFormats.VERY_LOW_TEMP
+        } ${userLocation} is ${Math.floor(realFeelTemp)} °C.`;
       }
     } else {
-      activityFeedback = `${activityFeedback} ${constants.sentences.SOCIAL_DISTANCING_HIGH}.`;
+      activityFeedback = `${activityFeedback} ${constants.sentenceFormats.SOCIAL_DISTANCING_HIGH}.`;
     }
   }
 
+  /**
+   * Builds the overall feedbakc using the methods available
+   */
   function buildFeedback() {
-    //FIXME: THIS IS FOR DEMO ONLY TESTING WITHOUT APIs
-    //let rollingRate100k = 900; // ideally from API
-    // let userAge = 88; // from APP storage
-    //let userUnderlyingHealthConditions = true;
-
     addCovidWeights(rollingRate100k, "weights");
     addAgeWeight(userAge);
-    addUnderlyingHealthCondWeight(userUnderlyingHealthConditions);
-    activityRiskLevel *= activityBaseRiskValue;
+    addUnderlyingHealthCondWeight(userUnderlyingHealthCond);
+    activityRiskLevel *= activityBaseRiskValue; // calculating risk level as percentage
     addFeedbackFromRiskLevel(false);
     offerHints();
   }
 
   buildFeedback();
 
-  function provideUserSpecificActivityFeedback(
+  /**
+   * Builds feedback using incoming parameters and returns Risk Level,
+   * Activity feedback and Risk label
+   * @param {number} userAgeBand
+   * @param {boolean} userUnderlyingHealthCond
+   * @param {boolean} involvesOtherPeople
+   * @param {number} timeSpentOnActivity
+   * @param {string} activityType
+   * @param {string} activityTimeExecution
+   */
+  function getFeedbackOnSpecificActivity(
     userAgeBand,
     userUnderlyingHealthCond,
     involvesOtherPeople,
@@ -221,56 +212,44 @@ const ActivityRowCard = ({
 
     // Add age weights
     if (userAgeBand === 0) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PUSER_AGE_LOW;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PUSER_AGE_LOW;
     } else if (userAgeBand === 1) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PUSER_AGE_MEDIUM;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PUSER_AGE_MEDIUM;
     } else if (userAgeBand === 2) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PUSER_AGE_HIGH;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PUSER_AGE_HIGH;
     }
 
     // Add underlying health conditions weights
     if (userUnderlyingHealthCond) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PUSER_UNDERLYING_HEALTH_CONDITION;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PUSER_UNDERLYING_HEALTH_CONDITION;
     }
 
     // Add other people involvment weights
     if (involvesOtherPeople) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.POTHER_PEOPLE_INTERACTION;
+      personalisedRiskLevelFactors += constants.personalisedWeights.POTHER_PEOPLE_INTERACTION;
     }
 
     // Add time spent on activity weights
     if (timeSpentOnActivity === 0) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PTIME_SPENT_LOW;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PTIME_SPENT_LOW;
     } else if (timeSpentOnActivity === 1) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PTIME_SPENT_MEDIUM;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PTIME_SPENT_MEDIUM;
     } else if (timeSpentOnActivity === 2) {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PTIME_SPENT_HIGH;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PTIME_SPENT_HIGH;
     }
 
     // Add activity type weights
     if (activityType === "indoor") {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PACTIVITY_INDOOR;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PACTIVITY_INDOOR;
     } else {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PACTIVITY_OUTDOOR;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PACTIVITY_OUTDOOR;
     }
 
     // Add activity timing weights
     if (activityTimeExecution === "busy") {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PEXECUTION_DURING_BUSY_TIMES;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PEXECUTION_DURING_BUSY_TIMES;
     } else {
-      personalisedRiskLevelFactors +=
-        constants.personalisedWeights.PEXECUTION_DURING_QUIET_TIMES;
+      personalisedRiskLevelFactors += constants.personalisedWeights.PEXECUTION_DURING_QUIET_TIMES;
     }
 
     // Calculate risk level
@@ -290,21 +269,17 @@ const ActivityRowCard = ({
       riskLabel = "High risk";
     }
 
-    personalisedActivityData = [
-      Math.floor(personalisedRiskLevelFactors),
-      activityFeedback,
-      riskLabel,
-    ];
+    personalisedActivityData = [Math.floor(personalisedRiskLevelFactors), activityFeedback, riskLabel];
     return personalisedActivityData;
   }
 
-  // Saving function into context as to be used from other files
-  myContext.provideUserSpecificActivityFeedback = provideUserSpecificActivityFeedback;
+  // Saving function in context as to be used from other files
+  myContext.getFeedbackOnSpecificActivity = getFeedbackOnSpecificActivity;
 
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      underlayColor="#DDD"
+      underlayColor={colors.appMainBackground}
       onPress={() => setModalVisible(true)}
     >
       {/* Modal showing more details about the activity clicked on */}
@@ -333,10 +308,7 @@ const ActivityRowCard = ({
       <View style={styles.activityCard}>
         {/* Image view */}
         <View style={styles.imageView}>
-          <ImageBackground
-            source={imagePath}
-            style={{ width: "100%", height: "100%" }}
-          ></ImageBackground>
+          <ImageBackground source={imagePath} style={{ width: "100%", height: "100%" }}></ImageBackground>
         </View>
 
         {/* Renders activity name and its risk level */}
@@ -349,7 +321,7 @@ const ActivityRowCard = ({
             <MaterialCommunityIcons
               style={{ alignSelf: "flex-end" }}
               name="arrow-right"
-              color={"#595959"}
+              color={colors.darkerGray}
               size={24}
             />
           </View>
@@ -384,7 +356,7 @@ const styles = StyleSheet.create({
   activityCard: {
     marginTop: 5,
     marginBottom: 5,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     flexDirection: "column",
     justifyContent: "flex-start",
     elevation: 6,
@@ -395,7 +367,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   activityNameRiskView: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     flexDirection: "column",
     width: "100%",
   },

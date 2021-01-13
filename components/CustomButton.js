@@ -1,16 +1,9 @@
 import React from "react";
 import { Text, Pressable } from "react-native";
+import colors from "../assets/colors";
 
 // This is a customised button that uses Pressable
-const CustomButton = ({
-  name,
-  height,
-  width,
-  disabled,
-  onPressOut,
-  textFontSize,
-  marginTop,
-}) => {
+const CustomButton = ({ name, height, width, disabled, onPressOut, textFontSize, marginTop }) => {
   let animationWidth = 2;
   return (
     <Pressable
@@ -18,7 +11,7 @@ const CustomButton = ({
       disabled={disabled}
       style={({ pressed }) => [
         {
-          backgroundColor: disabled ? "gray" : "#2196F3",
+          backgroundColor: disabled ? colors.gray : colors.lightBlue,
           height: height,
           width: pressed ? parseInt(width) - animationWidth + "%" : width,
           alignSelf: "center",
@@ -34,7 +27,7 @@ const CustomButton = ({
           height: "100%",
           textAlignVertical: "center",
           fontSize: textFontSize,
-          color: "white",
+          color: colors.white,
         }}
       >
         {name}
