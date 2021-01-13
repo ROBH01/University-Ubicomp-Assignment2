@@ -26,65 +26,31 @@ const MyModal = ({
     >
       {/* Modal container */}
       <View style={styles.modalContainer}>
-        {/* title */}
+        {/* Title */}
         <Text style={styles.title}>Covid risk level</Text>
 
-        {/* PROGRESS BAR */}
-        <View
-          style={{
-            height: 20,
-            width: "80%",
-            //backgroundColor: "pink",
-            alignSelf: "center",
-            marginTop: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>low</Text>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>high</Text>
+        {/* Progress bar labels */}
+        <View style={styles.progressBarLabelsView}>
+          <Text style={styles.progressBarLabels}>low</Text>
+          <Text style={styles.progressBarLabels}>high</Text>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            width: "80%",
-            height: 25,
-            alignSelf: "center",
-            backgroundColor: "white",
-            marginTop: 5,
-            //borderRadius: 15,
-          }}
-        >
+        {/* Progress bar */}
+        <View style={styles.progressBar}>
           <RiskStatusRectangle
             statusColor={riskStatusColor}
             width={riskValue + "%"}
             height={25}
           />
         </View>
-        <Text
-          style={{
-            fontWeight: "bold",
-            alignSelf: "center",
-            marginTop: 15,
-            fontSize: 16,
-            marginBottom: 10,
-          }}
-        >
+
+        {/* Activity risk lavel label */}
+        <Text style={styles.activityRiskLevel}>
           {activityRiskLabel} ({riskValue}%)
         </Text>
 
-        {/* Section text feedback about the activity with suggestions */}
-
-        <View
-          style={{
-            //height: 100, //TODO: remove after adding the text to let it self sizing
-            width: "90%",
-            alignSelf: "center",
-            marginTop: 20,
-            marginBottom: 20,
-          }}
-        >
+        {/* Feedback about the activity */}
+        <View style={styles.feedback}>
           <Text style={{ fontSize: 16 }}>{feedback}</Text>
         </View>
 
@@ -94,7 +60,7 @@ const MyModal = ({
           height={30}
           textFontSize={16}
           onPressOut={closeModal}
-          marginTop={10}
+          marginTop={5}
           width={"50%"}
           name={"CLOSE"}
         />
@@ -106,18 +72,6 @@ const MyModal = ({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    // paddingLeft: 10,
-    // paddingRight: 10,
-    // borderRadius: 15,
-    // marginTop: 120,
-    // marginLeft: 20,
-    // marginRight: 20,
-    //margin: 30,
-    // paddingTop: 5,
-    //height: "60%",
-    // paddingBottom: 5,
-    alignContent: "center",
-    //justifyContent: "space-between",
     backgroundColor: "#e6e6e6",
   },
   title: {
@@ -125,6 +79,39 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontWeight: "bold",
     alignSelf: "center",
+  },
+  progressBarLabelsView: {
+    height: 20,
+    width: "80%",
+    alignSelf: "center",
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  progressBarLabels: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  progressBar: {
+    flexDirection: "row",
+    width: "80%",
+    height: 25,
+    alignSelf: "center",
+    backgroundColor: "white",
+    marginTop: 5,
+  },
+  activityRiskLevel: {
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginTop: 15,
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  feedback: {
+    width: "90%",
+    alignSelf: "center",
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 

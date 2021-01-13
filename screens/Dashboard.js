@@ -1,9 +1,7 @@
 import React from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { ScrollView } from "react-native";
-import { Button } from "react-native";
 import { Text, View, StyleSheet, Image } from "react-native";
 import AppContext from "../components/AppContext";
 import MapView from "../components/MapView";
@@ -47,19 +45,27 @@ const Dashboard = () => {
 
   // WEATHER DATA
   //let currentTemperature = myContext.weatherData[0];
-  const [currT, setCurrT] = useState(myContext.weatherData[0]);
-  const [currFeelLikeTemp, setCurrFeelLikeTemp] = useState(
+  const [currentTemperature, setCurrentTemperature] = useState(
+    myContext.weatherData[0]
+  );
+  const [currentFeelsLikeTemp, setCurrentFeelsLikeTemp] = useState(
     myContext.weatherData[1]
   );
-  const [currHumidity, setCurrentHumidity] = useState(myContext.weatherData[2]);
-  const [currCondition, setCurrCondition] = useState(myContext.weatherData[3]);
-  const [currCity, setCurrCity] = useState(myContext.weatherData[4]);
-  const [conditionIconCode, setConditionIconCode] = useState(
+  const [currentHumidity, setCurrentHumidity] = useState(
+    myContext.weatherData[2]
+  );
+  const [currentCondition, setCurrentCondition] = useState(
+    myContext.weatherData[3]
+  );
+  const [currentCity, setCurrentCity] = useState(myContext.weatherData[4]);
+  const [currentConditionIconCode, setCurrentConditionIconCode] = useState(
     myContext.weatherData[5]
   );
-  const [currWindSpeed, setCurrWindSpeed] = useState(myContext.weatherData[6]);
+  const [currentWindSpeed, setCurrentWindSpeed] = useState(
+    myContext.weatherData[6]
+  );
   let conditionIconURL = {
-    uri: `http://openweathermap.org/img/wn/${conditionIconCode}@4x.png`,
+    uri: `http://openweathermap.org/img/wn/${currentConditionIconCode}@4x.png`,
   };
 
   const SectionRowText = ({
@@ -102,13 +108,13 @@ const Dashboard = () => {
     let currentWeather = await getCurrentWeather(lat, lon);
     //console.log("WOW WORKS: ");
     //console.log(newWeather);
-    setCurrT(currentWeather[0]);
-    setCurrFeelLikeTemp(currentWeather[1]);
+    setCurrentTemperature(currentWeather[0]);
+    setCurrentFeelsLikeTemp(currentWeather[1]);
     setCurrentHumidity(currentWeather[2]);
-    setCurrCondition(currentWeather[3]);
-    setCurrCity(currentWeather[4]);
-    setConditionIconCode(currentWeather[5]);
-    setCurrWindSpeed(currentWeather[6]);
+    setCurrentCondition(currentWeather[3]);
+    setCurrentCity(currentWeather[4]);
+    setCurrentConditionIconCode(currentWeather[5]);
+    setCurrentWindSpeed(currentWeather[6]);
 
     let currentONSCode = await fetchONSCode(lat, lon);
     //console.log("ONS?????????????");
@@ -230,7 +236,7 @@ const Dashboard = () => {
                 fontWeight: "bold",
               }}
             >
-              {currCity}
+              {currentCity}
             </Text>
             {/* Icon */}
             <View>
@@ -246,7 +252,7 @@ const Dashboard = () => {
                 }}
               />
               <Text style={{ alignSelf: "center", fontSize: 18 }}>
-                {currCondition}
+                {currentCondition}
               </Text>
             </View>
 
@@ -272,7 +278,7 @@ const Dashboard = () => {
                 }}
               >
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {Math.floor(currT)}°
+                  {Math.floor(currentTemperature)}°
                 </Text>
                 <Text>Temperature</Text>
                 <Text>(°C)</Text>
@@ -290,7 +296,7 @@ const Dashboard = () => {
                 }}
               >
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {Math.ceil(currFeelLikeTemp)}°
+                  {Math.ceil(currentFeelsLikeTemp)}°
                 </Text>
                 <Text>Feels like</Text>
                 <Text>(°C)</Text>
@@ -308,7 +314,7 @@ const Dashboard = () => {
                 }}
               >
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {currHumidity}
+                  {currentHumidity}
                 </Text>
                 <Text>Humidity</Text>
                 <Text>(%)</Text>
@@ -327,7 +333,7 @@ const Dashboard = () => {
               >
                 {/* TODO: Make a new View as Component that simplifies this! Takes in params e.g. style and vars e.g. windspeed, so all views are same but no repetition*/}
                 <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                  {currWindSpeed}
+                  {currentWindSpeed}
                 </Text>
                 <Text>Wind Speed</Text>
                 <Text>(m/s)</Text>

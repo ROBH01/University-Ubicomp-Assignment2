@@ -235,6 +235,7 @@ const ActivityRowCard = ({
     activityFeedback = "";
     activityRiskLevel = null;
     personalisedRiskLevelFactors = null;
+    let riskLabel = null;
 
     // Do covid weights, change main method
     addCovidWeights(rollingRate100k, "personalisedWeights");
@@ -300,9 +301,22 @@ const ActivityRowCard = ({
     //console.log(activityFeedback);
     //alert(personalisedRiskLevelFactors);
 
+    if (personalisedRiskLevelFactors <= 20) {
+      riskLabel = "Low risk";
+    } else if (personalisedRiskLevelFactors <= 40) {
+      riskLabel = "Moderate-low risk";
+    } else if (personalisedRiskLevelFactors <= 60) {
+      riskLabel = "Moderate risk";
+    } else if (personalisedRiskLevelFactors <= 80) {
+      riskLabel = "Moderate-high risk";
+    } else if (personalisedRiskLevelFactors > 80) {
+      riskLabel = "High risk";
+    }
+
     let personalisedActivityData = [
       Math.floor(personalisedRiskLevelFactors),
       activityFeedback,
+      riskLabel,
     ];
 
     return personalisedActivityData;

@@ -1,14 +1,13 @@
-/* This file contains all the activities that are displayed to the user.
-   Each activity has its standard base risk value, further increased
-   based on covid-19 area status and weather data incoming from APIs
-   for a maximum of 20 each (100/5), for visualisation purposes:
-      - Low risk: 10
-      - Moderate-Low risk: 30
-      - Moderate risk: 50
-      - Moderate-high risk: 70
-      - high risk: 90
-      TODO: Change this!, different logic used
-*/
+/**
+ * This file contains all the activities that are displayed to the user.
+ * Each activity has its standard base risk value, a factor that is
+ * multiplied by the current covid-19 area incoming data from the API.
+ *  LOW RISK COUNT: 5
+ *  MOD-LOW RISK COUNT: 5
+ *  MOD RISK COUNT: 5
+ *  MOD-HIGH RISK COUNT: 7
+ *  HIGH RISK COUNT: 8
+ */
 
 const activities = [
   {
@@ -23,140 +22,235 @@ const activities = [
     id: 1,
     activityName: "Cycling",
     activityRiskLabel: "Low risk",
-    activityBaseRiskValue: 2,
+    activityBaseRiskValue: 1,
     activityType: "outdoor",
     imagePath: require("../assets/images/cycling.png"),
   },
   {
     id: 2,
     activityName: "Horse riding",
-    activityRiskLabel: "Moderate-high risk",
-    activityBaseRiskValue: 3,
+    activityRiskLabel: "Low risk",
+    activityBaseRiskValue: 1,
     activityType: "outdoor",
     imagePath: require("../assets/images/horse_riding.png"),
   },
   {
     id: 3,
     activityName: "Indoor swimming",
-    activityRiskLabel: "Moderate-high risk",
-    activityBaseRiskValue: 4,
+    activityRiskLabel: "Moderate risk",
+    activityBaseRiskValue: 3,
     activityType: "indoor",
     imagePath: require("../assets/images/swimming.png"),
   },
   {
     id: 4,
     activityName: "Snowboarding",
-    activityRiskLabel: "Moderate-high risk",
-    activityBaseRiskValue: 5,
+    activityRiskLabel: "Moderate-low risk",
+    activityBaseRiskValue: 2,
     activityType: "outdoor",
     imagePath: require("../assets/images/snowboarding.png"),
   },
-  // {
-  //   id: 5,
-  //   activityName: "Fishing",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "outdoor",
-  //   imagePath: require("../assets/images/fishing.png"),
-  // },
-  // {
-  //   id: 7,
-  //   activityName: "Study at the library",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "indoor",
-  //   imagePath: require("../assets/images/library.png"),
-  // },
-  // {
-  //   id: 8,
-  //   activityName: "Shopping groceries",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "indoor",
-  //   imagePath: require("../assets/images/grocery.png"),
-  // },
-  // {
-  //   id: 9,
-  //   activityName: "Mall shopping",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "indoor",
-  //   imagePath: require("../assets/images/mall_shopping.png"),
-  // },
-  // {
-  //   id: 10,
-  //   activityName: "Going to the cinema",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "indoor",
-  //   imagePath: require("../assets/images/cinema.png"),
-  // },
-  // {
-  //   id: 11,
-  //   activityName: "Stargazing",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "outdoor",
-  //   imagePath: require("../assets/images/stargazing.png"),
-  // },
-  // {
-  //   id: 12,
-  //   activityName: "Exercising at the gym",
-  //   activityRiskLabel: "Moderate-high risk",
-  //   activityBaseRiskValue: 5,
-  //   activityType: "indoor",
-  //   imagePath: require("../assets/images/gym.png"),
-  // },
+  {
+    id: 5,
+    activityName: "Fishing",
+    activityRiskLabel: "Moderate-low risk",
+    activityBaseRiskValue: 2,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/fishing.png"),
+  },
+  {
+    id: 7,
+    activityName: "Going to the library",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "indoor",
+    imagePath: require("../assets/images/library.png"),
+  },
+  {
+    id: 8,
+    activityName: "Shopping groceries",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "indoor",
+    imagePath: require("../assets/images/grocery.png"),
+  },
+  {
+    id: 9,
+    activityName: "Mall shopping",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "indoor",
+    imagePath: require("../assets/images/mall_shopping.png"),
+  },
+  {
+    id: 10,
+    activityName: "Going to the cinema",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "indoor",
+    imagePath: require("../assets/images/cinema.png"),
+  },
+  {
+    id: 11,
+    activityName: "Stargazing",
+    activityRiskLabel: "Low risk",
+    activityBaseRiskValue: 1,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/stargazing.png"),
+  },
+  {
+    id: 12,
+    activityName: "Exercising at the gym",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "indoor",
+    imagePath: require("../assets/images/gym.png"),
+  },
+  {
+    id: 13,
+    activityName: "Restaurant collection",
+    activityRiskLabel: "Moderate-low risk",
+    activityBaseRiskValue: 2,
+    activityType: "indoor",
+    imagePath: require("../assets/images/food_collection.png"),
+  },
+  {
+    id: 14,
+    activityName: "Self-washing the car",
+    activityRiskLabel: "Moderate-low risk",
+    activityBaseRiskValue: 2,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/car_wash.png"),
+  },
+  {
+    id: 15,
+    activityName: "Movie drive-in",
+    activityRiskLabel: "Low risk",
+    activityBaseRiskValue: 1,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/drive_in_cinema.png"),
+  },
+  {
+    id: 16,
+    activityName: "Visiting the GP",
+    activityRiskLabel: "Moderate risk",
+    activityBaseRiskValue: 3,
+    activityType: "indoor",
+    imagePath: require("../assets/images/gp.png"),
+  },
+  {
+    id: 17,
+    activityName: "Dining at a friend's house",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "indoor",
+    imagePath: require("../assets/images/dining_friend.png"),
+  },
+  {
+    id: 18,
+    activityName: "Working in-office",
+    activityRiskLabel: "Moderate risk",
+    activityBaseRiskValue: 3,
+    activityType: "indoor",
+    imagePath: require("../assets/images/office_work.png"),
+  },
+  {
+    id: 19,
+    activityName: "Going to the barbershop",
+    activityRiskLabel: "Moderate risk",
+    activityBaseRiskValue: 3,
+    activityType: "indoor",
+    imagePath: require("../assets/images/barber.png"),
+  },
+  {
+    id: 20,
+    activityName: "Travel by bus",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "indoor",
+    imagePath: require("../assets/images/bus_travel.png"),
+  },
+  {
+    id: 21,
+    activityName: "Taking a taxi",
+    activityRiskLabel: "Moderate risk",
+    activityBaseRiskValue: 3,
+    activityType: "indoor",
+    imagePath: require("../assets/images/taxi.png"),
+  },
+  {
+    id: 22,
+    activityName: "Eating at a buffet",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "indoor",
+    imagePath: require("../assets/images/buffet.png"),
+  },
+  {
+    id: 23,
+    activityName: "Attending a large music concert",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/music_concert.png"),
+  },
+  {
+    id: 24,
+    activityName: "Going to the pub",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "indoor",
+    imagePath: require("../assets/images/pub.png"),
+  },
+  {
+    id: 25,
+    activityName: "Eating inside a restaurant",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "indoor",
+    imagePath: require("../assets/images/eat_in_restaurant.png"),
+  },
+  {
+    id: 26,
+    activityName: "Attending a wedding",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/wedding.png"),
+  },
+  {
+    id: 27,
+    activityName: "Going to a busy beach",
+    activityRiskLabel: "Moderate-high risk",
+    activityBaseRiskValue: 4,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/beach.png"),
+  },
+  {
+    id: 28,
+    activityName: "Playing group games",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/group_games.png"),
+  },
+  {
+    id: 29,
+    activityName: "Camping with the partner",
+    activityRiskLabel: "Moderate-low risk",
+    activityBaseRiskValue: 2,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/camping.png"),
+  },
+  {
+    id: 30,
+    activityName: "Going to a sports stadium",
+    activityRiskLabel: "High risk",
+    activityBaseRiskValue: 5,
+    activityType: "outdoor",
+    imagePath: require("../assets/images/sports_stadium.png"),
+  },
 ];
-
-/**
- * 
-Low risk
-Restaurant takeaway
-Going camping
-/////Snowboarding
-/////Fishing
-Drive in movies
-////Stargazing
-Wash the car
-
-//TODO: Re-assess all the activities and clean up
-Moderate Low risk
-////cinema
-Running or Walking
-Doctor waiting room
-////Study at the library
-Eating in a restaurant (outside)
-Walking in a busy downtown
-////Horse riding
-
-
-Moderate
-////Grocery shopping
-Dinner at friend's house
-Going to the beach > get date, check if summer!!!
-Working inside the office
-////Swimming in a public pool
-
-
-Moderate high
-////Shopping at a mall
-Going to the barbershop
-Eating inside the restaurant
-Attending weddings or funerals
-Playing football with others
-Travel by bus/taxi
-Hugging or shaking hands when greeting someone
-
-
-High
-Eating at a buffet
-////Exercise at the gym
-Going to the cinema
-Attending large music concert
-Going to a sports stadium
-Going to the pub
- */
 
 const getActivities = () => {
   return activities;

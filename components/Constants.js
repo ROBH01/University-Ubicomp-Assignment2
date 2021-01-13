@@ -1,22 +1,26 @@
-// Normal activities weights
-// Covid-19 and user weights
+/**
+ * This file contains all the constants needed by the app such
+ * as the weights and sentences that are used to generate the
+ * feedback based on the covid risk level for the user location
+ */
+
+//TODO: REFORMAT NAMES
+
+// Covid-19 and user weights for Standard activities
 const COVID_LOW_WEIGHT = 2;
 const COVID_MODERATE_LOW_WEIGHT = 4;
-const COVID_MODERATE_WEIGHT = 6;
-const COVID_MODERATE_HIGH_WEIGHT = 9;
-const COVID_HIGH_WEIGHT = 12;
-const USER_AGE_WEIGHT = 3;
-const USER_UNDERLYING_HEALTH_CONDITION_WEIGHT = 5;
+const COVID_MODERATE_WEIGHT = 7;
+const COVID_MODERATE_HIGH_WEIGHT = 10;
+const COVID_HIGH_WEIGHT = 14;
+const USER_AGE_WEIGHT = 2;
+const USER_UNDERLYING_HEALTH_CONDITION_WEIGHT = 4;
 
-// Personalised activities weights
-// Covid-19
+// Covid-19 and user weights for Personalised activities
 const PCOVID_LOW = 10;
 const PCOVID_MODERATE_LOW = 20;
 const PCOVID_MODERATE = 30;
 const PCOVID_MODERATE_HIGH = 40;
 const PCOVID_HIGH = 50;
-
-// User and other factors
 const PUSER_AGE_LOW = 0.1;
 const PUSER_AGE_MEDIUM = 0.2;
 const PUSER_AGE_HIGH = 0.3;

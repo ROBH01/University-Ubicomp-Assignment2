@@ -1,6 +1,5 @@
 import React from "react";
 import { View } from "react-native";
-import colors from "../assets/colors";
 
 const RiskStatusRectangle = ({
   statusColor,
@@ -17,7 +16,6 @@ const RiskStatusRectangle = ({
         height: height,
         alignSelf: alignSelf,
         borderWidth: borderWidth,
-        //borderRadius: 15,
       }}
     ></View>
   );

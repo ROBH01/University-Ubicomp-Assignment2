@@ -1,12 +1,9 @@
 //start working on a custom modal
 
 import React, { useState } from "react";
-import { Text, View, Modal, StyleSheet, Button } from "react-native";
-import RiskStatusRectangle from "./RiskStatusRectangle";
+import { Text, View, Modal, StyleSheet } from "react-native";
 import CustomButton from "./CustomButton";
-import CustomTextInput from "./CustomTextInput";
 import { Picker } from "@react-native-picker/picker";
-import { color } from "react-native-reanimated";
 import AppContext from "./AppContext";
 import { useContext } from "react";
 import MyModal from "./MyModal";
@@ -34,23 +31,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
   const [resultsModalVisible, setResultsModalVisible] = useState(false);
 
   function getResults() {
-    // if (ageRange === "under30") {
-    // _ageRange = 30
-    // } else if (ageRange === "3065") {
-    //   _ageRange =
-    // }
-    // console.log(
-    //   ">>>>>>>>>>>>>>>>>: " + activityTimeExecution,
-    //   typeof underlyingHealthCond
-    // );
-    // console.log(
-    //   ageBand,
-    //   underlyingHealthCond,
-    //   otherPeopleInteraction,
-    //   timeSpentOnActivity,
-    //   activityType,
-    //   activityTimeExecution
-    // );
     let results = myContext.provideUserSpecificActivityFeedback(
       parseInt(ageBand),
       underlyingHealthCond === "true",
@@ -68,7 +48,7 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
     <View>
       <MyModal
         modalVisible={resultsModalVisible}
-        //activityRiskLabel={activityRiskLabel}
+        activityRiskLabel={results[2]}
         riskStatusColor={
           results[0] <= 20
             ? colors.lowRisk
@@ -113,8 +93,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
           >
             <Picker
               selectedValue={ageBand}
-              //mode="dialog"
-              //prompt={"Select your"}
               style={{
                 width: "100%",
                 height: 25,
@@ -143,8 +121,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
           >
             <Picker
               selectedValue={underlyingHealthCond}
-              //mode="dialog"
-              //prompt={"Select your"}
               style={{
                 width: "100%",
                 height: 25,
@@ -172,8 +148,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
           >
             <Picker
               selectedValue={otherPeopleInteraction}
-              //mode="dialog"
-              //prompt={"Select your"}
               style={{
                 width: "100%",
                 height: 25,
@@ -203,8 +177,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
           >
             <Picker
               selectedValue={timeSpentOnActivity}
-              //mode="dialog"
-              //prompt={"Select your"}
               style={{
                 width: "100%",
                 height: 25,
@@ -233,8 +205,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
           >
             <Picker
               selectedValue={activityType}
-              //mode="dialog"
-              //prompt={"Select your"}
               style={{
                 width: "100%",
                 height: 25,
@@ -262,8 +232,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
           >
             <Picker
               selectedValue={activityTimeExecution}
-              //mode="dialog"
-              //prompt={"Select your"}
               style={{
                 width: "100%",
                 height: 25,
@@ -275,8 +243,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
               <Picker.Item label="During busy times" value="busy" />
             </Picker>
           </View>
-
-          {/* /dddddddddddddddddddddddddddddddd */}
 
           {/* Obtain results */}
           <CustomButton
@@ -308,19 +274,6 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    // paddingLeft: 10,
-    // paddingRight: 10,
-    // borderRadius: 15,
-    // marginTop: 120,
-    // marginLeft: 20,
-    // marginRight: 20,
-    //margin: 30,
-    // paddingTop: 5,
-    //height: "65%",
-    // paddingBottom: 5,
-
-    alignContent: "center",
-    //justifyContent: "space-between",
     backgroundColor: "#e6e6e6",
   },
   title: {
