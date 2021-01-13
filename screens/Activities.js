@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Vibration } from "react-native";
 import getActivities from "../APIs/Activities-api";
 import ActivityRowCard from "../components/ActivityRowCard";
 import SearchBox from "../components/SearchBox";
@@ -14,7 +14,7 @@ const Activities = () => {
   // Update risk colour associated with the activities when tab pressed
   useFocusEffect(
     React.useCallback(() => {
-      refreshData();
+      refreshData(false);
     }, [])
   );
 
@@ -45,8 +45,11 @@ const Activities = () => {
     setActivities(activitiesSorted);
   };
 
-  function refreshData() {
+  function refreshData(userFeedback = true) {
     setExtraData([...getActivities()]);
+    if (userFeedback) {
+      Vibration.vibrate(20);
+    }
   }
 
   return (
