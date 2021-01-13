@@ -3,8 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 /**
  * This method sets the value passed in as argument
  * for the key associated with it
- * @param {} key
- * @param {} value
+ * @param {string} key
+ * @param {string} value
  */
 async function saveData(key, value) {
   try {
@@ -18,13 +18,11 @@ async function saveData(key, value) {
 
 /**
  * This method reads the value based on the key provided
- * @param {} key
+ * @param {string} key
  */
 async function readData(key) {
   try {
     const value = await AsyncStorage.getItem(key);
-    //console.log("Next val is async val");
-    //console.log(typeof value);
     return value;
   } catch (exc) {
     console.error(exc);

@@ -10,7 +10,12 @@ import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
 import fetchONSCode from "../APIs/PostCodesAPI";
 import fetchCovid19Data from "../APIs/CovidGovAPI";
+import colors from "../assets/colors";
 
+/**
+ * This component displays the Covid-19 stats, current weather in the user's
+ * location and an interactive container displaying the tiers for England
+ */
 const Dashboard = () => {
   // Getting data from Context
   const myContext = useContext(AppContext);
@@ -137,7 +142,6 @@ const Dashboard = () => {
             dailyDeaths={nationalDeathsToday}
             cumulativeDeaths={nationalCumulativeDeaths}
           />
-          {/* </View> */}
         </View>
 
         {/* Weather view */}
@@ -167,19 +171,20 @@ const Dashboard = () => {
                 parameterValue={Math.floor(currentTemperature) + "°"}
                 parameterUnit={"°C"}
               />
-
               {/* Feels like view */}
               <ColumnWeatherParameter
                 parameterName={"Feels Like"}
                 parameterValue={Math.ceil(currentFeelsLikeTemp) + "°"}
                 parameterUnit={"°C"}
               />
-
               {/* Humidity view */}
               <ColumnWeatherParameter parameterName={"Humidity"} parameterValue={currentHumidity} parameterUnit={"%"} />
-
               {/* Wind speed view */}
-              <ColumnWeatherParameter parameterName={"Wind Speed"} parameterValue={currentWindSpeed} parameterUnit={"m/s"} />
+              <ColumnWeatherParameter
+                parameterName={"Wind Speed"}
+                parameterValue={currentWindSpeed}
+                parameterUnit={"m/s"}
+              />
             </View>
           </View>
         </View>
@@ -193,18 +198,18 @@ const styles = StyleSheet.create({
   topView: {
     flex: 1,
     justifyContent: "space-evenly",
-    backgroundColor: "lightgray",
+    backgroundColor: colors.lightGray,
     padding: 10,
   },
   covidView: {
-    backgroundColor: "#e5e5e5",
+    backgroundColor: colors.appMainBackground,
     width: "100%",
     marginTop: 30,
     alignItems: "center",
   },
   covidTitleView: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     padding: 5,
   },
   weatherView: {
@@ -213,11 +218,11 @@ const styles = StyleSheet.create({
   },
   weatherHeading: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     padding: 3,
   },
   weatherIconAndStatus: {
-    backgroundColor: "#e5e5e5",
+    backgroundColor: colors.appMainBackground,
     width: "100%",
     marginBottom: 10,
   },

@@ -1,20 +1,13 @@
 import React from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
+import colors from "../assets/colors";
 
 const SearchBar = ({ searchValue, onSearch, deleteSearchValue }) => {
   // Used to display an icon the clears the text input
   const ClearInput = () => {
     if (searchValue !== "") {
-      return (
-        <Icon
-          name="times"
-          type="font-awesome"
-          size={22}
-          color="gray"
-          onPress={deleteSearchValue}
-        ></Icon>
-      );
+      return <Icon name="times" type="font-awesome" size={22} color={colors.gray} onPress={deleteSearchValue}></Icon>;
     }
     return null;
   };
@@ -22,9 +15,7 @@ const SearchBar = ({ searchValue, onSearch, deleteSearchValue }) => {
   // Used to display a magnifier icon when there is no text
   const ShowSearchIcon = () => {
     if (searchValue === "") {
-      return (
-        <Icon name="search" type="font-awesome" size={20} color="gray"></Icon>
-      );
+      return <Icon name="search" type="font-awesome" size={20} color={colors.gray}></Icon>;
     }
     return null;
   };
@@ -39,7 +30,6 @@ const SearchBar = ({ searchValue, onSearch, deleteSearchValue }) => {
         maxLength={20}
         style={styles.input}
       />
-
       <ClearInput />
       <ShowSearchIcon />
     </View>
@@ -50,7 +40,7 @@ const styles = StyleSheet.create({
   searchView: {
     flexDirection: "row",
     alignContent: "center",
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     justifyContent: "center",
     alignItems: "center",
     width: "60%",

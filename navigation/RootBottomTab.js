@@ -8,7 +8,7 @@ import Profile from "../screens/Profile";
 import colors from "../assets/colors";
 
 const TabLabel = ({ labelName }) => {
-  return <Text style={{ fontSize: 10, color: "#2196F3" }}>{labelName}</Text>;
+  return <Text style={{ fontSize: 10, color: colors.lightBlue }}>{labelName}</Text>;
 };
 
 // Bottom Tab Navigator made of different screens
@@ -19,7 +19,7 @@ const Tabs = () => {
     <BottomTabNav.Navigator
       initialRouteName="Activities"
       tabBarOptions={{
-        activeTintColor: colors.tabBarTint,
+        activeTintColor: colors.lightBlue,
       }}
     >
       <BottomTabNav.Screen
@@ -29,9 +29,7 @@ const Tabs = () => {
           tabBarLabel: ({ focused }) => {
             if (focused) return <TabLabel labelName={"ACTIVITIES"} />;
           },
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="dumbbell" color={color} size={28} />
-          ),
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="dumbbell" color={color} size={28} />,
         }}
       />
 
@@ -42,9 +40,7 @@ const Tabs = () => {
           tabBarLabel: ({ focused }) => {
             if (focused) return <TabLabel labelName={"DASHBOARD"} />;
           },
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="earth" color={color} size={28} />
-          ),
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="earth" color={color} size={28} />,
         }}
       />
 
@@ -55,9 +51,7 @@ const Tabs = () => {
           tabBarLabel: ({ focused }) => {
             if (focused) return <TabLabel labelName={"USER"} />;
           },
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={28} />
-          ),
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account" color={color} size={28} />,
         }}
       />
     </BottomTabNav.Navigator>

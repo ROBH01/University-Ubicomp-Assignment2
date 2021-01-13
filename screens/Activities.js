@@ -6,9 +6,11 @@ import SearchBox from "../components/SearchBox";
 import CustomButton from "../components/CustomButton";
 import { useFocusEffect } from "@react-navigation/native";
 import ActivityCheckerModal from "../components/ActivityChecker";
-
+import colors from "../assets/colors";
 /**
- * This component renders the Activities screen
+ * This component renders the Activities screen which includes
+ * a Search function, a Personalised Activity checker, a FlatList
+ * and a RowCard component
  */
 const Activities = () => {
   // Update risk colour associated with the activities when tab pressed
@@ -22,16 +24,20 @@ const Activities = () => {
   const [extraData, setExtraData] = useState(null);
   const [refresh, setRefreshing] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [
-    activityCheckerModalVisible,
-    setActivityCheckerModalVisible,
-  ] = useState(false);
+  const [activityCheckerModalVisible, setActivityCheckerModalVisible] = useState(false);
 
+  /**
+   * Deletes values from the search box and refreshes activities
+   */
   const deleteSearchBoxValue = () => {
     setSearchValue("");
     setActivities(getActivities);
   };
 
+  /**
+   * Filters the activities by the name typed in the search box
+   * @param {string} text
+   */
   const onSearch = (text) => {
     setSearchValue(text);
     let activitiesSorted = getActivities();
@@ -45,6 +51,10 @@ const Activities = () => {
     setActivities(activitiesSorted);
   };
 
+  /**
+   * Refreshes the activities
+   * @param {boolean} userFeedback - whether vibrate on complete or not
+   */
   function refreshData(userFeedback = true) {
     setExtraData([...getActivities()]);
     if (userFeedback) {
@@ -58,7 +68,7 @@ const Activities = () => {
       style={{
         flex: 1,
         alignItems: "center",
-        backgroundColor: "lightgray",
+        backgroundColor: colors.lightGray,
         paddingLeft: 5,
         paddingRight: 5,
       }}
@@ -79,11 +89,7 @@ const Activities = () => {
           justifyContent: "space-around",
         }}
       >
-        <SearchBox
-          searchValue={searchValue}
-          onSearch={onSearch}
-          deleteSearchValue={deleteSearchBoxValue}
-        />
+        <SearchBox searchValue={searchValue} onSearch={onSearch} deleteSearchValue={deleteSearchBoxValue} />
         <CustomButton
           name="ACTIVITY CHECKER"
           height={35}

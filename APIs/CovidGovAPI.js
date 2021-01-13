@@ -1,11 +1,12 @@
 /**
- * This API is used to retrieve the rate per 100k population
- * in the area the user is by using the ONS code provided
+ * This API is used to retrieve the rate per 100k population and other
+ * Covid-19 related information such as the number of cases and deaths
+ * in the user's area as well as nationwide, by using the ONS code provided
  */
 
 /**
- * Method used to retrieve all the necessary Covid-19 data from gov.uk API
- * @param {} ONSCode area code
+ * Method used to retrieve all the necessary Covid-19 data from Gov.uk API
+ * @param {number} ONSCode area code
  */
 async function fetchCovid19Data(ONSCode) {
   const structureRolling100k = {
@@ -33,21 +34,15 @@ async function fetchCovid19Data(ONSCode) {
 
   try {
     let response100k = await fetch(
-      `https://api.coronavirus.data.gov.uk/v1/data?filters=areaCode=${ONSCode}&structure=${JSON.stringify(
-        structureRolling100k
-      )}`
+      `https://api.coronavirus.data.gov.uk/v1/data?filters=areaCode=${ONSCode}&structure=${JSON.stringify(structureRolling100k)}`
     );
 
     let responseStatistics = await fetch(
-      `https://api.coronavirus.data.gov.uk/v1/data?filters=areaCode=${ONSCode}&structure=${JSON.stringify(
-        structureStatistics
-      )}`
+      `https://api.coronavirus.data.gov.uk/v1/data?filters=areaCode=${ONSCode}&structure=${JSON.stringify(structureStatistics)}`
     );
 
     let responseNationalStatistics = await fetch(
-      `https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure=${JSON.stringify(
-        structureNationalStatistics
-      )}`
+      `https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure=${JSON.stringify(structureNationalStatistics)}`
     );
 
     let data100k = await response100k.json();
@@ -55,12 +50,9 @@ async function fetchCovid19Data(ONSCode) {
     let dataNationalStatistics = await responseNationalStatistics.json();
 
     // Get rate per 100k population
-    //console.log(data100k.data[0]);
     let rolling100k = data100k.data[0].SevenDayRolling;
-    //console.log("Checking response: " + rolling100k);
 
-    // Get other statistical data such as daily cases, cumulative cases and the area name queried
-    //console.log(dataStatistics.data[0]);
+    // Get other statistical data
     let dailyCases = dataStatistics.data[0].DailyCases;
     let cumulativeCases = dataStatistics.data[0].CumulativeCases;
     let areaName = dataStatistics.data[0].Name;
@@ -68,15 +60,11 @@ async function fetchCovid19Data(ONSCode) {
     let cumulativeDeaths = dataStatistics.data[0].CumulativeDeaths;
 
     // Get national statistics
-    //console.log(dataNationalStatistics.data[0]);
     let dailyNationalCases = dataNationalStatistics.data[0].DailyCases;
-    let cumulativeNationalCases =
-      dataNationalStatistics.data[0].CumulativeCases;
+    let cumulativeNationalCases = dataNationalStatistics.data[0].CumulativeCases;
     let dailyNationalDeaths = dataNationalStatistics.data[0].DailyDeaths;
-    let cumulativeNationalDeaths =
-      dataNationalStatistics.data[0].CumulativeDeaths;
+    let cumulativeNationalDeaths = dataNationalStatistics.data[0].CumulativeDeaths;
 
-    // Return all the data requested
     let covidAPIData = [
       rolling100k,
       dailyCases,
