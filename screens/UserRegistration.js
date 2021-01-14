@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 16,
     color: "black",
+    marginTop: 10,
     textAlign: "center",
   },
   underlyingHealthConditionsView: {

@@ -54,7 +54,9 @@ export default function App() {
 
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
-        alert("The application will not work without the permission, please launch the app again and accept if you wish to use the app");
+        alert(
+          "The application will not work without the permission, please launch the app again and accept if you wish to use the app"
+        );
         return;
       }
       // Getting user current location

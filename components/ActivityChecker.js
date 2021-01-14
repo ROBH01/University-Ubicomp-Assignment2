@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   pickerView: {
     backgroundColor: colors.white,
     height: 25,
-    width: "65%",
+    width: "78%",
     marginTop: 5,
     alignSelf: "center",
   },

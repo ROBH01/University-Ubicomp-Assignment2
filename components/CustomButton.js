@@ -4,7 +4,7 @@ import colors from "../assets/colors";
 
 // This is a customised button that uses Pressable
 const CustomButton = ({ name, height, width, disabled, onPressOut, textFontSize, marginTop }) => {
-  let animationWidth = 2;
+  let animationWidth = 0.5;
   return (
     <Pressable
       onPressOut={onPressOut}
@@ -13,6 +13,8 @@ const CustomButton = ({ name, height, width, disabled, onPressOut, textFontSize,
         {
           backgroundColor: disabled ? colors.gray : colors.lightBlue,
           height: height,
+          borderWidth: pressed ? 1 : 0,
+          borderColor: pressed ? colors.white : colors.lightBlue,
           width: pressed ? parseInt(width) - animationWidth + "%" : width,
           alignSelf: "center",
           justifyContent: "center",

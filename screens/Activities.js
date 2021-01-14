@@ -7,6 +7,7 @@ import CustomButton from "../components/CustomButton";
 import { useFocusEffect } from "@react-navigation/native";
 import ActivityCheckerModal from "../components/ActivityChecker";
 import colors from "../assets/colors";
+
 /**
  * This component renders the Activities screen which includes
  * a Search function, a Personalised Activity checker, a FlatList
@@ -57,6 +58,7 @@ const Activities = () => {
    */
   function refreshData(userFeedback = true) {
     setExtraData([...getActivities()]);
+    deleteSearchBoxValue();
     if (userFeedback) {
       Vibration.vibrate(20);
     }
@@ -69,8 +71,8 @@ const Activities = () => {
         flex: 1,
         alignItems: "center",
         backgroundColor: colors.lightGray,
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: 8,
+        paddingRight: 8,
       }}
     >
       {/* Used to handle the personalised activities */}
@@ -110,7 +112,6 @@ const Activities = () => {
         renderItem={({ item }) => (
           <ActivityRowCard
             activityName={item.activityName}
-            activityRiskLabel={item.activityRiskLabel}
             activityBaseRiskValue={item.activityBaseRiskValue}
             activityType={item.activityType}
             imagePath={item.imagePath}
