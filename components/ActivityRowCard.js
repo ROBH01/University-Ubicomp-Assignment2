@@ -63,7 +63,6 @@ const ActivityRowCard = ({ activityName, activityBaseRiskValue, activityType, im
    * @param {string} weights - Either the normal weights or personalisedWeights
    */
   function addCovidWeights(rollingRate100k, weights) {
-    console.log(rollingRate100k);
     if (weights === "weights") {
       if (rollingRate100k < 150) {
         activityRiskLevel = constants.weights.COVID_LOW;
