@@ -89,7 +89,7 @@ const Profile = () => {
         backgroundColor: colors.lightGray,
       }}
     >
-      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>My details</Text>
+      <Text style={{ alignSelf: "center", fontSize: 24, color: "black" }}>My Details</Text>
 
       {/* Showing name */}
       <CustomTextInput
@@ -163,7 +163,7 @@ const Profile = () => {
       >
         {/* Getting new details from the user and updating existing ones */}
         <UserRegistration
-          title={"Edit details"}
+          title={"Edit Details"}
           subtitle={"Update your name, age and underlying health conditions"}
           buttonName={"Update"}
           onCompleted={updateUserInfo}

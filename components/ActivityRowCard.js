@@ -4,11 +4,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RiskStatusRectangle from "./RiskStatusRectangle";
 import MyModal from "./MyModal";
 import colors from "../assets/colors";
-import constants from "./Constants";
+import constants from "../assets/constants";
 import AppContext from "./AppContext";
 import { useContext } from "react";
 
-const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValue, activityType, imagePath }) => {
+const ActivityRowCard = ({ activityName, activityBaseRiskValue, activityType, imagePath }) => {
   // Getting data from context
   const myContext = useContext(AppContext);
 
@@ -22,6 +22,7 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
 
   let activityFeedback = "";
   let activityRiskLevel = null;
+  let riskLabel = "";
   let personalisedRiskLevelFactors = null;
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -62,6 +63,7 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
    * @param {string} weights - Either the normal weights or personalisedWeights
    */
   function addCovidWeights(rollingRate100k, weights) {
+    console.log(rollingRate100k);
     if (weights === "weights") {
       if (rollingRate100k < 150) {
         activityRiskLevel = constants.weights.COVID_LOW;
@@ -164,23 +166,29 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
         } ${userLocation} is ${Math.floor(realFeelTemp)} °C.`;
       }
     } else {
-      activityFeedback = `${activityFeedback} ${constants.sentenceFormats.SOCIAL_DISTANCING_HIGH}.`;
+      if (activityRiskLevel > 40) {
+        activityFeedback = `${activityFeedback} ${constants.sentenceFormats.SOCIAL_DISTANCING_HIGH}.`;
+      }
     }
   }
 
   /**
-   * Builds the overall feedbakc using the methods available
+   * Provides the correct label based on the activity risk level
+   * @param {number} activityRiskLevel
    */
-  function buildFeedback() {
-    addCovidWeights(rollingRate100k, "weights");
-    addAgeWeight(userAge);
-    addUnderlyingHealthCondWeight(userUnderlyingHealthCond);
-    activityRiskLevel *= activityBaseRiskValue; // calculating risk level as percentage
-    addFeedbackFromRiskLevel(false);
-    offerHints();
+  function buildLabel(activityRiskLevel) {
+    if (activityRiskLevel <= 20) {
+      riskLabel = "Low risk";
+    } else if (activityRiskLevel <= 40) {
+      riskLabel = "Moderate-low risk";
+    } else if (activityRiskLevel <= 60) {
+      riskLabel = "Moderate risk";
+    } else if (activityRiskLevel <= 80) {
+      riskLabel = "Moderate-high risk";
+    } else if (activityRiskLevel > 80) {
+      riskLabel = "High risk";
+    }
   }
-
-  buildFeedback();
 
   /**
    * Builds feedback using incoming parameters and returns Risk Level,
@@ -204,7 +212,7 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
     activityFeedback = "";
     activityRiskLevel = null;
     personalisedRiskLevelFactors = null;
-    let riskLabel = null;
+    riskLabel = null;
     let personalisedActivityData = [];
 
     // Add covid weights
@@ -257,21 +265,26 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
     addFeedbackFromRiskLevel(true);
 
     // Gather appropriate risk label
-    if (personalisedRiskLevelFactors <= 20) {
-      riskLabel = "Low risk";
-    } else if (personalisedRiskLevelFactors <= 40) {
-      riskLabel = "Moderate-low risk";
-    } else if (personalisedRiskLevelFactors <= 60) {
-      riskLabel = "Moderate risk";
-    } else if (personalisedRiskLevelFactors <= 80) {
-      riskLabel = "Moderate-high risk";
-    } else if (personalisedRiskLevelFactors > 80) {
-      riskLabel = "High risk";
-    }
+    buildLabel(personalisedRiskLevelFactors);
 
     personalisedActivityData = [Math.floor(personalisedRiskLevelFactors), activityFeedback, riskLabel];
     return personalisedActivityData;
   }
+
+  /**
+   * Builds the overall feedback using the methods available
+   */
+  function buildFeedback() {
+    addCovidWeights(rollingRate100k, "weights");
+    addAgeWeight(userAge);
+    addUnderlyingHealthCondWeight(userUnderlyingHealthCond);
+    activityRiskLevel *= activityBaseRiskValue; // calculating risk level as percentage
+    buildLabel(activityRiskLevel);
+    addFeedbackFromRiskLevel(false);
+    offerHints();
+  }
+
+  buildFeedback();
 
   // Saving function in context as to be used from other files
   myContext.getFeedbackOnSpecificActivity = getFeedbackOnSpecificActivity;
@@ -285,7 +298,7 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
       {/* Modal showing more details about the activity clicked on */}
       <MyModal
         modalVisible={modalVisible}
-        activityRiskLabel={activityRiskLabel}
+        activityRiskLabel={riskLabel}
         riskStatusColor={
           activityRiskLevel <= 20
             ? colors.lowRisk
@@ -314,7 +327,7 @@ const ActivityRowCard = ({ activityName, activityRiskLabel, activityBaseRiskValu
         {/* Renders activity name and its risk level */}
         <View style={styles.activityNameRiskView}>
           <Text style={styles.activityName}>{activityName}</Text>
-          <Text style={styles.activityRiskLevel}>{activityRiskLabel}</Text>
+          <Text style={styles.activityRiskLevel}>{riskLabel}</Text>
 
           {/* Showing the right arrow on the card */}
           <View style={styles.rightArrowIcon}>
