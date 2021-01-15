@@ -33,7 +33,7 @@ const MyModal = ({ modalVisible, closeModal, riskStatusColor, riskValue, feedbac
 
         {/* Progress bar */}
         <View style={styles.progressBar}>
-          <RiskStatusRectangle statusColor={riskStatusColor} width={riskValue + "%"} height={25} />
+          <RiskStatusRectangle statusColor={riskStatusColor} width={riskValue + "%"} height={30} />
         </View>
 
         {/* Activity risk lavel label */}
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   progressBar: {
     flexDirection: "row",
     width: "80%",
-    height: 25,
+    height: 30,
     alignSelf: "center",
     backgroundColor: colors.white,
     marginTop: 5,
