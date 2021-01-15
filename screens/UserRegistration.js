@@ -33,7 +33,7 @@ const UserRegistration = ({
       {/* Name text input */}
       <CustomTextInput
         marginTop={20}
-        height={30}
+        height={35}
         width={"60%"}
         backgroundColor={colors.white}
         alignSelf={"center"}
@@ -47,7 +47,7 @@ const UserRegistration = ({
       {/* Age text input */}
       <CustomTextInput
         marginTop={20}
-        height={30}
+        height={35}
         width={"60%"}
         backgroundColor={colors.white}
         alignSelf={"center"}

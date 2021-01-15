@@ -94,7 +94,7 @@ const Profile = () => {
       {/* Showing name */}
       <CustomTextInput
         marginTop={20}
-        height={30}
+        height={35}
         width={"60%"}
         backgroundColor={colors.white}
         alignSelf={"center"}
@@ -106,7 +106,7 @@ const Profile = () => {
       {/* Showing age */}
       <CustomTextInput
         marginTop={20}
-        height={30}
+        height={35}
         width={"60%"}
         backgroundColor={colors.white}
         alignSelf={"center"}
@@ -118,7 +118,7 @@ const Profile = () => {
       {/* Showing underlying health conditions */}
       <CustomTextInput
         marginTop={20}
-        height={30}
+        height={35}
         width={"60%"}
         backgroundColor={colors.white}
         alignSelf={"center"}
@@ -132,7 +132,7 @@ const Profile = () => {
       {/* Showing user current location */}
       <CustomTextInput
         marginTop={20}
-        height={30}
+        height={35}
         width={"60%"}
         backgroundColor={colors.white}
         alignSelf={"center"}

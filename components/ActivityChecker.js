@@ -175,7 +175,7 @@ const ActivityCheckerModal = ({ modalVisible, closeModal }) => {
             height={30}
             textFontSize={16}
             onPressOut={closeModal}
-            marginTop={40}
+            marginTop={20}
             width={"50%"}
             name={"CLOSE"}
           />
@@ -203,14 +203,14 @@ const styles = StyleSheet.create({
   },
   pickerView: {
     backgroundColor: colors.white,
-    height: 25,
+    height: 30,
     width: "78%",
     marginTop: 5,
     alignSelf: "center",
   },
   pickerStyle: {
     width: "100%",
-    height: 25,
+    height: 30,
     alignSelf: "center",
   },
 });

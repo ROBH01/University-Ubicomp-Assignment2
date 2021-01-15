@@ -40,6 +40,7 @@ export default function App() {
       let user = await AsyncStorageController.readData(USER_NAME_KEY);
       let age = await AsyncStorageController.readData(USER_AGE_KEY);
       let condition = await AsyncStorageController.readData(USER_CONDITION_KEY);
+      //AsyncStorageController.clearStorage();
 
       if (user !== null || age !== null || condition !== null) {
         setUserName(user);
